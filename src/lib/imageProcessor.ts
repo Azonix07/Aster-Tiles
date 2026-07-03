@@ -98,11 +98,14 @@ function autoLevels(ctx: CanvasRenderingContext2D, w: number, h: number) {
   if (range < 15) return; // Avoid dividing by zero or destroying flat images
   
   for (let i = 0; i < data.length; i += 4) {
-    for (let c = 0; c < 3; c++) {
-      let val = data[i + c];
-      val = ((val - lowPoint) / range) * 255;
-      data[i + c] = Math.min(255, Math.max(0, val));
-    }
+    const r = data[i], g = data[i+1], b = data[i+2];
+    const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+    const newLum = ((lum - lowPoint) / range) * 255;
+    const ratio = lum === 0 ? 0 : newLum / lum;
+    
+    data[i] = Math.min(255, Math.max(0, r * ratio));
+    data[i+1] = Math.min(255, Math.max(0, g * ratio));
+    data[i+2] = Math.min(255, Math.max(0, b * ratio));
   }
   ctx.putImageData(imageData, 0, 0);
 }
@@ -134,19 +137,14 @@ function flattenLighting(ctx: CanvasRenderingContext2D, w: number, h: number) {
   const data = imageData.data;
   const mapData = blurCtx.getImageData(0, 0, w, h).data;
   
-  // Calculate global average colour
-  let sumR = 0, sumG = 0, sumB = 0;
+  // Calculate global average luminance
+  let sumL = 0;
   for (let i = 0; i < data.length; i += 4) {
-    sumR += data[i];
-    sumG += data[i+1];
-    sumB += data[i+2];
+    sumL += 0.299 * data[i] + 0.587 * data[i+1] + 0.114 * data[i+2];
   }
-  const pixels = w * h;
-  const meanR = sumR / pixels;
-  const meanG = sumG / pixels;
-  const meanB = sumB / pixels;
+  const meanL = sumL / (w * h);
 
-  const strength = 0.90; // High flattening strength to match edges
+  const strength = 0.80; // High flattening strength to match edges
   
   for (let i = 0; i < data.length; i += 4) {
     let r = data[i], g = data[i+1], b = data[i+2];
@@ -171,11 +169,14 @@ function flattenLighting(ctx: CanvasRenderingContext2D, w: number, h: number) {
       b = b * (1 - glareAmount) + lb * glareAmount;
     }
 
-    // Shading correction: multiply pixel by the ratio of global average to local light
-    // This perfectly evens out vignettes, shadows, and broad glare.
-    const targetR = r * (meanR / lr);
-    const targetG = g * (meanG / lg);
-    const targetB = b * (meanB / lb);
+    // Shading correction: preserve original colour, but scale luminance
+    let lL = 0.299 * lr + 0.587 * lg + 0.114 * lb;
+    lL = Math.max(5, lL);
+    const lumRatio = meanL / lL;
+    
+    const targetR = r * lumRatio;
+    const targetG = g * lumRatio;
+    const targetB = b * lumRatio;
     
     data[i] = Math.min(255, Math.max(0, r * (1 - strength) + targetR * strength));
     data[i+1] = Math.min(255, Math.max(0, g * (1 - strength) + targetG * strength));
