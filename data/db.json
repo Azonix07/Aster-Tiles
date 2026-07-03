@@ -1,0 +1,533 @@
+{
+  "tiles": [
+    {
+      "id": "venus-bianco",
+      "name": "Venus Bianco",
+      "widthMm": 600,
+      "heightMm": 600,
+      "finish": "Matt Carving",
+      "material": "Porcelain",
+      "category": "stone",
+      "texture": "/media/tiles/venus-bianco.jpg",
+      "defaultGrout": "#d8d4cf",
+      "pricePerSqm": 34,
+      "bestFor": [],
+      "description": "A soft white marble-effect porcelain with warm grey veining that brightens any room without feeling clinical.",
+      "inStock": true
+    },
+    {
+      "id": "sigma-statuario",
+      "name": "Sigma Statuario",
+      "widthMm": 800,
+      "heightMm": 1600,
+      "finish": "Matt Carving",
+      "material": "Porcelain",
+      "category": "stone",
+      "texture": "/media/tiles/sigma-statuario.jpg",
+      "defaultGrout": "#e2e0dd",
+      "pricePerSqm": 58,
+      "bestFor": [
+        "Feature walls",
+        "Bathrooms",
+        "Open plan"
+      ],
+      "description": "Large-format statuario with bold diagonal veining — a statement slab look at a fraction of natural marble cost.",
+      "inStock": true
+    },
+    {
+      "id": "torano-gold",
+      "name": "Torano Gold",
+      "widthMm": 800,
+      "heightMm": 1600,
+      "finish": "Polished",
+      "material": "Porcelain",
+      "category": "stone",
+      "texture": "/media/tiles/torano-gold.jpg",
+      "defaultGrout": "#ded6c2",
+      "pricePerSqm": 62,
+      "bestFor": [
+        "Feature walls",
+        "Bathrooms",
+        "Hotels"
+      ],
+      "description": "Dramatic flowing gold and grey veining on a polished white body. Our most luxurious large-format tile.",
+      "inStock": true
+    },
+    {
+      "id": "laurent-black",
+      "name": "Laurent Black",
+      "widthMm": 600,
+      "heightMm": 600,
+      "finish": "Polished",
+      "material": "Porcelain",
+      "category": "stone",
+      "texture": "/media/tiles/laurent-black.jpg",
+      "defaultGrout": "#2a2a2e",
+      "pricePerSqm": 48,
+      "bestFor": [
+        "Bathrooms",
+        "Feature walls",
+        "Bars"
+      ],
+      "description": "Deep black marble-effect with fine gold veins — moody, glamorous and unforgettable under warm light.",
+      "inStock": true
+    },
+    {
+      "id": "rock-concrete",
+      "name": "Rock Concrete",
+      "widthMm": 600,
+      "heightMm": 600,
+      "finish": "Matt",
+      "material": "Porcelain",
+      "category": "stone",
+      "texture": "/media/tiles/rock-concrete.jpg",
+      "defaultGrout": "#9a9a98",
+      "pricePerSqm": 29,
+      "bestFor": [
+        "Kitchens",
+        "Utility rooms",
+        "Commercial"
+      ],
+      "description": "An honest, industrial concrete look that hides everyday life and pairs beautifully with timber and steel.",
+      "inStock": true
+    },
+    {
+      "id": "terracotta",
+      "name": "Terracotta",
+      "widthMm": 300,
+      "heightMm": 300,
+      "finish": "Matt",
+      "material": "Ceramic",
+      "category": "stone",
+      "texture": "/media/tiles/terracotta.jpg",
+      "defaultGrout": "#b58a6a",
+      "pricePerSqm": 26,
+      "bestFor": [
+        "Kitchens",
+        "Sunrooms",
+        "Cottages"
+      ],
+      "description": "Warm handmade-look clay with natural tonal variation — timeless in Irish cottages and modern farmhouses alike.",
+      "inStock": true
+    },
+    {
+      "id": "heritage-oak",
+      "name": "Heritage Oak",
+      "widthMm": 200,
+      "heightMm": 1200,
+      "finish": "Matt",
+      "material": "LVT",
+      "category": "wood",
+      "texture": "/media/tiles/heritage-oak.jpg",
+      "defaultGrout": "#c0a582",
+      "pricePerSqm": 32,
+      "bestFor": [
+        "Living rooms",
+        "Bedrooms",
+        "Hallways"
+      ],
+      "description": "Honey-toned oak planks with authentic grain and knots. All the warmth of timber, none of the upkeep.",
+      "inStock": true
+    },
+    {
+      "id": "dark-walnut",
+      "name": "Dark Walnut",
+      "widthMm": 200,
+      "heightMm": 1200,
+      "finish": "Matt",
+      "material": "LVT",
+      "category": "wood",
+      "texture": "/media/tiles/dark-walnut.jpg",
+      "defaultGrout": "#4a3728",
+      "pricePerSqm": 34,
+      "bestFor": [
+        "Bedrooms",
+        "Studies",
+        "Snugs"
+      ],
+      "description": "Rich chocolate walnut planks that ground a room — stunning with cream rugs and brass lamplight.",
+      "inStock": true
+    },
+    {
+      "id": "subway-white",
+      "name": "Subway White",
+      "widthMm": 75,
+      "heightMm": 150,
+      "finish": "Gloss",
+      "material": "Ceramic",
+      "category": "metro",
+      "texture": "/media/tiles/subway-white.jpg",
+      "defaultGrout": "#c8c8c8",
+      "pricePerSqm": 22,
+      "bestFor": [
+        "Splashbacks",
+        "Bathrooms",
+        "Utility"
+      ],
+      "description": "The classic bevelled metro in warm gloss white. Brick-bond it behind a range cooker and it never dates.",
+      "inStock": true
+    },
+    {
+      "id": "metro-grey",
+      "name": "Metro Grey",
+      "widthMm": 75,
+      "heightMm": 150,
+      "finish": "Matt",
+      "material": "Ceramic",
+      "category": "metro",
+      "texture": "/media/tiles/metro-grey.jpg",
+      "defaultGrout": "#8f8f8f",
+      "pricePerSqm": 22,
+      "bestFor": [
+        "Splashbacks",
+        "Shower walls",
+        "WCs"
+      ],
+      "description": "A soft matt grey metro that swaps classic sparkle for calm, contemporary texture.",
+      "inStock": true
+    },
+    {
+      "id": "hex-carrara",
+      "name": "Hex Carrara",
+      "widthMm": 200,
+      "heightMm": 200,
+      "finish": "Matt",
+      "material": "Porcelain",
+      "category": "pattern",
+      "texture": "/media/tiles/hex-carrara.jpg",
+      "defaultGrout": "#dcdcdc",
+      "pricePerSqm": 44,
+      "bestFor": [
+        "Shower floors",
+        "Bathrooms",
+        "Porches"
+      ],
+      "description": "Carrara marble hexagon mosaic — grippy underfoot, gorgeous from above. A shower-floor favourite.",
+      "inStock": true
+    },
+    {
+      "id": "moroccan-star",
+      "name": "Moroccan Star",
+      "widthMm": 200,
+      "heightMm": 200,
+      "finish": "Matt",
+      "material": "Ceramic",
+      "category": "pattern",
+      "texture": "/media/tiles/moroccan-star.jpg",
+      "defaultGrout": "#20365a",
+      "pricePerSqm": 38,
+      "bestFor": [
+        "Splashbacks",
+        "Porches",
+        "Fireplaces"
+      ],
+      "description": "Navy and white star-and-cross encaustic pattern — one wall of this and the room designs itself.",
+      "inStock": true
+    }
+  ],
+  "content": {
+    "site": {
+      "name": "Aster Tiles",
+      "tagline": "Tiles · Wooden Floors · Bathrooms",
+      "description": "Aster Tiles – Premium Tiles, Wooden Floors & Bathrooms in Lifford, Co. Donegal, Ireland. Visit our showroom or explore online.",
+      "phone": "+353 89 428 8016",
+      "phoneHref": "tel:+353894288016",
+      "email": "astertiles.ie@gmail.com",
+      "emailHref": "mailto:astertiles.ie@gmail.com",
+      "address": {
+        "line1": "The Haw, Lifford",
+        "line2": "Co. Donegal, F93 X522",
+        "mapsUrl": "https://maps.google.com/?q=The+Haw,+Lifford,+Co.+Donegal,+F93+X522"
+      },
+      "hours": [
+        {
+          "days": "Monday – Friday",
+          "time": "9:00 – 18:00"
+        },
+        {
+          "days": "Saturday",
+          "time": "10:00 – 17:00"
+        },
+        {
+          "days": "Sunday",
+          "time": "Closed"
+        }
+      ],
+      "stats": [
+        {
+          "value": 500,
+          "suffix": "+",
+          "label": "Tile Collections"
+        },
+        {
+          "value": 15,
+          "suffix": "+",
+          "label": "Years Experience"
+        },
+        {
+          "value": 5000,
+          "suffix": "+",
+          "label": "Happy Customers"
+        }
+      ],
+      "nav": [
+        {
+          "href": "/",
+          "label": "Home"
+        },
+        {
+          "href": "/collections",
+          "label": "Collections"
+        },
+        {
+          "href": "/visualizer",
+          "label": "Room Visualizer"
+        },
+        {
+          "href": "/about",
+          "label": "About"
+        },
+        {
+          "href": "/contact",
+          "label": "Contact"
+        }
+      ]
+    },
+    "staff": [
+      {
+        "id": "maire",
+        "name": "Máire Doherty",
+        "role": "Showroom Manager",
+        "bio": "Máire has led the Lifford showroom for over a decade and can match a tile to a home from a single photograph.",
+        "photo": "/media/staff/maire.jpg"
+      },
+      {
+        "id": "sean",
+        "name": "Seán Gallagher",
+        "role": "Flooring Specialist",
+        "bio": "Thirty years of floors — laminate, herringbone and luxury vinyl. Seán knows what lasts in an Irish hallway.",
+        "photo": "/media/staff/sean.jpg"
+      },
+      {
+        "id": "ciaran",
+        "name": "Ciarán Byrne",
+        "role": "Tile Consultant",
+        "bio": "Ciarán runs our sample library and the visualiser desk — bring your room photo and he'll do the rest.",
+        "photo": "/media/staff/ciaran.jpg"
+      },
+      {
+        "id": "aoife",
+        "name": "Aoife McLaughlin",
+        "role": "Bathroom Designer",
+        "bio": "From vanity units to walk-in showers, Aoife designs complete bathrooms around the tiles you love.",
+        "photo": "/media/staff/aoife.jpg"
+      }
+    ],
+    "testimonials": [
+      {
+        "quote": "Absolutely stunning bathroom after fitting the Aster marble-effect tiles. The team helped us choose the perfect grout colour and the visualiser tool was brilliant!",
+        "name": "Siobhán Gallagher",
+        "location": "Letterkenny, Co. Donegal"
+      },
+      {
+        "quote": "We renovated our kitchen floor with 600×600 porcelain tiles from Aster. The calculator told us exactly how many to order — saved us buying too many!",
+        "name": "Patrick McGinley",
+        "location": "Ballybofey, Co. Donegal"
+      },
+      {
+        "quote": "Visited the showroom in Lifford — staff were incredibly helpful. They showed us samples and used the room visualiser on a photo of our hallway. Perfect result.",
+        "name": "Mairéad O'Brien",
+        "location": "Derry / Londonderry"
+      },
+      {
+        "quote": "Free delivery to Galway on a full pallet of outdoor porcelain. Every tile arrived perfect. Genuinely the best tile shop in the northwest.",
+        "name": "Tomás Ó Sé",
+        "location": "Galway"
+      }
+    ],
+    "collections": [
+      {
+        "id": "floor-tiles",
+        "name": "Floor Tiles",
+        "blurb": "Porcelain · Large Format · Marble Effect",
+        "image": "/media/categories/floor-tiles.jpg",
+        "description": "Large-format porcelain floors that flow from hallway to kitchen — polished, matt and anti-slip finishes."
+      },
+      {
+        "id": "wall-tiles",
+        "name": "Wall Tiles",
+        "blurb": "Feature Walls · Marble · Décor",
+        "image": "/media/categories/wall-tiles.jpg",
+        "description": "Statement feature walls in statuario, torano gold and textured décor panels."
+      },
+      {
+        "id": "bathrooms",
+        "name": "Bathrooms",
+        "blurb": "Suites · Wet Rooms · Vanities",
+        "image": "/media/categories/bathrooms.jpg",
+        "description": "Complete bathroom design — from zellige walls and terrazzo floors to vanity units and fluted glass."
+      },
+      {
+        "id": "wooden-floors",
+        "name": "Wooden Floors",
+        "blurb": "Laminates · Luxury Vinyl · Herringbone",
+        "image": "/media/categories/wooden-floors.jpg",
+        "description": "Herringbone, wide plank and classic straight-lay in oak, walnut and painted tones."
+      },
+      {
+        "id": "outdoor",
+        "name": "Outdoor",
+        "blurb": "Patios · Porcelain · Anti-Slip",
+        "image": "/media/categories/outdoor.jpg",
+        "description": "20mm anti-slip outdoor porcelain that shrugs off Irish weather — patios, paths and steps."
+      },
+      {
+        "id": "kitchen",
+        "name": "Kitchen",
+        "blurb": "Splashbacks · Counters · Floors",
+        "image": "/media/categories/kitchen.jpg",
+        "description": "Splashbacks and floors that stand up to the busiest room in the house."
+      }
+    ],
+    "gallery": [
+      {
+        "id": "open-plan-marble",
+        "image": "/media/gallery/open-plan-marble.jpg",
+        "tag": "Porcelain Floor",
+        "span": "wide"
+      },
+      {
+        "id": "black-marble-bath",
+        "image": "/media/gallery/black-marble-bath.jpg",
+        "tag": "Black Marble Bathroom",
+        "span": "tall"
+      },
+      {
+        "id": "moroccan-kitchen",
+        "image": "/media/gallery/moroccan-kitchen.jpg",
+        "tag": "Patterned Splashback",
+        "span": "tall"
+      },
+      {
+        "id": "hex-shower",
+        "image": "/media/gallery/hex-shower.jpg",
+        "tag": "Hex Mosaic Shower",
+        "span": "tall"
+      },
+      {
+        "id": "walnut-bedroom",
+        "image": "/media/gallery/walnut-bedroom.jpg",
+        "tag": "Walnut Bedroom",
+        "span": "wide"
+      },
+      {
+        "id": "outdoor-kitchen",
+        "image": "/media/gallery/outdoor-kitchen.jpg",
+        "tag": "Outdoor Living",
+        "span": "std"
+      }
+    ]
+  },
+  "settings": {
+    "currencySymbol": "€",
+    "deliveryFee": 25,
+    "freeDeliveryOver": 500,
+    "codEnabled": true,
+    "razorpayEnabled": true,
+    "maintenance": {
+      "fullSite": false,
+      "payments": false,
+      "message": "We're doing a little regrouting behind the scenes. You can still browse every tile — ordering will be back shortly."
+    }
+  },
+  "users": [
+    {
+      "id": "9cb5a1662b3151567484",
+      "name": "Aster Admin",
+      "email": "admin@astertiles.ie",
+      "passwordHash": "ef57801669d80cf157228f185ae71273:085d105347fad1d90da3c236b8e77581b964fce9d3c66da9962fb2935ab7d5e25d9a4ee2e927b0be9413b82fe0bd5fbfa87207ccb46fee5014b550dee557a8aa",
+      "isAdmin": true,
+      "addresses": [],
+      "createdAt": "2026-07-03T03:57:04.243Z"
+    },
+    {
+      "id": "7f826106e5bb5be4ecaf",
+      "name": "Test Customer",
+      "email": "customer@test.ie",
+      "passwordHash": "58efabf0550da0767268d6935f1db40b:f127123d2b3c98a5e4e8da77126b5d60ad0a27488f740de3da0cedebeab925e29657b262812bc8e7bc0907758836ffe56932da10048bdc3614578a95817bfd57",
+      "isAdmin": false,
+      "addresses": [
+        {
+          "id": "7c9078de2bb981072714",
+          "fullName": "Test Customer",
+          "phone": "+353 89 111 2233",
+          "line1": "12 Main Street",
+          "line2": "",
+          "city": "Letterkenny",
+          "county": "Co. Donegal",
+          "postcode": "F92 AB12"
+        }
+      ],
+      "createdAt": "2026-07-03T03:59:44.149Z"
+    }
+  ],
+  "sessions": [
+    {
+      "token": "f7aca38efdc36e1cbf9eb13fbb04bdb31b8a942a5e3add4183e72413c060d7ce",
+      "userId": "7f826106e5bb5be4ecaf",
+      "expiresAt": "2026-08-02T04:03:17.987Z"
+    }
+  ],
+  "orders": [
+    {
+      "id": "cc2da5c360f734ef9d19",
+      "number": "AT-2026-0001",
+      "userId": "7f826106e5bb5be4ecaf",
+      "customerName": "Test Customer",
+      "customerEmail": "customer@test.ie",
+      "address": {
+        "fullName": "Test Customer",
+        "phone": "+353 89 111 2233",
+        "line1": "12 Main Street",
+        "line2": "",
+        "city": "Letterkenny",
+        "county": "Co. Donegal",
+        "postcode": "F92 AB12"
+      },
+      "items": [
+        {
+          "tileId": "venus-bianco",
+          "name": "Venus Bianco",
+          "image": "/media/tiles/venus-bianco.jpg",
+          "pricePerSqm": 34,
+          "sqm": 1.5,
+          "lineTotal": 51
+        }
+      ],
+      "subtotal": 51,
+      "deliveryFee": 25,
+      "total": 76,
+      "currencySymbol": "€",
+      "paymentMethod": "cod",
+      "paymentStatus": "pending",
+      "status": "shipped",
+      "timeline": [
+        {
+          "status": "pending",
+          "note": "Order placed — cash on delivery",
+          "at": "2026-07-03T04:00:42.534Z"
+        },
+        {
+          "status": "shipped",
+          "note": "Courier collected — tracking #IE20260703",
+          "at": "2026-07-03T04:01:48.259Z"
+        }
+      ],
+      "createdAt": "2026-07-03T04:00:42.534Z",
+      "updatedAt": "2026-07-03T04:01:48.259Z"
+    }
+  ],
+  "counters": {
+    "order": 1
+  }
+}

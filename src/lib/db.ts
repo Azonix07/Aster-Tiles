@@ -129,8 +129,12 @@ export function newId(): string {
 
 /* ── Store ─────────────────────────────────────────── */
 
-const DATA_DIR = path.join(process.cwd(), "data");
+// On Vercel the project root is read-only; /tmp is the only writable dir.
+const IS_VERCEL = process.env.VERCEL === "1";
+const DATA_DIR = IS_VERCEL ? "/tmp" : path.join(process.cwd(), "data");
 const DB_FILE = path.join(DATA_DIR, "db.json");
+// Bundled seed file shipped with the deployment (always readable).
+const SEED_FILE = path.join(process.cwd(), "data", "db.json");
 
 export const DEFAULT_ADMIN = { email: "admin@astertiles.ie", password: "admin123" };
 
@@ -176,6 +180,12 @@ function seed(): Db {
 
 function readDb(): Db {
   if (!fs.existsSync(DB_FILE)) {
+    // On Vercel: copy the bundled seed file into /tmp so subsequent reads work.
+    if (IS_VERCEL && fs.existsSync(SEED_FILE)) {
+      const db = JSON.parse(fs.readFileSync(SEED_FILE, "utf8")) as Db;
+      writeDb(db);
+      return db;
+    }
     const db = seed();
     writeDb(db);
     return db;
@@ -185,9 +195,14 @@ function readDb(): Db {
 
 function writeDb(db: Db): void {
   fs.mkdirSync(DATA_DIR, { recursive: true });
-  const tmp = `${DB_FILE}.${process.pid}.tmp`;
-  fs.writeFileSync(tmp, JSON.stringify(db, null, 2), "utf8");
-  fs.renameSync(tmp, DB_FILE);
+  // On Vercel /tmp rename across devices can fail; write directly.
+  if (IS_VERCEL) {
+    fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2), "utf8");
+  } else {
+    const tmp = `${DB_FILE}.${process.pid}.tmp`;
+    fs.writeFileSync(tmp, JSON.stringify(db, null, 2), "utf8");
+    fs.renameSync(tmp, DB_FILE);
+  }
 }
 
 export function getDb(): Db {
