@@ -14,7 +14,20 @@ export async function currentUser(): Promise<User | null> {
   const payload = await verifySession(token);
   if (!payload) return null;
   // Fetch the live user record so name / isAdmin changes propagate.
-  return getDb().users.find((u) => u.id === payload.userId) ?? null;
+  // If not found (e.g. Vercel ephemeral /tmp wiped), reconstruct from JWT payload.
+  const dbUser = getDb().users.find((u) => u.id === payload.userId);
+  if (dbUser) return dbUser;
+
+  return {
+    id: payload.userId,
+    name: payload.name || "User",
+    email: payload.email || "",
+    phone: payload.phone || "",
+    passwordHash: "",
+    isAdmin: payload.isAdmin,
+    addresses: [],
+    createdAt: payload.createdAt || new Date().toISOString(),
+  };
 }
 
 /** Shape safe to hand to client components. */
@@ -46,7 +59,15 @@ async function isHttps(): Promise<boolean> {
 
 export async function createAndSetSession(user: User): Promise<void> {
   const exp = Math.floor(Date.now() / 1000) + SESSION_DAYS * 24 * 3600;
-  const token = await signSession({ userId: user.id, isAdmin: user.isAdmin, exp });
+  const token = await signSession({
+    userId: user.id,
+    name: user.name,
+    email: user.email,
+    phone: user.phone || "",
+    createdAt: user.createdAt,
+    isAdmin: user.isAdmin,
+    exp,
+  });
   const store = await cookies();
   store.set(SESSION_COOKIE, token, {
     httpOnly: true,

@@ -27,6 +27,10 @@ async function hmac(secret: string, data: string): Promise<string> {
 
 export interface SessionPayload {
   userId: string;
+  name: string;
+  email: string;
+  phone: string;
+  createdAt: string;
   isAdmin: boolean;
   exp: number; // unix seconds
 }

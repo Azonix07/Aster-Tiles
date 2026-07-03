@@ -475,7 +475,7 @@
     }
   },
   "settings": {
-    "currencySymbol": "â‚¬",
+    "currencySymbol": "€",
     "deliveryFee": 25,
     "freeDeliveryOver": 500,
     "codEnabled": true,
@@ -553,7 +553,7 @@
       "subtotal": 51,
       "deliveryFee": 25,
       "total": 76,
-      "currencySymbol": "â‚¬",
+      "currencySymbol": "€",
       "paymentMethod": "cod",
       "paymentStatus": "pending",
       "status": "shipped",
