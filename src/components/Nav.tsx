@@ -1,0 +1,154 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Logo } from "@/components/Logo";
+import { useSite, useUser } from "@/components/StoreProvider";
+import { useCart } from "@/components/CartProvider";
+
+export default function Nav() {
+  const site = useSite();
+  const user = useUser();
+  const { count } = useCart();
+  const pathname = usePathname();
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => setOpen(false), [pathname]);
+
+  useEffect(() => {
+    document.documentElement.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.documentElement.style.overflow = "";
+    };
+  }, [open]);
+
+  const accountHref = user ? "/account" : "/login";
+  const accountLabel = user ? "My Account" : "Log in";
+
+  return (
+    <>
+      <header
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? "border-b border-green/20 bg-navy/95 shadow-lg backdrop-blur-md"
+            : "bg-gradient-to-b from-ink/70 to-transparent"
+        }`}
+      >
+        <div className="mx-auto flex h-17 max-w-7xl items-center gap-8 px-6">
+          <Link href="/" aria-label={`${site.name} home`} className="shrink-0">
+            <Logo />
+          </Link>
+
+          <nav className="hidden flex-1 items-center gap-1 lg:flex" aria-label="Main">
+            {site.nav.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`rounded-md px-3.5 py-2 text-[0.85rem] font-medium transition-colors ${
+                  pathname === item.href
+                    ? "bg-white/10 text-white"
+                    : "text-white/70 hover:bg-white/8 hover:text-white"
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="ml-auto hidden items-center gap-3 lg:flex">
+            {user?.isAdmin && (
+              <Link
+                href="/admin"
+                className="rounded-md px-3 py-2 text-[0.8rem] font-bold text-gold transition-colors hover:bg-white/8"
+              >
+                Admin
+              </Link>
+            )}
+            <Link
+              href={accountHref}
+              className="flex items-center gap-2 rounded-md px-3 py-2 text-[0.85rem] font-medium text-white/70 transition-colors hover:bg-white/8 hover:text-white"
+            >
+              <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              {accountLabel}
+            </Link>
+            <Link
+              href="/cart"
+              aria-label={`Cart, ${count} item${count === 1 ? "" : "s"}`}
+              className="relative flex items-center gap-2 rounded-full bg-green px-4 py-2 text-[0.8rem] font-bold text-white transition-colors hover:bg-green-2"
+            >
+              <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              Cart
+              {count > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-gold px-1 text-[0.65rem] font-bold text-ink">
+                  {count}
+                </span>
+              )}
+            </Link>
+          </div>
+
+          <button
+            onClick={() => setOpen(!open)}
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            className="ml-auto flex h-10 w-10 flex-col items-center justify-center gap-[5px] lg:hidden"
+          >
+            <span className={`block h-0.5 w-6 rounded bg-white transition-all ${open ? "translate-y-[7px] rotate-45" : ""}`} />
+            <span className={`block h-0.5 w-6 rounded bg-white transition-opacity ${open ? "opacity-0" : ""}`} />
+            <span className={`block h-0.5 w-6 rounded bg-white transition-all ${open ? "-translate-y-[7px] -rotate-45" : ""}`} />
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile menu */}
+      <div
+        className={`fixed inset-0 z-40 flex flex-col justify-center bg-ink/98 px-10 backdrop-blur-lg transition-all duration-400 lg:hidden ${
+          open ? "visible opacity-100" : "invisible opacity-0"
+        }`}
+      >
+        <nav className="flex flex-col gap-2" aria-label="Mobile">
+          {site.nav.map((item, i) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              style={{ transitionDelay: open ? `${80 + i * 50}ms` : "0ms" }}
+              className={`display text-4xl text-white/90 transition-all duration-500 hover:text-green ${
+                open ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
+              }`}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+        <div className="mt-8 flex flex-col gap-3">
+          <Link href="/cart" className="text-lg font-bold text-green">
+            🛒 Cart{count > 0 ? ` (${count})` : ""}
+          </Link>
+          <Link href={accountHref} className="text-lg font-bold text-white/80">
+            {accountLabel}
+          </Link>
+          {user?.isAdmin && (
+            <Link href="/admin" className="text-lg font-bold text-gold">
+              Admin panel
+            </Link>
+          )}
+        </div>
+        <a href={site.phoneHref} className="mt-8 text-lg font-bold text-green">
+          📞 {site.phone}
+        </a>
+      </div>
+    </>
+  );
+}
