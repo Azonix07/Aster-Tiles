@@ -105,8 +105,8 @@ export default function TileForm({ tile }: { tile?: DbTile }) {
 
   const handleImageFile = useCallback(
     async (file: File) => {
-      if (!file.type.startsWith("image/")) {
-        setError("Please select an image file (JPG, PNG, WebP).");
+      if (!file.type.startsWith("image/") && !file.name.toLowerCase().endsWith(".heic")) {
+        setError("Please select an image file (JPG, PNG, WebP, HEIC).");
         return;
       }
       if (file.size > 20 * 1024 * 1024) {
@@ -313,7 +313,7 @@ export default function TileForm({ tile }: { tile?: DbTile }) {
               <input
                 ref={fileInputRef}
                 type="file"
-                accept="image/*"
+                accept="image/*,.heic"
                 onChange={onFileChange}
                 className="hidden"
                 aria-label="Upload tile image"
@@ -348,7 +348,7 @@ export default function TileForm({ tile }: { tile?: DbTile }) {
                         Drop an image here or click to browse
                       </p>
                       <p className="mt-1 text-xs text-muted">
-                        JPG, PNG or WebP up to 20 MB. Image will be auto-cropped to square, upscaled and sharpened.
+                        JPG, PNG, WebP or HEIC up to 20 MB. Image will be auto-cropped to square, upscaled, flattened and sharpened.
                       </p>
                     </>
                   ) : (
