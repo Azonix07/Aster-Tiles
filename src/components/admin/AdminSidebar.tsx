@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LogoutButton } from "@/components/shop/AuthForms";
@@ -61,6 +62,25 @@ function SiteIcon() {
   );
 }
 
+function MenuIcon({ isOpen }: { isOpen: boolean }) {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      {isOpen ? (
+        <>
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </>
+      ) : (
+        <>
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </>
+      )}
+    </svg>
+  );
+}
+
 const LINKS = [
   { href: "/admin", label: "Dashboard", Icon: DashboardIcon },
   { href: "/admin/orders", label: "Orders", Icon: OrdersIcon },
@@ -71,66 +91,86 @@ const LINKS = [
 
 export default function AdminSidebar({ adminName }: { adminName: string }) {
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
 
   return (
-    <aside className="flex w-full shrink-0 flex-col border-b border-white/10 bg-ink px-4 py-5 lg:min-h-screen lg:w-60 lg:border-r lg:border-b-0">
-      {/* Brand */}
-      <Link href="/admin" className="flex items-center gap-2 px-2">
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-green font-display text-sm font-bold text-white">A</span>
-        <span className="font-display text-lg font-bold text-white">
-          Aster <span className="text-green">Admin</span>
-        </span>
-      </Link>
-
-      {/* User badge */}
-      <div className="mt-4 flex items-center gap-2.5 rounded-lg bg-white/5 px-3 py-2">
-        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-green/20 text-[0.65rem] font-bold text-green">
-          {adminName.charAt(0).toUpperCase()}
-        </span>
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-xs font-semibold text-white/90">{adminName}</p>
-          <p className="text-[0.6rem] text-white/40">Administrator</p>
-        </div>
+    <aside className="flex w-full shrink-0 flex-col border-b border-white/10 bg-ink lg:min-h-screen lg:w-60 lg:border-r lg:border-b-0">
+      {/* Mobile Header & Brand */}
+      <div className="flex items-center justify-between px-4 py-4 lg:py-5">
+        <Link href="/admin" className="flex items-center gap-2 px-2">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-green font-display text-sm font-bold text-white">A</span>
+          <span className="font-display text-lg font-bold text-white">
+            Aster <span className="text-green">Admin</span>
+          </span>
+        </Link>
+        
+        {/* Mobile Toggle */}
+        <button 
+          onClick={() => setIsOpen(!isOpen)}
+          className="rounded-lg p-2 text-white/70 hover:bg-white/10 hover:text-white lg:hidden"
+          aria-label="Toggle navigation"
+        >
+          <MenuIcon isOpen={isOpen} />
+        </button>
       </div>
 
-      {/* Navigation */}
-      <nav className="mt-6 flex flex-row flex-wrap gap-0.5 lg:flex-col" aria-label="Admin">
-        <p className="mb-1 hidden px-3 text-[0.6rem] font-bold tracking-[0.12em] text-white/30 uppercase lg:block">
-          Manage
-        </p>
-        {LINKS.map((l) => {
-          const active =
-            l.href === "/admin" ? pathname === "/admin" : pathname.startsWith(l.href);
-          return (
-            <Link
-              key={l.href}
-              href={l.href}
-              className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium transition ${
-                active
-                  ? "bg-green/15 text-green shadow-sm"
-                  : "text-white/55 hover:bg-white/6 hover:text-white/90"
-              }`}
-            >
-              <l.Icon />
-              {l.label}
-              {active && (
-                <span className="ml-auto h-1.5 w-1.5 rounded-full bg-green" />
-              )}
-            </Link>
-          );
-        })}
-      </nav>
+      {/* Expandable Content */}
+      <div className={`${isOpen ? "flex" : "hidden"} flex-1 flex-col px-4 pb-5 lg:flex lg:pb-5`}>
+        {/* User badge */}
+        <div className="mt-2 flex items-center gap-2.5 rounded-lg bg-white/5 px-3 py-2 lg:mt-4">
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-green/20 text-[0.65rem] font-bold text-green">
+            {adminName.charAt(0).toUpperCase()}
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-xs font-semibold text-white/90">{adminName}</p>
+            <p className="text-[0.6rem] text-white/40">Administrator</p>
+          </div>
+        </div>
 
-      {/* Footer */}
-      <div className="mt-6 flex flex-col gap-2 border-t border-white/8 pt-5 lg:mt-auto">
-        <Link
-          href="/"
-          className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold text-white/45 transition hover:bg-white/5 hover:text-green"
-        >
-          <SiteIcon />
-          View storefront
-        </Link>
-        <LogoutButton className="rounded-lg px-3 py-2 text-left text-xs font-semibold text-white/45 transition hover:bg-red-500/10 hover:text-red-400" />
+        {/* Navigation */}
+        <nav className="mt-6 flex flex-col gap-0.5" aria-label="Admin">
+          <p className="mb-1 hidden px-3 text-[0.6rem] font-bold tracking-[0.12em] text-white/30 uppercase lg:block">
+            Manage
+          </p>
+          {LINKS.map((l) => {
+            const active =
+              l.href === "/admin" ? pathname === "/admin" : pathname.startsWith(l.href);
+            return (
+              <Link
+                key={l.href}
+                href={l.href}
+                className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium transition ${
+                  active
+                    ? "bg-green/15 text-green shadow-sm"
+                    : "text-white/55 hover:bg-white/6 hover:text-white/90"
+                }`}
+              >
+                <l.Icon />
+                {l.label}
+                {active && (
+                  <span className="ml-auto h-1.5 w-1.5 rounded-full bg-green" />
+                )}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Footer */}
+        <div className="mt-6 flex flex-col gap-2 border-t border-white/8 pt-5 lg:mt-auto">
+          <Link
+            href="/"
+            className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold text-white/45 transition hover:bg-white/5 hover:text-green"
+          >
+            <SiteIcon />
+            View storefront
+          </Link>
+          <LogoutButton className="rounded-lg px-3 py-2 text-left text-xs font-semibold text-white/45 transition hover:bg-red-500/10 hover:text-red-400" />
+        </div>
       </div>
     </aside>
   );
