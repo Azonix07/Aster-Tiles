@@ -80,15 +80,15 @@ export default function CollectionsRail() {
 
         <div
           ref={railRef}
-          className="flex items-stretch gap-6 px-6 md:pl-[max(1.5rem,calc((100vw-80rem)/2+1.5rem))]"
-          style={{ perspective: "1200px" }}
+          className="no-scrollbar flex items-stretch gap-6 overflow-x-auto px-6 snap-x snap-mandatory md:overflow-visible md:snap-none md:pl-[max(1.5rem,calc((100vw-80rem)/2+1.5rem))]"
+          style={{ perspective: "1200px", scrollbarWidth: "none" }}
         >
           {collections.map((c, i) => (
             <Link
               key={c.id}
               href={`/collections#${c.id}`}
               data-rail-card
-              className="group relative block w-[78vw] shrink-0 overflow-hidden rounded-2xl sm:w-[52vw] md:w-[38vw] lg:w-[30vw]"
+              className="group relative block w-[78vw] shrink-0 snap-center overflow-hidden rounded-2xl sm:w-[52vw] md:w-[38vw] lg:w-[30vw] md:snap-none"
               style={{ transformStyle: "preserve-3d" }}
             >
               <div className="relative aspect-[4/5] w-full md:aspect-[3/4]">
@@ -125,7 +125,7 @@ export default function CollectionsRail() {
           <Link
             href="/collections"
             data-rail-card
-            className="group flex w-[60vw] shrink-0 items-center justify-center rounded-2xl border border-white/15 bg-navy-2 sm:w-[40vw] md:w-[24vw]"
+            className="group flex w-[60vw] shrink-0 snap-center items-center justify-center rounded-2xl border border-white/15 bg-navy-2 sm:w-[40vw] md:w-[24vw] md:snap-none"
           >
             <div className="text-center">
               <div className="display text-3xl text-white">
