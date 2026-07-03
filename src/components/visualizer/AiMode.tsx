@@ -233,7 +233,11 @@ export default function AiMode({
                 className="sr-only"
                 onChange={(e) => acceptFile(e.target.files?.[0])}
               />
-              <span className="flex h-14 w-14 items-center justify-center rounded-full bg-green/15 text-2xl">✨</span>
+              <span className="flex h-14 w-14 items-center justify-center rounded-full bg-green/15 text-green">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M12 3l1.912 5.813a2 2 0 001.275 1.275L21 12l-5.813 1.912a2 2 0 00-1.275 1.275L12 21l-1.912-5.813a2 2 0 00-1.275-1.275L3 12l5.813-1.912a2 2 0 001.275-1.275L12 3z" />
+                </svg>
+              </span>
               <span className="mt-4 font-display text-sm font-bold text-white">
                 Drop a room photo for an AI redesign
               </span>
@@ -281,7 +285,12 @@ export default function AiMode({
 
         {keyNotice && (
           <div className="flex items-start gap-3 rounded-xl border border-gold/40 bg-gold/10 p-4">
-            <span className="text-lg" aria-hidden="true">🔑</span>
+            <span className="mt-0.5 text-gold" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="7.5" cy="15.5" r="4.5" />
+                <path d="M10.85 12.15L19 4M18 5l3 3M15 8l2 2" />
+              </svg>
+            </span>
             <div>
               <p className="text-sm font-semibold text-gold">AI mode is not configured yet</p>
               <p className="mt-1 text-xs leading-relaxed text-white/65">{keyNotice}</p>
@@ -293,7 +302,13 @@ export default function AiMode({
         )}
         {error && (
           <div className="flex items-start gap-3 rounded-xl border border-red-400/40 bg-red-400/10 p-4">
-            <span className="text-lg" aria-hidden="true">⚠️</span>
+            <span className="mt-0.5 text-red-300" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                <line x1="12" y1="9" x2="12" y2="13" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
+            </span>
             <p className="text-sm text-red-200">{error}</p>
           </div>
         )}

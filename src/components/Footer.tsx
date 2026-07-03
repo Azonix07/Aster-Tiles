@@ -9,10 +9,7 @@ export default function Footer() {
       <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 md:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
         <div>
           <Logo />
-          <p className="mt-4 max-w-xs text-sm leading-relaxed">
-            Premium tiles, wooden floors and bathrooms — serving Co. Donegal
-            and all of Ireland from our Lifford showroom.
-          </p>
+          <p className="mt-4 max-w-xs text-sm leading-relaxed">{site.description}</p>
         </div>
 
         <div>

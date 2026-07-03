@@ -1,4 +1,4 @@
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { getDb, type User } from "@/lib/db";
 import { signSession, verifySession } from "@/lib/jwt";
 
@@ -22,13 +22,26 @@ export interface PublicUser {
   id: string;
   name: string;
   email: string;
+  phone: string;
   isAdmin: boolean;
 }
 
 export function toPublicUser(user: User | null): PublicUser | null {
   if (!user) return null;
-  const { id, name, email, isAdmin } = user;
-  return { id, name, email, isAdmin };
+  const { id, name, email, phone, isAdmin } = user;
+  return { id, name, email, phone: phone ?? "", isAdmin };
+}
+
+/**
+ * Only mark the cookie Secure when the request actually arrived over https.
+ * A NODE_ENV check breaks `next start` reached via a LAN IP (http://192.168…):
+ * the browser silently drops the Secure cookie and login appears to do nothing.
+ */
+async function isHttps(): Promise<boolean> {
+  const h = await headers();
+  const proto = h.get("x-forwarded-proto");
+  if (proto) return proto.split(",")[0].trim() === "https";
+  return false;
 }
 
 export async function createAndSetSession(user: User): Promise<void> {
@@ -38,20 +51,8 @@ export async function createAndSetSession(user: User): Promise<void> {
   store.set(SESSION_COOKIE, token, {
     httpOnly: true,
     sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    secure: await isHttps(),
     expires: new Date(exp * 1000),
-    path: "/",
-  });
-}
-
-/** @deprecated use createAndSetSession instead */
-export async function setSessionCookie(token: string, expiresAt: string): Promise<void> {
-  const store = await cookies();
-  store.set(SESSION_COOKIE, token, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    expires: new Date(expiresAt),
     path: "/",
   });
 }

@@ -4,12 +4,12 @@ import Reveal from "@/components/scroll/Reveal";
 import { getContent } from "@/lib/db";
 
 export default function ContactCta() {
-  const { site } = getContent();
+  const { site, media } = getContent();
   return (
     <section className="relative overflow-hidden bg-navy">
       <div className="absolute inset-0 opacity-25">
         <Image
-          src="/media/stills/showroom-wide.jpg"
+          src={media.contactCtaImage}
           alt=""
           fill
           sizes="100vw"

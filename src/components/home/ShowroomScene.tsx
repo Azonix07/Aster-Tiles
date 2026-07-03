@@ -2,7 +2,8 @@
 
 import ScrubVideo from "@/components/scroll/ScrubVideo";
 import Counter from "@/components/scroll/Counter";
-import { useSite } from "@/components/StoreProvider";
+import { useSite, useStore } from "@/components/StoreProvider";
+import { Accent } from "@/components/Accent";
 
 /**
  * Act II — Inside the showroom. The camera glides down the main walkway
@@ -10,10 +11,11 @@ import { useSite } from "@/components/StoreProvider";
  */
 export default function ShowroomScene() {
   const site = useSite();
+  const { media, home } = useStore().content;
   return (
     <ScrubVideo
-      src="/media/video/showroom-entry-scrub.mp4"
-      poster="/media/video/showroom-entry-poster.jpg"
+      src={media.showroomVideo.src}
+      poster={media.showroomVideo.poster}
       pinHeight={240}
     >
       <div className="absolute inset-0 z-10 bg-gradient-to-b from-ink/55 via-transparent to-ink/65" />
@@ -23,10 +25,9 @@ export default function ShowroomScene() {
         data-window="0.04,0.4"
         className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center"
       >
-        <p className="label text-green">Welcome to the Showroom</p>
+        <p className="label text-green">{home.showroomLabel}</p>
         <h2 className="display mt-4 max-w-3xl text-4xl text-white sm:text-6xl">
-          Every tile, at <em className="accent-italic text-green">true scale</em>,
-          under real light
+          <Accent text={home.showroomHeadline} />
         </h2>
       </div>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { useSettings, useTiles } from "@/components/StoreProvider";
+import { useSettings, useTiles, useUser } from "@/components/StoreProvider";
 import type { DbTile } from "@/lib/db";
 
 export interface CartItem {
@@ -21,38 +21,71 @@ interface CartValue {
 
 const CartContext = createContext<CartValue | null>(null);
 
-const STORAGE_KEY = "aster_cart";
+const LEGACY_KEY = "aster_cart";
+const GUEST_KEY = "aster_cart:guest";
 
 function clampSqm(sqm: number): number {
   return Math.min(500, Math.max(0.5, Math.round(sqm * 2) / 2));
 }
 
+function readCart(key: string): CartItem[] {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw) as CartItem[];
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter(
+      (i) => typeof i?.tileId === "string" && Number.isFinite(i?.sqm) && i.sqm > 0,
+    );
+  } catch {
+    return [];
+  }
+}
+
 export default function CartProvider({ children }: { children: React.ReactNode }) {
+  const user = useUser();
+  // Each account gets its own cart; guests get a separate one, so logging
+  // out never leaks the account's cart into the browser session.
+  const storageKey = user ? `aster_cart:${user.id}` : GUEST_KEY;
   const [items, setItems] = useState<CartItem[]>([]);
-  const [loaded, setLoaded] = useState(false);
+  // The key `items` was loaded from — gates persistence so we never write
+  // one cart's items under another key while switching users.
+  const [activeKey, setActiveKey] = useState<string | null>(null);
 
   useEffect(() => {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw) as CartItem[];
-        if (Array.isArray(parsed)) {
-          setItems(
-            parsed.filter(
-              (i) => typeof i?.tileId === "string" && Number.isFinite(i?.sqm) && i.sqm > 0,
-            ),
-          );
+      // One-time migration: the old single shared cart becomes the guest cart.
+      const legacy = localStorage.getItem(LEGACY_KEY);
+      if (legacy) {
+        if (!localStorage.getItem(GUEST_KEY)) localStorage.setItem(GUEST_KEY, legacy);
+        localStorage.removeItem(LEGACY_KEY);
+      }
+
+      const cart = readCart(storageKey);
+      if (user) {
+        // Items picked while logged out follow the user into their account.
+        const guest = readCart(GUEST_KEY);
+        if (guest.length > 0) {
+          for (const g of guest) {
+            const existing = cart.find((i) => i.tileId === g.tileId);
+            if (existing) existing.sqm = clampSqm(existing.sqm + g.sqm);
+            else cart.push({ tileId: g.tileId, sqm: clampSqm(g.sqm) });
+          }
+          localStorage.removeItem(GUEST_KEY);
+          localStorage.setItem(storageKey, JSON.stringify(cart));
         }
       }
+      setItems(cart);
     } catch {
-      /* corrupted cart — start fresh */
+      setItems([]);
     }
-    setLoaded(true);
-  }, []);
+    setActiveKey(storageKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [storageKey]);
 
   useEffect(() => {
-    if (loaded) localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-  }, [items, loaded]);
+    if (activeKey === storageKey) localStorage.setItem(storageKey, JSON.stringify(items));
+  }, [items, activeKey, storageKey]);
 
   const value = useMemo<CartValue>(
     () => ({

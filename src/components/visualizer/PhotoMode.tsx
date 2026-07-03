@@ -460,8 +460,11 @@ export default function PhotoMode({ tile, active }: { tile: Tile; active: boolea
                 className="sr-only"
                 onChange={(e) => acceptFile(e.target.files?.[0])}
               />
-              <span className="flex h-14 w-14 items-center justify-center rounded-full bg-green/15 text-2xl">
-                📷
+              <span className="flex h-14 w-14 items-center justify-center rounded-full bg-green/15 text-green">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" />
+                  <circle cx="12" cy="13" r="4" />
+                </svg>
               </span>
               <span className="mt-4 font-display text-sm font-bold text-white">
                 Drop a room photo here

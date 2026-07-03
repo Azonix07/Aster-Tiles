@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart, useCartDetails } from "@/components/CartProvider";
-import { useSettings } from "@/components/StoreProvider";
+import { useSettings, useUser } from "@/components/StoreProvider";
 import { money } from "@/lib/format";
 import type { Address } from "@/lib/db";
 
@@ -30,9 +30,17 @@ export default function CheckoutForm({ savedAddresses }: { savedAddresses: Addre
   const { items, clear } = useCart();
   const { lines, subtotal, deliveryFee, total } = useCartDetails();
   const settings = useSettings();
+  const user = useUser();
+
+  // A fresh address starts from the account profile so name/phone are one tap away.
+  const newAddress: AddressFields = {
+    ...EMPTY_ADDRESS,
+    fullName: user?.name ?? "",
+    phone: user?.phone ?? "",
+  };
 
   const [address, setAddress] = useState<AddressFields>(
-    savedAddresses[0] ? { ...savedAddresses[0] } : EMPTY_ADDRESS,
+    savedAddresses[0] ? { ...savedAddresses[0] } : newAddress,
   );
   const [selectedSaved, setSelectedSaved] = useState<string | "new">(
     savedAddresses[0]?.id ?? "new",
@@ -51,7 +59,7 @@ export default function CheckoutForm({ savedAddresses }: { savedAddresses: Addre
   const pickSaved = (id: string | "new") => {
     setSelectedSaved(id);
     if (id === "new") {
-      setAddress(EMPTY_ADDRESS);
+      setAddress(newAddress);
     } else {
       const found = savedAddresses.find((a) => a.id === id);
       if (found) setAddress({ ...found });

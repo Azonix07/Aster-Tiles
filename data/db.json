@@ -31,7 +31,7 @@
         "Bathrooms",
         "Open plan"
       ],
-      "description": "Large-format statuario with bold diagonal veining — a statement slab look at a fraction of natural marble cost.",
+      "description": "Large-format statuario with bold diagonal veining â€” a statement slab look at a fraction of natural marble cost.",
       "inStock": true
     },
     {
@@ -69,7 +69,7 @@
         "Feature walls",
         "Bars"
       ],
-      "description": "Deep black marble-effect with fine gold veins — moody, glamorous and unforgettable under warm light.",
+      "description": "Deep black marble-effect with fine gold veins â€” moody, glamorous and unforgettable under warm light.",
       "inStock": true
     },
     {
@@ -107,7 +107,7 @@
         "Sunrooms",
         "Cottages"
       ],
-      "description": "Warm handmade-look clay with natural tonal variation — timeless in Irish cottages and modern farmhouses alike.",
+      "description": "Warm handmade-look clay with natural tonal variation â€” timeless in Irish cottages and modern farmhouses alike.",
       "inStock": true
     },
     {
@@ -145,7 +145,7 @@
         "Studies",
         "Snugs"
       ],
-      "description": "Rich chocolate walnut planks that ground a room — stunning with cream rugs and brass lamplight.",
+      "description": "Rich chocolate walnut planks that ground a room â€” stunning with cream rugs and brass lamplight.",
       "inStock": true
     },
     {
@@ -202,7 +202,7 @@
         "Bathrooms",
         "Porches"
       ],
-      "description": "Carrara marble hexagon mosaic — grippy underfoot, gorgeous from above. A shower-floor favourite.",
+      "description": "Carrara marble hexagon mosaic â€” grippy underfoot, gorgeous from above. A shower-floor favourite.",
       "inStock": true
     },
     {
@@ -221,15 +221,15 @@
         "Porches",
         "Fireplaces"
       ],
-      "description": "Navy and white star-and-cross encaustic pattern — one wall of this and the room designs itself.",
+      "description": "Navy and white star-and-cross encaustic pattern â€” one wall of this and the room designs itself.",
       "inStock": true
     }
   ],
   "content": {
     "site": {
       "name": "Aster Tiles",
-      "tagline": "Tiles · Wooden Floors · Bathrooms",
-      "description": "Aster Tiles – Premium Tiles, Wooden Floors & Bathrooms in Lifford, Co. Donegal, Ireland. Visit our showroom or explore online.",
+      "tagline": "Tiles Â· Wooden Floors Â· Bathrooms",
+      "description": "Aster Tiles â€“ Premium Tiles, Wooden Floors & Bathrooms in Lifford, Co. Donegal, Ireland. Visit our showroom or explore online.",
       "phone": "+353 89 428 8016",
       "phoneHref": "tel:+353894288016",
       "email": "astertiles.ie@gmail.com",
@@ -241,12 +241,12 @@
       },
       "hours": [
         {
-          "days": "Monday – Friday",
-          "time": "9:00 – 18:00"
+          "days": "Monday â€“ Friday",
+          "time": "9:00 â€“ 18:00"
         },
         {
           "days": "Saturday",
-          "time": "10:00 – 17:00"
+          "time": "10:00 â€“ 17:00"
         },
         {
           "days": "Sunday",
@@ -296,23 +296,23 @@
     "staff": [
       {
         "id": "maire",
-        "name": "Máire Doherty",
+        "name": "MÃ¡ire Doherty",
         "role": "Showroom Manager",
-        "bio": "Máire has led the Lifford showroom for over a decade and can match a tile to a home from a single photograph.",
+        "bio": "MÃ¡ire has led the Lifford showroom for over a decade and can match a tile to a home from a single photograph.",
         "photo": "/media/staff/maire.jpg"
       },
       {
         "id": "sean",
-        "name": "Seán Gallagher",
+        "name": "SeÃ¡n Gallagher",
         "role": "Flooring Specialist",
-        "bio": "Thirty years of floors — laminate, herringbone and luxury vinyl. Seán knows what lasts in an Irish hallway.",
+        "bio": "Thirty years of floors â€” laminate, herringbone and luxury vinyl. SeÃ¡n knows what lasts in an Irish hallway.",
         "photo": "/media/staff/sean.jpg"
       },
       {
         "id": "ciaran",
-        "name": "Ciarán Byrne",
+        "name": "CiarÃ¡n Byrne",
         "role": "Tile Consultant",
-        "bio": "Ciarán runs our sample library and the visualiser desk — bring your room photo and he'll do the rest.",
+        "bio": "CiarÃ¡n runs our sample library and the visualiser desk â€” bring your room photo and he'll do the rest.",
         "photo": "/media/staff/ciaran.jpg"
       },
       {
@@ -326,22 +326,22 @@
     "testimonials": [
       {
         "quote": "Absolutely stunning bathroom after fitting the Aster marble-effect tiles. The team helped us choose the perfect grout colour and the visualiser tool was brilliant!",
-        "name": "Siobhán Gallagher",
+        "name": "SiobhÃ¡n Gallagher",
         "location": "Letterkenny, Co. Donegal"
       },
       {
-        "quote": "We renovated our kitchen floor with 600×600 porcelain tiles from Aster. The calculator told us exactly how many to order — saved us buying too many!",
+        "quote": "We renovated our kitchen floor with 600Ã—600 porcelain tiles from Aster. The calculator told us exactly how many to order â€” saved us buying too many!",
         "name": "Patrick McGinley",
         "location": "Ballybofey, Co. Donegal"
       },
       {
-        "quote": "Visited the showroom in Lifford — staff were incredibly helpful. They showed us samples and used the room visualiser on a photo of our hallway. Perfect result.",
-        "name": "Mairéad O'Brien",
+        "quote": "Visited the showroom in Lifford â€” staff were incredibly helpful. They showed us samples and used the room visualiser on a photo of our hallway. Perfect result.",
+        "name": "MairÃ©ad O'Brien",
         "location": "Derry / Londonderry"
       },
       {
         "quote": "Free delivery to Galway on a full pallet of outdoor porcelain. Every tile arrived perfect. Genuinely the best tile shop in the northwest.",
-        "name": "Tomás Ó Sé",
+        "name": "TomÃ¡s Ã“ SÃ©",
         "location": "Galway"
       }
     ],
@@ -349,42 +349,42 @@
       {
         "id": "floor-tiles",
         "name": "Floor Tiles",
-        "blurb": "Porcelain · Large Format · Marble Effect",
+        "blurb": "Porcelain Â· Large Format Â· Marble Effect",
         "image": "/media/categories/floor-tiles.jpg",
-        "description": "Large-format porcelain floors that flow from hallway to kitchen — polished, matt and anti-slip finishes."
+        "description": "Large-format porcelain floors that flow from hallway to kitchen â€” polished, matt and anti-slip finishes."
       },
       {
         "id": "wall-tiles",
         "name": "Wall Tiles",
-        "blurb": "Feature Walls · Marble · Décor",
+        "blurb": "Feature Walls Â· Marble Â· DÃ©cor",
         "image": "/media/categories/wall-tiles.jpg",
-        "description": "Statement feature walls in statuario, torano gold and textured décor panels."
+        "description": "Statement feature walls in statuario, torano gold and textured dÃ©cor panels."
       },
       {
         "id": "bathrooms",
         "name": "Bathrooms",
-        "blurb": "Suites · Wet Rooms · Vanities",
+        "blurb": "Suites Â· Wet Rooms Â· Vanities",
         "image": "/media/categories/bathrooms.jpg",
-        "description": "Complete bathroom design — from zellige walls and terrazzo floors to vanity units and fluted glass."
+        "description": "Complete bathroom design â€” from zellige walls and terrazzo floors to vanity units and fluted glass."
       },
       {
         "id": "wooden-floors",
         "name": "Wooden Floors",
-        "blurb": "Laminates · Luxury Vinyl · Herringbone",
+        "blurb": "Laminates Â· Luxury Vinyl Â· Herringbone",
         "image": "/media/categories/wooden-floors.jpg",
         "description": "Herringbone, wide plank and classic straight-lay in oak, walnut and painted tones."
       },
       {
         "id": "outdoor",
         "name": "Outdoor",
-        "blurb": "Patios · Porcelain · Anti-Slip",
+        "blurb": "Patios Â· Porcelain Â· Anti-Slip",
         "image": "/media/categories/outdoor.jpg",
-        "description": "20mm anti-slip outdoor porcelain that shrugs off Irish weather — patios, paths and steps."
+        "description": "20mm anti-slip outdoor porcelain that shrugs off Irish weather â€” patios, paths and steps."
       },
       {
         "id": "kitchen",
         "name": "Kitchen",
-        "blurb": "Splashbacks · Counters · Floors",
+        "blurb": "Splashbacks Â· Counters Â· Floors",
         "image": "/media/categories/kitchen.jpg",
         "description": "Splashbacks and floors that stand up to the busiest room in the house."
       }
@@ -426,10 +426,56 @@
         "tag": "Outdoor Living",
         "span": "std"
       }
-    ]
+    ],
+    "media": {
+      "heroVideo": {
+        "src": "/media/video/exterior-arrival-scrub.mp4",
+        "poster": "/media/video/exterior-arrival-poster.jpg"
+      },
+      "showroomVideo": {
+        "src": "/media/video/showroom-entry-scrub.mp4",
+        "poster": "/media/video/showroom-entry-poster.jpg"
+      },
+      "staffVideo": {
+        "src": "/media/video/staff-welcome-scrub.mp4",
+        "poster": "/media/video/staff-welcome-poster.jpg"
+      },
+      "collectionsVideo": {
+        "src": "/media/video/tile-aisle-loop.mp4",
+        "poster": "/media/video/tile-aisle-poster.jpg"
+      },
+      "collectionsBreakImage": "/media/gallery/open-plan-marble.jpg",
+      "visualizerTeaserImage": "/media/stills/bathroom.jpg",
+      "contactCtaImage": "/media/stills/showroom-wide.jpg",
+      "aboutHeroImage": "/media/stills/showroom-wide.jpg",
+      "aboutStoryImage": "/media/stills/exterior.jpg",
+      "aboutShowroomImage": "/media/stills/showroom-entry.jpg",
+      "ogImage": "/media/stills/exterior.jpg"
+    },
+    "home": {
+      "heroBadge": "Donegal's Premier Tile Showroom",
+      "heroHeadline": "Transform your *space*\nwith premium tiles",
+      "heroSub": "Exquisite tiles, wooden floors and bathroom solutions — serving all of Ireland from our Lifford showroom.",
+      "heroAddressLabel": "The Haw · Lifford · Co. Donegal",
+      "heroAddressHeadline": "Fifteen years on the same street,\n*five thousand* happy homes",
+      "heroClosingHeadline": "Step *inside*",
+      "heroClosingSub": "Keep scrolling — the doors are open.",
+      "showroomLabel": "Welcome to the Showroom",
+      "showroomHeadline": "Every tile, at *true scale*, under real light",
+      "staffLabel": "The Aster Team",
+      "staffHeadline": "Meet the people\n*behind the tiles*",
+      "marquee": [
+        "Free Nationwide Delivery",
+        "Premium Quality Guaranteed",
+        "Lifford Showroom Open Daily",
+        "Expert Design Advice",
+        "Same-Day Quotes",
+        "500+ Tile Collections"
+      ]
+    }
   },
   "settings": {
-    "currencySymbol": "€",
+    "currencySymbol": "â‚¬",
     "deliveryFee": 25,
     "freeDeliveryOver": 500,
     "codEnabled": true,
@@ -437,7 +483,7 @@
     "maintenance": {
       "fullSite": false,
       "payments": false,
-      "message": "We're doing a little regrouting behind the scenes. You can still browse every tile — ordering will be back shortly."
+      "message": "We're doing a little regrouting behind the scenes. You can still browse every tile â€” ordering will be back shortly."
     }
   },
   "users": [
@@ -507,19 +553,19 @@
       "subtotal": 51,
       "deliveryFee": 25,
       "total": 76,
-      "currencySymbol": "€",
+      "currencySymbol": "â‚¬",
       "paymentMethod": "cod",
       "paymentStatus": "pending",
       "status": "shipped",
       "timeline": [
         {
           "status": "pending",
-          "note": "Order placed — cash on delivery",
+          "note": "Order placed â€” cash on delivery",
           "at": "2026-07-03T04:00:42.534Z"
         },
         {
           "status": "shipped",
-          "note": "Courier collected — tracking #IE20260703",
+          "note": "Courier collected â€” tracking #IE20260703",
           "at": "2026-07-03T04:01:48.259Z"
         }
       ],

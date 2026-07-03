@@ -4,7 +4,8 @@ import { currentUser } from "@/lib/auth";
 
 /**
  * Replaces one section of the editable site content at a time:
- * { section: "site" | "staff" | "testimonials" | "collections" | "gallery", value: ... }
+ * { section: "site" | "staff" | "testimonials" | "collections" | "gallery"
+ *            | "media" | "home", value: ... }
  */
 export async function PUT(request: Request) {
   const user = await currentUser();
@@ -15,24 +16,29 @@ export async function PUT(request: Request) {
     value?: unknown;
   } | null;
 
-  const sections: (keyof SiteContent)[] = ["site", "staff", "testimonials", "collections", "gallery"];
-  if (!body?.section || !sections.includes(body.section) || body.value === undefined) {
+  const objectSections: (keyof SiteContent)[] = ["site", "media", "home"];
+  const listSections: (keyof SiteContent)[] = ["staff", "testimonials", "collections", "gallery"];
+  if (
+    !body?.section ||
+    (!objectSections.includes(body.section) && !listSections.includes(body.section)) ||
+    body.value === undefined
+  ) {
     return NextResponse.json({ error: "Bad request." }, { status: 400 });
   }
 
   const { section, value } = body;
-  if (section === "site") {
+  if (objectSections.includes(section)) {
     if (typeof value !== "object" || value === null || Array.isArray(value)) {
-      return NextResponse.json({ error: "Site info must be an object." }, { status: 400 });
+      return NextResponse.json({ error: "That section must be an object." }, { status: 400 });
     }
   } else if (!Array.isArray(value)) {
     return NextResponse.json({ error: "That section must be a list." }, { status: 400 });
   }
 
   mutateDb((db) => {
-    // Merge for "site" so a partial edit can't wipe fields; replace for lists.
-    if (section === "site") {
-      db.content.site = { ...db.content.site, ...(value as object) } as SiteContent["site"];
+    // Merge objects so a partial edit can't wipe fields; replace lists outright.
+    if (section === "site" || section === "media" || section === "home") {
+      (db.content[section] as object) = { ...db.content[section], ...(value as object) };
     } else {
       (db.content[section] as unknown) = value;
     }

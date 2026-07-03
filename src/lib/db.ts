@@ -58,12 +58,56 @@ export interface GalleryItem {
   span: "wide" | "tall" | "std";
 }
 
+export interface VideoSlot {
+  src: string;
+  poster: string;
+}
+
+/** Every background video and image slot used around the site. */
+export interface SiteMedia {
+  heroVideo: VideoSlot;
+  showroomVideo: VideoSlot;
+  staffVideo: VideoSlot;
+  collectionsVideo: VideoSlot;
+  collectionsBreakImage: string;
+  visualizerTeaserImage: string;
+  contactCtaImage: string;
+  aboutHeroImage: string;
+  aboutStoryImage: string;
+  aboutShowroomImage: string;
+  /** social share / Open Graph image */
+  ogImage: string;
+}
+
+/**
+ * Editable copy for the three scroll scenes on the home page.
+ * In headline fields, *word* renders in the green accent italic and
+ * line breaks are kept.
+ */
+export interface HomeText {
+  heroBadge: string;
+  heroHeadline: string;
+  heroSub: string;
+  heroAddressLabel: string;
+  heroAddressHeadline: string;
+  heroClosingHeadline: string;
+  heroClosingSub: string;
+  showroomLabel: string;
+  showroomHeadline: string;
+  staffLabel: string;
+  staffHeadline: string;
+  /** trust marquee lines under the hero */
+  marquee: string[];
+}
+
 export interface SiteContent {
   site: SiteInfo;
   staff: StaffMember[];
   testimonials: Testimonial[];
   collections: CollectionInfo[];
   gallery: GalleryItem[];
+  media: SiteMedia;
+  home: HomeText;
 }
 
 export interface Settings {
@@ -85,6 +129,8 @@ export interface User {
   id: string;
   name: string;
   email: string;
+  /** optional for accounts created before phone was collected at registration */
+  phone?: string;
   passwordHash: string;
   isAdmin: boolean;
   addresses: Address[];
@@ -138,6 +184,55 @@ const SEED_FILE = path.join(process.cwd(), "data", "db.json");
 
 export const DEFAULT_ADMIN = { email: "admin@astertiles.ie", password: "admin123" };
 
+export const DEFAULT_MEDIA: SiteMedia = {
+  heroVideo: {
+    src: "/media/video/exterior-arrival-scrub.mp4",
+    poster: "/media/video/exterior-arrival-poster.jpg",
+  },
+  showroomVideo: {
+    src: "/media/video/showroom-entry-scrub.mp4",
+    poster: "/media/video/showroom-entry-poster.jpg",
+  },
+  staffVideo: {
+    src: "/media/video/staff-welcome-scrub.mp4",
+    poster: "/media/video/staff-welcome-poster.jpg",
+  },
+  collectionsVideo: {
+    src: "/media/video/tile-aisle-loop.mp4",
+    poster: "/media/video/tile-aisle-poster.jpg",
+  },
+  collectionsBreakImage: "/media/gallery/open-plan-marble.jpg",
+  visualizerTeaserImage: "/media/stills/bathroom.jpg",
+  contactCtaImage: "/media/stills/showroom-wide.jpg",
+  aboutHeroImage: "/media/stills/showroom-wide.jpg",
+  aboutStoryImage: "/media/stills/exterior.jpg",
+  aboutShowroomImage: "/media/stills/showroom-entry.jpg",
+  ogImage: "/media/stills/exterior.jpg",
+};
+
+export const DEFAULT_HOME: HomeText = {
+  heroBadge: "Donegal's Premier Tile Showroom",
+  heroHeadline: "Transform your *space*\nwith premium tiles",
+  heroSub:
+    "Exquisite tiles, wooden floors and bathroom solutions — serving all of Ireland from our Lifford showroom.",
+  heroAddressLabel: "The Haw · Lifford · Co. Donegal",
+  heroAddressHeadline: "Fifteen years on the same street,\n*five thousand* happy homes",
+  heroClosingHeadline: "Step *inside*",
+  heroClosingSub: "Keep scrolling — the doors are open.",
+  showroomLabel: "Welcome to the Showroom",
+  showroomHeadline: "Every tile, at *true scale*, under real light",
+  staffLabel: "The Aster Team",
+  staffHeadline: "Meet the people\n*behind the tiles*",
+  marquee: [
+    "Free Nationwide Delivery",
+    "Premium Quality Guaranteed",
+    "Lifford Showroom Open Daily",
+    "Expert Design Advice",
+    "Same-Day Quotes",
+    "500+ Tile Collections",
+  ],
+};
+
 function seed(): Db {
   return {
     tiles: seedTiles.map((t) => ({ ...structuredClone(t), inStock: true })),
@@ -147,6 +242,8 @@ function seed(): Db {
       testimonials: seedTestimonials,
       collections: seedCollections,
       gallery: seedGallery,
+      media: DEFAULT_MEDIA,
+      home: DEFAULT_HOME,
     }) as unknown as SiteContent,
     settings: {
       currencySymbol: "€",
@@ -178,11 +275,26 @@ function seed(): Db {
   };
 }
 
+/** Backfill sections added after a db.json was first written. */
+function migrate(db: Db): Db {
+  let changed = false;
+  if (!db.content.media) {
+    db.content.media = structuredClone(DEFAULT_MEDIA);
+    changed = true;
+  }
+  if (!db.content.home) {
+    db.content.home = structuredClone(DEFAULT_HOME);
+    changed = true;
+  }
+  if (changed) writeDb(db);
+  return db;
+}
+
 function readDb(): Db {
   if (!fs.existsSync(DB_FILE)) {
     // On Vercel: copy the bundled seed file into /tmp so subsequent reads work.
     if (IS_VERCEL && fs.existsSync(SEED_FILE)) {
-      const db = JSON.parse(fs.readFileSync(SEED_FILE, "utf8")) as Db;
+      const db = migrate(JSON.parse(fs.readFileSync(SEED_FILE, "utf8")) as Db);
       writeDb(db);
       return db;
     }
@@ -190,7 +302,7 @@ function readDb(): Db {
     writeDb(db);
     return db;
   }
-  return JSON.parse(fs.readFileSync(DB_FILE, "utf8")) as Db;
+  return migrate(JSON.parse(fs.readFileSync(DB_FILE, "utf8")) as Db);
 }
 
 function writeDb(db: Db): void {
@@ -233,38 +345,6 @@ export function getContent(): SiteContent {
 
 export function getSettings(): Settings {
   return getDb().settings;
-}
-
-/* ── Sessions ──────────────────────────────────────── */
-
-const SESSION_DAYS = 30;
-
-export function createSession(userId: string): Session {
-  return mutateDb((db) => {
-    const now = Date.now();
-    db.sessions = db.sessions.filter((s) => Date.parse(s.expiresAt) > now);
-    const session: Session = {
-      token: crypto.randomBytes(32).toString("hex"),
-      userId,
-      expiresAt: new Date(now + SESSION_DAYS * 24 * 3600 * 1000).toISOString(),
-    };
-    db.sessions.push(session);
-    return session;
-  });
-}
-
-export function deleteSession(token: string): void {
-  mutateDb((db) => {
-    db.sessions = db.sessions.filter((s) => s.token !== token);
-  });
-}
-
-export function getUserByToken(token: string | undefined): User | null {
-  if (!token) return null;
-  const db = getDb();
-  const session = db.sessions.find((s) => s.token === token);
-  if (!session || Date.parse(session.expiresAt) <= Date.now()) return null;
-  return db.users.find((u) => u.id === session.userId) ?? null;
 }
 
 /* ── Orders ────────────────────────────────────────── */

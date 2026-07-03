@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Logo } from "@/components/Logo";
 import { useSite, useUser } from "@/components/StoreProvider";
 import { useCart } from "@/components/CartProvider";
@@ -12,8 +12,16 @@ export default function Nav() {
   const user = useUser();
   const { count } = useCart();
   const pathname = usePathname();
+  const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+
+  const logout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    setOpen(false);
+    router.push("/");
+    router.refresh();
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -82,6 +90,18 @@ export default function Nav() {
               </svg>
               {accountLabel}
             </Link>
+            {user && (
+              <button
+                type="button"
+                onClick={logout}
+                className="flex items-center gap-2 rounded-md px-3 py-2 text-[0.85rem] font-medium text-white/70 transition-colors hover:bg-white/8 hover:text-white"
+              >
+                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                Log out
+              </button>
+            )}
             <Link
               href="/cart"
               aria-label={`Cart, ${count} item${count === 1 ? "" : "s"}`}
@@ -133,8 +153,11 @@ export default function Nav() {
           ))}
         </nav>
         <div className="mt-8 flex flex-col gap-3">
-          <Link href="/cart" className="text-lg font-bold text-green">
-            🛒 Cart{count > 0 ? ` (${count})` : ""}
+          <Link href="/cart" className="flex items-center gap-2.5 text-lg font-bold text-green">
+            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            Cart{count > 0 ? ` (${count})` : ""}
           </Link>
           <Link href={accountHref} className="text-lg font-bold text-white/80">
             {accountLabel}
@@ -144,9 +167,17 @@ export default function Nav() {
               Admin panel
             </Link>
           )}
+          {user && (
+            <button type="button" onClick={logout} className="text-left text-lg font-bold text-white/60">
+              Log out
+            </button>
+          )}
         </div>
-        <a href={site.phoneHref} className="mt-8 text-lg font-bold text-green">
-          📞 {site.phone}
+        <a href={site.phoneHref} className="mt-8 flex items-center gap-2.5 text-lg font-bold text-green">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+          </svg>
+          {site.phone}
         </a>
       </div>
     </>

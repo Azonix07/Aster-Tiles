@@ -1,14 +1,16 @@
 import Image from "next/image";
 import Parallax from "@/components/scroll/Parallax";
 import Reveal, { RevealLines } from "@/components/scroll/Reveal";
+import { getContent } from "@/lib/db";
 
 /** Full-bleed opening shot — the showroom, wide, with the story headline. */
 export default function AboutHero() {
+  const { media } = getContent();
   return (
     <section className="vignette relative h-[70vh] min-h-[540px] overflow-hidden bg-ink">
       <Parallax speed={-0.18} className="absolute inset-0">
         <Image
-          src="/media/stills/showroom-wide.jpg"
+          src={media.aboutHeroImage}
           alt="Inside the Aster Tiles showroom in Lifford, Co. Donegal"
           fill
           sizes="100vw"

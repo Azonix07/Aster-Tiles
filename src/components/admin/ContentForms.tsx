@@ -10,6 +10,7 @@ import type {
   StaffMember,
   Testimonial,
 } from "@/lib/db";
+import MediaInput from "@/components/admin/MediaInput";
 
 const inputCls =
   "w-full rounded-xl border border-mist bg-off px-4 py-2.5 text-sm text-navy outline-none transition placeholder:text-muted/50 focus:border-green focus:ring-2 focus:ring-green/20";
@@ -161,7 +162,7 @@ export function SiteInfoForm({ initial }: { initial: SiteInfo }) {
                 onClick={() => setForm((p) => ({ ...p, hours: p.hours.filter((_, j) => j !== i) }))}
                 className="shrink-0 text-xs font-bold text-muted hover:text-red-500"
               >
-                ✕
+                Remove
               </button>
             </div>
           </div>
@@ -252,7 +253,14 @@ export function StaffForm({ initial }: { initial: StaffMember[] }) {
             <div className="grid gap-3 sm:grid-cols-2">
               <input aria-label="Name" required placeholder="Name" value={r.name} onChange={(e) => update(i, "name", e.target.value)} className={inputCls} />
               <input aria-label="Role" required placeholder="Role" value={r.role} onChange={(e) => update(i, "role", e.target.value)} className={inputCls} />
-              <input aria-label="Photo" required placeholder="/media/staff/photo.jpg" value={r.photo} onChange={(e) => update(i, "photo", e.target.value)} className={`${inputCls} sm:col-span-2`} />
+              <div className="sm:col-span-2">
+                <MediaInput
+                  value={r.photo}
+                  onChange={(path) => update(i, "photo", path)}
+                  folder="staff"
+                  placeholder="/media/staff/photo.jpg"
+                />
+              </div>
               <textarea aria-label="Bio" required rows={2} placeholder="Short bio" value={r.bio} onChange={(e) => update(i, "bio", e.target.value)} className={`${inputCls} resize-y sm:col-span-2`} />
             </div>
             <button
@@ -360,7 +368,14 @@ export function CollectionsForm({ initial }: { initial: CollectionInfo[] }) {
             <div className="mt-2 grid gap-3 sm:grid-cols-2">
               <input aria-label="Name" required placeholder="Name" value={r.name} onChange={(e) => update(i, "name", e.target.value)} className={inputCls} />
               <input aria-label="Blurb" required placeholder="Blurb" value={r.blurb} onChange={(e) => update(i, "blurb", e.target.value)} className={inputCls} />
-              <input aria-label="Image" required placeholder="/media/categories/image.jpg" value={r.image} onChange={(e) => update(i, "image", e.target.value)} className={`${inputCls} sm:col-span-2`} />
+              <div className="sm:col-span-2">
+                <MediaInput
+                  value={r.image}
+                  onChange={(path) => update(i, "image", path)}
+                  folder="categories"
+                  placeholder="/media/categories/image.jpg"
+                />
+              </div>
               <textarea aria-label="Description" required rows={2} placeholder="Description" value={r.description} onChange={(e) => update(i, "description", e.target.value)} className={`${inputCls} resize-y sm:col-span-2`} />
             </div>
           </div>
@@ -399,7 +414,12 @@ export function GalleryForm({ initial }: { initial: GalleryItem[] }) {
       <div className="mt-6 space-y-4">
         {rows.map((r, i) => (
           <div key={i} className="grid gap-3 rounded-xl border border-mist p-4 sm:grid-cols-[2fr_1.2fr_auto_auto]">
-            <input aria-label="Image" required placeholder="/media/gallery/image.jpg" value={r.image} onChange={(e) => update(i, "image", e.target.value)} className={inputCls} />
+            <MediaInput
+              value={r.image}
+              onChange={(path) => update(i, "image", path)}
+              folder="gallery"
+              placeholder="/media/gallery/image.jpg"
+            />
             <input aria-label="Tag" required placeholder="Caption tag" value={r.tag} onChange={(e) => update(i, "tag", e.target.value)} className={inputCls} />
             <select aria-label="Shape" value={r.span} onChange={(e) => update(i, "span", e.target.value)} className={inputCls}>
               <option value="std">Standard</option>
@@ -411,7 +431,7 @@ export function GalleryForm({ initial }: { initial: GalleryItem[] }) {
               onClick={() => setRows((p) => p.filter((_, j) => j !== i))}
               className="text-xs font-bold text-muted hover:text-red-500"
             >
-              ✕
+              Remove
             </button>
           </div>
         ))}

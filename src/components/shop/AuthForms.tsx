@@ -91,6 +91,7 @@ export function RegisterForm({ next }: { next: string }) {
   const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -102,7 +103,7 @@ export function RegisterForm({ next }: { next: string }) {
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify({ name, email, phone, password }),
     });
     if (res.ok) {
       router.push(next);
@@ -145,6 +146,19 @@ export function RegisterForm({ next }: { next: string }) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.ie"
+            className={inputCls}
+          />
+        </div>
+        <div>
+          <label htmlFor="rg-phone" className={labelCls}>Phone number</label>
+          <input
+            id="rg-phone"
+            type="tel"
+            required
+            autoComplete="tel"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            placeholder="+353 89 000 0000"
             className={inputCls}
           />
         </div>

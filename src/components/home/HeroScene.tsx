@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import ScrubVideo from "@/components/scroll/ScrubVideo";
-import { useSite } from "@/components/StoreProvider";
+import { useSite, useStore } from "@/components/StoreProvider";
+import { Accent } from "@/components/Accent";
 
 /**
  * Act I — Arrival. The camera pushes toward the showroom door as the
@@ -10,10 +11,11 @@ import { useSite } from "@/components/StoreProvider";
  */
 export default function HeroScene() {
   const site = useSite();
+  const { media, home } = useStore().content;
   return (
     <ScrubVideo
-      src="/media/video/exterior-arrival-scrub.mp4"
-      poster="/media/video/exterior-arrival-poster.jpg"
+      src={media.heroVideo.src}
+      poster={media.heroVideo.poster}
       pinHeight={280}
     >
       {/* readability gradient */}
@@ -25,17 +27,13 @@ export default function HeroScene() {
         className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center"
       >
         <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-green/40 bg-green/15 px-4 py-1.5 text-[0.72rem] font-bold tracking-[0.14em] text-green uppercase">
-          <span className="text-[0.5rem]">●</span> Donegal&apos;s Premier Tile Showroom
+          <span className="inline-block h-1.5 w-1.5 rounded-full bg-green" aria-hidden="true" />
+          {home.heroBadge}
         </span>
         <h1 className="display max-w-4xl text-5xl text-white sm:text-6xl lg:text-7xl">
-          Transform your <em className="accent-italic text-green">space</em>
-          <br />
-          with premium tiles
+          <Accent text={home.heroHeadline} />
         </h1>
-        <p className="mt-6 max-w-xl text-lg text-white/75">
-          Exquisite tiles, wooden floors and bathroom solutions — serving all
-          of Ireland from our Lifford showroom.
-        </p>
+        <p className="mt-6 max-w-xl text-lg text-white/75">{home.heroSub}</p>
         <div className="mt-9 flex flex-wrap justify-center gap-4">
           <Link href="/visualizer" className="btn btn-green">
             Try the Room Visualizer
@@ -51,11 +49,9 @@ export default function HeroScene() {
         data-window="0.42,0.66"
         className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center"
       >
-        <p className="label text-green">The Haw · Lifford · Co. Donegal</p>
+        <p className="label text-green">{home.heroAddressLabel}</p>
         <h2 className="display mt-4 max-w-3xl text-4xl text-white sm:text-5xl">
-          Fifteen years on the same street,
-          <br />
-          <em className="accent-italic text-white/80">five thousand</em> happy homes
+          <Accent text={home.heroAddressHeadline} accentClass="accent-italic text-white/80" />
         </h2>
       </div>
 
@@ -65,9 +61,9 @@ export default function HeroScene() {
         className="absolute inset-0 z-20 flex flex-col items-center justify-end pb-24 px-6 text-center"
       >
         <h2 className="display text-4xl text-white sm:text-5xl">
-          Step <em className="accent-italic text-green">inside</em>
+          <Accent text={home.heroClosingHeadline} />
         </h2>
-        <p className="mt-3 text-white/70">Keep scrolling — the doors are open.</p>
+        <p className="mt-3 text-white/70">{home.heroClosingSub}</p>
       </div>
 
       {/* scroll cue */}

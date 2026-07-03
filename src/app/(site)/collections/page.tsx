@@ -18,21 +18,22 @@ export const metadata: Metadata = {
  * invitation to the showroom.
  */
 export default function CollectionsPage() {
-  const { site, staff, collections } = getContent();
+  const { site, staff, collections, media } = getContent();
   return (
     <>
       {/* ── Hero — the tile aisle ─────────────────────────── */}
       <section className="grain vignette relative h-[70vh] min-h-[520px] overflow-hidden bg-ink">
         <video
+          key={media.collectionsVideo.src}
           className="absolute inset-0 h-full w-full object-cover"
           autoPlay
           muted
           loop
           playsInline
-          poster="/media/video/tile-aisle-poster.jpg"
+          poster={media.collectionsVideo.poster}
           aria-hidden="true"
         >
-          <source src="/media/video/tile-aisle-loop.mp4" type="video/mp4" />
+          <source src={media.collectionsVideo.src} type="video/mp4" />
         </video>
         <div className="absolute inset-0 z-10 bg-gradient-to-b from-ink/75 via-ink/35 to-ink/85" />
 
@@ -98,7 +99,7 @@ export default function CollectionsPage() {
           className="absolute inset-x-0 -top-[14%] -bottom-[14%]"
         >
           <Image
-            src="/media/gallery/open-plan-marble.jpg"
+            src={media.collectionsBreakImage}
             alt="Open-plan living space finished in marble-effect porcelain"
             fill
             sizes="100vw"

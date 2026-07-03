@@ -1,19 +1,15 @@
-const items = [
-  "Free Nationwide Delivery",
-  "Premium Quality Guaranteed",
-  "Lifford Showroom Open Daily",
-  "Expert Design Advice",
-  "Same-Day Quotes",
-  "500+ Tile Collections",
-];
+import { getContent } from "@/lib/db";
 
 export default function TrustMarquee() {
+  const items = getContent().home.marquee;
   const row = items.map((t, i) => (
     <span key={i} className="flex items-center gap-6 pr-6">
       <span className="font-display text-sm font-semibold tracking-wide text-white/70">
         {t}
       </span>
-      <span className="text-green">◆</span>
+      <span className="text-green" aria-hidden="true">
+        ◆
+      </span>
     </span>
   ));
 

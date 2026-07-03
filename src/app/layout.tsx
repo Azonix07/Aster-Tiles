@@ -16,7 +16,7 @@ const instrument = Instrument_Serif({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { site } = getContent();
+  const { site, media } = getContent();
   return {
     metadataBase: new URL("https://astertiles.ie"),
     title: {
@@ -39,7 +39,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: site.description,
       type: "website",
       locale: "en_IE",
-      images: [{ url: "/media/stills/exterior.jpg", width: 2000, height: 1116 }],
+      images: [{ url: media.ogImage, width: 2000, height: 1116 }],
     },
   };
 }

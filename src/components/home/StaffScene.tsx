@@ -3,17 +3,18 @@
 import Link from "next/link";
 import ScrubVideo from "@/components/scroll/ScrubVideo";
 import { useStore } from "@/components/StoreProvider";
+import { Accent } from "@/components/Accent";
 
 /**
  * Act III — Meet the people. The camera settles at the counter and the
  * team looks up; names fade in as the shot completes.
  */
 export default function StaffScene() {
-  const { staff } = useStore().content;
+  const { staff, media, home } = useStore().content;
   return (
     <ScrubVideo
-      src="/media/video/staff-welcome-scrub.mp4"
-      poster="/media/video/staff-welcome-poster.jpg"
+      src={media.staffVideo.src}
+      poster={media.staffVideo.poster}
       pinHeight={240}
     >
       <div className="absolute inset-0 z-10 bg-gradient-to-b from-ink/60 via-transparent to-ink/70" />
@@ -22,11 +23,9 @@ export default function StaffScene() {
         data-window="0.04,0.42"
         className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center"
       >
-        <p className="label text-green">The Aster Team</p>
+        <p className="label text-green">{home.staffLabel}</p>
         <h2 className="display mt-4 max-w-3xl text-4xl text-white sm:text-6xl">
-          Meet the people
-          <br />
-          <em className="accent-italic text-white/85">behind the tiles</em>
+          <Accent text={home.staffHeadline} accentClass="accent-italic text-white/85" />
         </h2>
       </div>
 

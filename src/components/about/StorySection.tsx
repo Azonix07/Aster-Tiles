@@ -2,6 +2,7 @@ import Image from "next/image";
 import Counter from "@/components/scroll/Counter";
 import Parallax from "@/components/scroll/Parallax";
 import Reveal from "@/components/scroll/Reveal";
+import { getContent } from "@/lib/db";
 
 const promises = [
   "500+ tile collections under one roof",
@@ -11,6 +12,7 @@ const promises = [
 
 /** The founding story — words on the left, the shopfront on the right. */
 export default function StorySection() {
+  const { media } = getContent();
   return (
     <section className="bg-off py-24 sm:py-28">
       <div className="mx-auto grid max-w-7xl items-center gap-14 px-6 lg:grid-cols-2 lg:gap-20">
@@ -55,7 +57,7 @@ export default function StorySection() {
               <div className="relative aspect-[4/5] sm:aspect-[4/4]">
                 <Parallax speed={-0.12} className="absolute inset-0">
                   <Image
-                    src="/media/stills/exterior.jpg"
+                    src={media.aboutStoryImage}
                     alt="The Aster Tiles showroom exterior on The Haw, Lifford"
                     fill
                     sizes="(min-width: 1024px) 45vw, 90vw"

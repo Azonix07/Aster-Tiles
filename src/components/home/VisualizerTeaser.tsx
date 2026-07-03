@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Reveal from "@/components/scroll/Reveal";
-import { useTiles } from "@/components/StoreProvider";
+import { useStore, useTiles } from "@/components/StoreProvider";
 
 const featured = ["venus-bianco", "torano-gold", "heritage-oak", "laurent-black", "moroccan-star"];
 
@@ -14,6 +14,7 @@ const featured = ["venus-bianco", "torano-gold", "heritage-oak", "laurent-black"
  */
 export default function VisualizerTeaser() {
   const tiles = useTiles();
+  const { media } = useStore().content;
   const preferred = tiles.filter((t) => featured.includes(t.id));
   const options = preferred.length > 0 ? preferred : tiles.slice(0, 5);
   const [active, setActive] = useState(options[0]);
@@ -60,7 +61,7 @@ export default function VisualizerTeaser() {
           <div data-reveal className="relative">
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/10">
               <Image
-                src="/media/stills/bathroom.jpg"
+                src={media.visualizerTeaserImage}
                 alt="Room preview"
                 fill
                 sizes="(min-width: 1024px) 45vw, 90vw"

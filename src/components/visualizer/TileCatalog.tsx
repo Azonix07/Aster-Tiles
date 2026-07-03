@@ -126,7 +126,12 @@ export default function TileCatalog({
       >
         {list.length === 0 ? (
           <div className="px-4 py-14 text-center">
-            <div className="text-2xl">🔍</div>
+            <div className="flex justify-center text-white/40" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="7" />
+                <path d="M21 21l-4.35-4.35" />
+              </svg>
+            </div>
             <p className="mt-2 text-sm text-white/55">
               {favsOnly && favorites.size === 0
                 ? "No favourites yet — tap a heart to save tiles you love."

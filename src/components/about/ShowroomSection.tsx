@@ -6,7 +6,7 @@ import { getContent } from "@/lib/db";
 
 /** Closing scene — the showroom entrance, opening hours and directions. */
 export default function ShowroomSection() {
-  const { site } = getContent();
+  const { site, media } = getContent();
   return (
     <section className="relative overflow-hidden bg-ink py-24 sm:py-28">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_25%_20%,rgba(45,184,124,0.1),transparent_55%)]" />
@@ -20,7 +20,7 @@ export default function ShowroomSection() {
             <div className="relative aspect-[4/3]">
               <Parallax speed={-0.12} className="absolute inset-0">
                 <Image
-                  src="/media/stills/showroom-entry.jpg"
+                  src={media.aboutShowroomImage}
                   alt="The entrance to the Aster Tiles showroom"
                   fill
                   sizes="(min-width: 1024px) 45vw, 90vw"
