@@ -18,7 +18,7 @@ export default function AdminTilesPage() {
 
       <div className="mt-6 rounded-2xl border border-mist bg-white p-6 shadow-sm">
         <div className="overflow-x-auto">
-          <table className="w-full min-w-140 text-left text-sm">
+          <table className="w-full min-w-[560px] text-left text-sm">
             <thead>
               <tr className="border-b border-mist text-[0.68rem] tracking-wide text-muted uppercase">
                 <th className="py-2.5 pr-4 font-bold">Tile</th>

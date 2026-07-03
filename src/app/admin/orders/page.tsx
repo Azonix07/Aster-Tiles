@@ -52,7 +52,7 @@ export default async function AdminOrdersPage({
           <p className="text-sm text-muted">No orders here yet.</p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full min-w-160 text-left text-sm">
+            <table className="w-full min-w-[640px] text-left text-sm">
               <thead>
                 <tr className="border-b border-mist text-[0.68rem] tracking-wide text-muted uppercase">
                   <th className="py-2.5 pr-4 font-bold">Order</th>
