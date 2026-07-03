@@ -8,6 +8,7 @@ import Reveal from "@/components/scroll/Reveal";
 import { tileCategories, type TileCategory } from "@/lib/tiles";
 import { useSettings, useTiles } from "@/components/StoreProvider";
 import { money } from "@/lib/format";
+import { effectivePrice, hasDiscount } from "@/lib/pricing";
 
 type FilterKey = TileCategory | "all";
 
@@ -126,6 +127,11 @@ export default function TileGrid() {
                   Out of stock
                 </span>
               )}
+              {t.inStock && hasDiscount(t) && (
+                <span className="absolute top-3 right-3 rounded-full bg-red-500 px-3 py-1 font-display text-[0.62rem] font-bold tracking-[0.08em] text-white uppercase">
+                  {t.discountPercent}% OFF
+                </span>
+              )}
             </Link>
 
             <div className="mt-4 flex items-start justify-between gap-3">
@@ -140,9 +146,20 @@ export default function TileGrid() {
                 </p>
               </div>
               <p className="shrink-0 text-right">
-                <span className="font-display text-lg font-bold text-navy">
-                  {money(t.pricePerSqm, settings.currencySymbol)}
-                </span>
+                {hasDiscount(t) ? (
+                  <>
+                    <span className="font-display text-sm text-muted line-through">
+                      {money(t.pricePerSqm, settings.currencySymbol)}
+                    </span>
+                    <span className="block font-display text-lg font-bold text-red-500">
+                      {money(effectivePrice(t), settings.currencySymbol)}
+                    </span>
+                  </>
+                ) : (
+                  <span className="font-display text-lg font-bold text-navy">
+                    {money(t.pricePerSqm, settings.currencySymbol)}
+                  </span>
+                )}
                 <span className="block text-[0.65rem] text-muted">per m²</span>
               </p>
             </div>

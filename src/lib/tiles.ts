@@ -14,6 +14,8 @@ export interface Tile {
   /** suggested grout colour that flatters this tile */
   defaultGrout: string;
   pricePerSqm: number;
+  /** discount percentage (0–100); 0 means no discount */
+  discountPercent: number;
   bestFor: string[];
   description: string;
 }
@@ -30,6 +32,7 @@ export const tiles: Tile[] = [
     texture: "/media/tiles/venus-bianco.jpg",
     defaultGrout: "#d8d4cf",
     pricePerSqm: 34,
+    discountPercent: 0,
     bestFor: ["Living rooms", "Hallways", "Kitchens"],
     description:
       "A soft white marble-effect porcelain with warm grey veining that brightens any room without feeling clinical.",
@@ -45,6 +48,7 @@ export const tiles: Tile[] = [
     texture: "/media/tiles/sigma-statuario.jpg",
     defaultGrout: "#e2e0dd",
     pricePerSqm: 58,
+    discountPercent: 0,
     bestFor: ["Feature walls", "Bathrooms", "Open plan"],
     description:
       "Large-format statuario with bold diagonal veining — a statement slab look at a fraction of natural marble cost.",
@@ -60,6 +64,7 @@ export const tiles: Tile[] = [
     texture: "/media/tiles/torano-gold.jpg",
     defaultGrout: "#ded6c2",
     pricePerSqm: 62,
+    discountPercent: 0,
     bestFor: ["Feature walls", "Bathrooms", "Hotels"],
     description:
       "Dramatic flowing gold and grey veining on a polished white body. Our most luxurious large-format tile.",
@@ -75,6 +80,7 @@ export const tiles: Tile[] = [
     texture: "/media/tiles/laurent-black.jpg",
     defaultGrout: "#2a2a2e",
     pricePerSqm: 48,
+    discountPercent: 0,
     bestFor: ["Bathrooms", "Feature walls", "Bars"],
     description:
       "Deep black marble-effect with fine gold veins — moody, glamorous and unforgettable under warm light.",
@@ -90,6 +96,7 @@ export const tiles: Tile[] = [
     texture: "/media/tiles/rock-concrete.jpg",
     defaultGrout: "#9a9a98",
     pricePerSqm: 29,
+    discountPercent: 0,
     bestFor: ["Kitchens", "Utility rooms", "Commercial"],
     description:
       "An honest, industrial concrete look that hides everyday life and pairs beautifully with timber and steel.",
@@ -105,6 +112,7 @@ export const tiles: Tile[] = [
     texture: "/media/tiles/terracotta.jpg",
     defaultGrout: "#b58a6a",
     pricePerSqm: 26,
+    discountPercent: 0,
     bestFor: ["Kitchens", "Sunrooms", "Cottages"],
     description:
       "Warm handmade-look clay with natural tonal variation — timeless in Irish cottages and modern farmhouses alike.",
@@ -120,6 +128,7 @@ export const tiles: Tile[] = [
     texture: "/media/tiles/heritage-oak.jpg",
     defaultGrout: "#c0a582",
     pricePerSqm: 32,
+    discountPercent: 0,
     bestFor: ["Living rooms", "Bedrooms", "Hallways"],
     description:
       "Honey-toned oak planks with authentic grain and knots. All the warmth of timber, none of the upkeep.",
@@ -135,6 +144,7 @@ export const tiles: Tile[] = [
     texture: "/media/tiles/dark-walnut.jpg",
     defaultGrout: "#4a3728",
     pricePerSqm: 34,
+    discountPercent: 0,
     bestFor: ["Bedrooms", "Studies", "Snugs"],
     description:
       "Rich chocolate walnut planks that ground a room — stunning with cream rugs and brass lamplight.",
@@ -150,6 +160,7 @@ export const tiles: Tile[] = [
     texture: "/media/tiles/subway-white.jpg",
     defaultGrout: "#c8c8c8",
     pricePerSqm: 22,
+    discountPercent: 0,
     bestFor: ["Splashbacks", "Bathrooms", "Utility"],
     description:
       "The classic bevelled metro in warm gloss white. Brick-bond it behind a range cooker and it never dates.",
@@ -165,6 +176,7 @@ export const tiles: Tile[] = [
     texture: "/media/tiles/metro-grey.jpg",
     defaultGrout: "#8f8f8f",
     pricePerSqm: 22,
+    discountPercent: 0,
     bestFor: ["Splashbacks", "Shower walls", "WCs"],
     description:
       "A soft matt grey metro that swaps classic sparkle for calm, contemporary texture.",
@@ -180,6 +192,7 @@ export const tiles: Tile[] = [
     texture: "/media/tiles/hex-carrara.jpg",
     defaultGrout: "#dcdcdc",
     pricePerSqm: 44,
+    discountPercent: 0,
     bestFor: ["Shower floors", "Bathrooms", "Porches"],
     description:
       "Carrara marble hexagon mosaic — grippy underfoot, gorgeous from above. A shower-floor favourite.",
@@ -195,6 +208,7 @@ export const tiles: Tile[] = [
     texture: "/media/tiles/moroccan-star.jpg",
     defaultGrout: "#20365a",
     pricePerSqm: 38,
+    discountPercent: 0,
     bestFor: ["Splashbacks", "Porches", "Fireplaces"],
     description:
       "Navy and white star-and-cross encaustic pattern — one wall of this and the room designs itself.",

@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { DbTile } from "@/lib/db";
+import { effectivePrice, hasDiscount } from "@/lib/pricing";
+import { money } from "@/lib/format";
 
 const inputCls =
   "w-full rounded-xl border border-mist bg-off px-4 py-2.5 text-sm text-navy outline-none transition placeholder:text-muted/50 focus:border-green focus:ring-2 focus:ring-green/20";
@@ -19,6 +21,7 @@ interface TileFields {
   texture: string;
   defaultGrout: string;
   pricePerSqm: string;
+  discountPercent: string;
   bestFor: string;
   description: string;
   inStock: boolean;
@@ -36,6 +39,7 @@ function toFields(tile?: DbTile): TileFields {
     texture: tile?.texture ?? "",
     defaultGrout: tile?.defaultGrout ?? "#d8d4cf",
     pricePerSqm: String(tile?.pricePerSqm ?? 30),
+    discountPercent: String(tile?.discountPercent ?? 0),
     bestFor: (tile?.bestFor ?? []).join(", "),
     description: tile?.description ?? "",
     inStock: tile?.inStock ?? true,
@@ -64,6 +68,7 @@ export default function TileForm({ tile }: { tile?: DbTile }) {
       widthMm: Number(form.widthMm),
       heightMm: Number(form.heightMm),
       pricePerSqm: Number(form.pricePerSqm),
+      discountPercent: Number(form.discountPercent),
       inStock: form.inStock,
     };
     const res = await fetch(isNew ? "/api/admin/tiles" : `/api/admin/tiles/${tile.id}`, {
@@ -119,6 +124,11 @@ export default function TileForm({ tile }: { tile?: DbTile }) {
           <div>
             <label htmlFor="tf-price" className={labelCls}>Price per m²</label>
             <input id="tf-price" required type="number" min="0.5" step="0.01" value={form.pricePerSqm} onChange={set("pricePerSqm")} className={inputCls} />
+          </div>
+          <div>
+            <label htmlFor="tf-discount" className={labelCls}>Discount %</label>
+            <input id="tf-discount" type="number" min="0" max="100" step="1" value={form.discountPercent} onChange={set("discountPercent")} className={inputCls} />
+            <p className="mt-1 text-[0.7rem] text-muted">0 = no discount. 10 = 10% off the price.</p>
           </div>
           <div>
             <label htmlFor="tf-category" className={labelCls}>Category</label>
@@ -212,6 +222,11 @@ export default function TileForm({ tile }: { tile?: DbTile }) {
               {form.finish}
             </span>
           )}
+          {Number(form.discountPercent) > 0 && (
+            <span className="absolute top-3 right-3 rounded-full bg-red-500 px-3 py-1 font-display text-[0.62rem] font-bold tracking-[0.08em] text-white uppercase">
+              {form.discountPercent}% OFF
+            </span>
+          )}
         </div>
         <div className="mt-4 flex items-start justify-between gap-3">
           <div>
@@ -220,7 +235,23 @@ export default function TileForm({ tile }: { tile?: DbTile }) {
               {form.material || "Material"} · {form.widthMm || "?"} × {form.heightMm || "?"} mm
             </p>
           </div>
-          <p className="font-display text-lg font-bold text-navy">{form.pricePerSqm || "—"}</p>
+          <div className="text-right">
+            {Number(form.discountPercent) > 0 ? (
+              <>
+                <p className="font-display text-sm text-muted line-through">
+                  {money(Number(form.pricePerSqm) || 0, "€")}
+                </p>
+                <p className="font-display text-lg font-bold text-red-500">
+                  {money(
+                    effectivePrice({ pricePerSqm: Number(form.pricePerSqm) || 0, discountPercent: Number(form.discountPercent) }),
+                    "€"
+                  )}
+                </p>
+              </>
+            ) : (
+              <p className="font-display text-lg font-bold text-navy">{form.pricePerSqm || "—"}</p>
+            )}
+          </div>
         </div>
       </aside>
     </form>

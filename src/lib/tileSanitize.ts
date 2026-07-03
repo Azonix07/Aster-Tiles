@@ -33,6 +33,7 @@ export function sanitizeTile(raw: Record<string, unknown>, existing?: DbTile): D
     texture,
     defaultGrout: str(raw.defaultGrout, existing?.defaultGrout ?? "#d8d4cf"),
     pricePerSqm: num(raw.pricePerSqm, existing?.pricePerSqm ?? 30),
+    discountPercent: Math.min(100, Math.max(0, Math.round(Number(raw.discountPercent ?? existing?.discountPercent ?? 0)) || 0)),
     bestFor: Array.isArray(raw.bestFor)
       ? raw.bestFor.map((b) => String(b).trim()).filter(Boolean)
       : String(raw.bestFor ?? "")

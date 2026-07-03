@@ -7,6 +7,7 @@ import Reveal from "@/components/scroll/Reveal";
 import { getSettings, getTile, getTiles } from "@/lib/db";
 import { money } from "@/lib/format";
 import { currencyCode } from "@/lib/currency";
+import { effectivePrice, hasDiscount } from "@/lib/pricing";
 
 export async function generateMetadata({
   params,
@@ -42,6 +43,7 @@ export default async function TilePage({
     .filter((t) => t.id !== tile.id && t.category === tile.category)
     .slice(0, 4);
 
+  const salePrice = effectivePrice(tile);
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -52,7 +54,7 @@ export default async function TilePage({
     brand: { "@type": "Brand", name: "Aster Tiles" },
     offers: {
       "@type": "Offer",
-      price: tile.pricePerSqm,
+      price: salePrice,
       priceCurrency: currencyCode(settings.currencySymbol),
       availability: tile.inStock
         ? "https://schema.org/InStock"
@@ -98,6 +100,11 @@ export default async function TilePage({
                   Out of stock
                 </span>
               )}
+              {tile.inStock && hasDiscount(tile) && (
+                <span className="absolute top-4 right-4 rounded-full bg-red-500 px-3.5 py-1.5 font-display text-[0.65rem] font-bold tracking-[0.08em] text-white uppercase">
+                  {tile.discountPercent}% OFF
+                </span>
+              )}
             </div>
 
             {/* details */}
@@ -106,9 +113,20 @@ export default async function TilePage({
               <h1 className="display mt-2 text-4xl text-navy sm:text-5xl">{tile.name}</h1>
 
               <p className="mt-5 flex items-baseline gap-2">
-                <span className="font-display text-3xl font-bold text-navy">
-                  {money(tile.pricePerSqm, settings.currencySymbol)}
-                </span>
+                {hasDiscount(tile) ? (
+                  <>
+                    <span className="font-display text-xl text-muted line-through">
+                      {money(tile.pricePerSqm, settings.currencySymbol)}
+                    </span>
+                    <span className="font-display text-3xl font-bold text-red-500">
+                      {money(salePrice, settings.currencySymbol)}
+                    </span>
+                  </>
+                ) : (
+                  <span className="font-display text-3xl font-bold text-navy">
+                    {money(tile.pricePerSqm, settings.currencySymbol)}
+                  </span>
+                )}
                 <span className="text-sm text-muted">per m²</span>
               </p>
 
@@ -146,7 +164,7 @@ export default async function TilePage({
               </div>
 
               <div className="mt-8">
-                <AddToCart tileId={tile.id} pricePerSqm={tile.pricePerSqm} inStock={tile.inStock} />
+                <AddToCart tileId={tile.id} pricePerSqm={salePrice} inStock={tile.inStock} />
               </div>
 
               <Link
