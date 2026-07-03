@@ -60,7 +60,7 @@ export default function ScrubVideo({
 
     const tick = () => {
       if (!duration || video.readyState < 2) return;
-      current += (target - current) * 0.14;
+      current += (target - current) * 0.2;
       const t = current * duration;
       if (Math.abs(video.currentTime - t) > 0.015) {
         video.currentTime = t;
@@ -76,14 +76,14 @@ export default function ScrubVideo({
     });
 
     const applyOverlays = (p: number) => {
-      const fade = 0.07; // progress-fraction used to ease in/out
+      const fade = 0.10; // progress-fraction used to ease in/out
       for (const { el, a, b } of overlays) {
         // windows that start at 0 are fully visible on load; ones that end at 1 never fade out
         const rise = a <= 0 ? 1 : Math.min(1, Math.max(0, (p - a) / fade));
         const fall = b >= 1 ? 1 : Math.min(1, Math.max(0, 1 - (p - b) / fade));
         const o = p < a ? 0 : Math.min(rise, fall);
         el.style.opacity = String(o);
-        el.style.transform = `translateY(${(1 - o) * 28}px)`;
+        el.style.transform = `translateY(${(1 - o) * 20}px)`;
         el.style.pointerEvents = o > 0.5 ? "auto" : "none";
       }
     };

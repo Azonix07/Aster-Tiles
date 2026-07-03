@@ -125,9 +125,9 @@ export default function Nav() {
             aria-expanded={open}
             className="ml-auto flex h-10 w-10 flex-col items-center justify-center gap-[5px] lg:hidden"
           >
-            <span className={`block h-0.5 w-6 rounded bg-white transition-all ${open ? "translate-y-[7px] rotate-45" : ""}`} />
-            <span className={`block h-0.5 w-6 rounded bg-white transition-opacity ${open ? "opacity-0" : ""}`} />
-            <span className={`block h-0.5 w-6 rounded bg-white transition-all ${open ? "-translate-y-[7px] -rotate-45" : ""}`} />
+            <span className={`block h-0.5 w-6 rounded bg-white transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${open ? "translate-y-[7px] rotate-45" : ""}`} />
+            <span className={`block h-0.5 w-6 rounded bg-white transition-opacity duration-200 ${open ? "opacity-0" : ""}`} />
+            <span className={`block h-0.5 w-6 rounded bg-white transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${open ? "-translate-y-[7px] -rotate-45" : ""}`} />
           </button>
         </div>
       </header>
@@ -144,8 +144,8 @@ export default function Nav() {
               key={item.href}
               href={item.href}
               style={{ transitionDelay: open ? `${80 + i * 50}ms` : "0ms" }}
-              className={`display text-4xl text-white/90 transition-all duration-500 hover:text-green ${
-                open ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
+              className={`display text-4xl text-white/90 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-green ${
+                open ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
               }`}
             >
               {item.label}

@@ -47,7 +47,7 @@ export default function CollectionsRail() {
       cards.forEach((card) => {
         gsap.fromTo(
           card,
-          { rotateY: 14, scale: 0.92, opacity: 0.55 },
+          { rotateY: 8, scale: 0.95, opacity: 0.6 },
           {
             rotateY: 0,
             scale: 1,

@@ -296,23 +296,23 @@
     "staff": [
       {
         "id": "maire",
-        "name": "MÃ¡ire Doherty",
+        "name": "Máire Doherty",
         "role": "Showroom Manager",
-        "bio": "MÃ¡ire has led the Lifford showroom for over a decade and can match a tile to a home from a single photograph.",
+        "bio": "Máire has led the Lifford showroom for over a decade and can match a tile to a home from a single photograph.",
         "photo": "/media/staff/maire.jpg"
       },
       {
         "id": "sean",
-        "name": "SeÃ¡n Gallagher",
+        "name": "Seán Gallagher",
         "role": "Flooring Specialist",
-        "bio": "Thirty years of floors â€” laminate, herringbone and luxury vinyl. SeÃ¡n knows what lasts in an Irish hallway.",
+        "bio": "Thirty years of floors â€” laminate, herringbone and luxury vinyl. Seán knows what lasts in an Irish hallway.",
         "photo": "/media/staff/sean.jpg"
       },
       {
         "id": "ciaran",
-        "name": "CiarÃ¡n Byrne",
+        "name": "Ciarán Byrne",
         "role": "Tile Consultant",
-        "bio": "CiarÃ¡n runs our sample library and the visualiser desk â€” bring your room photo and he'll do the rest.",
+        "bio": "Ciarán runs our sample library and the visualiser desk â€” bring your room photo and he'll do the rest.",
         "photo": "/media/staff/ciaran.jpg"
       },
       {
@@ -326,22 +326,22 @@
     "testimonials": [
       {
         "quote": "Absolutely stunning bathroom after fitting the Aster marble-effect tiles. The team helped us choose the perfect grout colour and the visualiser tool was brilliant!",
-        "name": "SiobhÃ¡n Gallagher",
+        "name": "Siobhán Gallagher",
         "location": "Letterkenny, Co. Donegal"
       },
       {
-        "quote": "We renovated our kitchen floor with 600Ã—600 porcelain tiles from Aster. The calculator told us exactly how many to order â€” saved us buying too many!",
+        "quote": "We renovated our kitchen floor with 600×600 porcelain tiles from Aster. The calculator told us exactly how many to order â€” saved us buying too many!",
         "name": "Patrick McGinley",
         "location": "Ballybofey, Co. Donegal"
       },
       {
         "quote": "Visited the showroom in Lifford â€” staff were incredibly helpful. They showed us samples and used the room visualiser on a photo of our hallway. Perfect result.",
-        "name": "MairÃ©ad O'Brien",
+        "name": "Mairéad O'Brien",
         "location": "Derry / Londonderry"
       },
       {
         "quote": "Free delivery to Galway on a full pallet of outdoor porcelain. Every tile arrived perfect. Genuinely the best tile shop in the northwest.",
-        "name": "TomÃ¡s Ã“ SÃ©",
+        "name": "Tomás Ã“ Sé",
         "location": "Galway"
       }
     ],
@@ -356,9 +356,9 @@
       {
         "id": "wall-tiles",
         "name": "Wall Tiles",
-        "blurb": "Feature Walls Â· Marble Â· DÃ©cor",
+        "blurb": "Feature Walls Â· Marble Â· Décor",
         "image": "/media/categories/wall-tiles.jpg",
-        "description": "Statement feature walls in statuario, torano gold and textured dÃ©cor panels."
+        "description": "Statement feature walls in statuario, torano gold and textured décor panels."
       },
       {
         "id": "bathrooms",
