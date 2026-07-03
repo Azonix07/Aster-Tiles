@@ -99,9 +99,9 @@ export default function AdminSidebar({ adminName }: { adminName: string }) {
   }, [pathname]);
 
   return (
-    <aside className="flex w-full shrink-0 flex-col border-b border-white/10 bg-ink lg:min-h-screen lg:w-60 lg:border-r lg:border-b-0">
+    <aside className="sticky top-0 z-50 flex w-full shrink-0 flex-col bg-ink lg:static lg:min-h-screen lg:w-60 lg:border-r">
       {/* Mobile Header & Brand */}
-      <div className="flex items-center justify-between px-4 py-4 lg:py-5">
+      <div className="relative z-20 flex items-center justify-between border-b border-white/10 bg-ink px-4 py-4 lg:border-b-0 lg:py-5">
         <Link href="/admin" className="flex items-center gap-2 px-2">
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-green font-display text-sm font-bold text-white">A</span>
           <span className="font-display text-lg font-bold text-white">
@@ -120,7 +120,7 @@ export default function AdminSidebar({ adminName }: { adminName: string }) {
       </div>
 
       {/* Expandable Content */}
-      <div className={`${isOpen ? "flex" : "hidden"} flex-1 flex-col px-4 pb-5 lg:flex lg:pb-5`}>
+      <div className={`${isOpen ? "absolute top-full left-0 flex w-full max-h-[85vh] overflow-y-auto border-b border-white/10 bg-ink shadow-2xl" : "hidden"} flex-1 flex-col px-4 pb-5 lg:static lg:flex lg:max-h-none lg:overflow-visible lg:border-b-0 lg:pb-5 lg:shadow-none`}>
         {/* User badge */}
         <div className="mt-2 flex items-center gap-2.5 rounded-lg bg-white/5 px-3 py-2 lg:mt-4">
           <span className="flex h-7 w-7 items-center justify-center rounded-full bg-green/20 text-[0.65rem] font-bold text-green">
