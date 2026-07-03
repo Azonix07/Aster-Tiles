@@ -242,7 +242,7 @@ export default function AdminDashboard() {
       {/* Two-column: Orders table + Stats sidebar */}
       <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_320px]">
         {/* Latest orders */}
-        <div className="rounded-2xl border border-mist bg-white p-6 shadow-sm">
+        <div className="min-w-0 rounded-2xl border border-mist bg-white p-6 shadow-sm">
           <div className="flex items-center justify-between">
             <h2 className="font-display text-lg font-bold text-navy">Recent Orders</h2>
             <Link href="/admin/orders" className="inline-flex items-center gap-1 text-xs font-bold text-green hover:text-green-2">
