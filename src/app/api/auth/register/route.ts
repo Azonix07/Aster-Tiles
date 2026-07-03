@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { createSession, hashPassword, mutateDb, newId, type User } from "@/lib/db";
-import { setSessionCookie } from "@/lib/auth";
+import { hashPassword, mutateDb, newId, type User } from "@/lib/db";
+import { createAndSetSession } from "@/lib/auth";
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
@@ -40,7 +40,6 @@ export async function POST(request: Request) {
     );
   }
 
-  const session = createSession(user.id);
-  await setSessionCookie(session.token, session.expiresAt);
+  await createAndSetSession(user);
   return NextResponse.json({ ok: true });
 }

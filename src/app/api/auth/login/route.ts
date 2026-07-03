@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { createSession, getDb, verifyPassword } from "@/lib/db";
-import { setSessionCookie } from "@/lib/auth";
+import { getDb, verifyPassword } from "@/lib/db";
+import { createAndSetSession } from "@/lib/auth";
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
@@ -12,7 +12,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Wrong email or password." }, { status: 401 });
   }
 
-  const session = createSession(user.id);
-  await setSessionCookie(session.token, session.expiresAt);
+  await createAndSetSession(user);
   return NextResponse.json({ ok: true, isAdmin: user.isAdmin });
 }
