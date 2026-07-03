@@ -27,6 +27,19 @@
 html {
   scrollbar-width: thin;
   scrollbar-color: #2db87c #07172a;
+  font-size: 100%;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 106.25%; /* 17px base */
+  }
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 112.5%; /* 18px base */
+  }
 }
 
 html.lenis,
