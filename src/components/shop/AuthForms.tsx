@@ -26,7 +26,9 @@ export function LoginForm({ next }: { next: string }) {
       body: JSON.stringify({ email, password }),
     });
     if (res.ok) {
-      router.push(next);
+      const data = await res.json().catch(() => null);
+      // admins land on their dashboard unless they were headed somewhere specific
+      router.push(data?.isAdmin && next === "/" ? "/admin" : next);
       router.refresh();
     } else {
       const data = await res.json().catch(() => null);

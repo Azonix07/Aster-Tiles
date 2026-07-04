@@ -109,30 +109,46 @@ export default function TileGrid() {
             data-tile-card
             className="group flex flex-col opacity-0"
           >
-            <Link href={`/tiles/${t.id}`} className="relative block aspect-square overflow-hidden rounded-xl bg-mist">
-              <Image
-                src={t.texture}
-                alt={t.name}
-                fill
-                sizes="(min-width: 1024px) 24vw, (min-width: 640px) 31vw, 46vw"
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-              />
-              {/* shine sweep */}
-              <div className="pointer-events-none absolute inset-0 -translate-x-[130%] skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-[130%]" />
-              <span className="absolute top-3 left-3 rounded-full bg-ink/65 px-3 py-1 font-display text-[0.62rem] font-bold tracking-[0.08em] text-white uppercase backdrop-blur-sm">
-                {t.finish}
-              </span>
-              {!t.inStock && (
-                <span className="absolute top-3 right-3 rounded-full bg-red-500/90 px-3 py-1 font-display text-[0.62rem] font-bold tracking-[0.08em] text-white uppercase">
-                  Out of stock
+            <div className="relative aspect-square overflow-hidden rounded-xl bg-mist">
+              <Link href={`/tiles/${t.id}`} className="absolute inset-0 block">
+                <Image
+                  src={t.texture}
+                  alt={t.name}
+                  fill
+                  sizes="(min-width: 1024px) 24vw, (min-width: 640px) 31vw, 46vw"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                />
+                {/* shine sweep */}
+                <div className="pointer-events-none absolute inset-0 -translate-x-[130%] skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-[130%]" />
+                <span className="absolute top-3 left-3 rounded-full bg-ink/65 px-3 py-1 font-display text-[0.62rem] font-bold tracking-[0.08em] text-white uppercase backdrop-blur-sm">
+                  {t.finish}
                 </span>
-              )}
-              {t.inStock && hasDiscount(t) && (
-                <span className="absolute top-3 right-3 rounded-full bg-red-500 px-3 py-1 font-display text-[0.62rem] font-bold tracking-[0.08em] text-white uppercase">
-                  {t.discountPercent}% OFF
-                </span>
-              )}
-            </Link>
+                {!t.inStock && (
+                  <span className="absolute top-3 right-3 rounded-full bg-red-500/90 px-3 py-1 font-display text-[0.62rem] font-bold tracking-[0.08em] text-white uppercase">
+                    Out of stock
+                  </span>
+                )}
+                {t.inStock && hasDiscount(t) && (
+                  <span className="absolute top-3 right-3 rounded-full bg-red-500 px-3 py-1 font-display text-[0.62rem] font-bold tracking-[0.08em] text-white uppercase">
+                    {t.discountPercent}% OFF
+                  </span>
+                )}
+              </Link>
+              {/* 360° room view badge */}
+              <Link
+                href={`/visualizer/360?tile=${t.id}`}
+                title={`See ${t.name} in a 360° room`}
+                aria-label={`See ${t.name} in a 360° room`}
+                className="absolute right-3 bottom-3 z-10 flex items-center gap-1.5 rounded-full bg-white/92 py-1.5 pr-3 pl-2.5 text-navy shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-green hover:text-white"
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                  <ellipse cx="12" cy="12" rx="8.5" ry="3.6" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M20.2 14.6 22 12.2l-2.9-.9" />
+                  <circle cx="12" cy="12" r="2.3" fill="currentColor" stroke="none" />
+                </svg>
+                <span className="font-display text-[0.68rem] font-bold tracking-[0.05em]">360°</span>
+              </Link>
+            </div>
 
             <div className="mt-4 flex items-start justify-between gap-3">
               <div>

@@ -18,7 +18,8 @@ export default async function LoginPage({
   searchParams: Promise<{ next?: string }>;
 }) {
   const next = safeNext((await searchParams).next);
-  if (await currentUser()) redirect(next === "/" ? "/account" : next);
+  const user = await currentUser();
+  if (user) redirect(next === "/" ? (user.isAdmin ? "/admin" : "/account") : next);
 
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-navy px-6 py-28">

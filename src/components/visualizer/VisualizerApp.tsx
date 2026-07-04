@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState, useSyncExternalStore } from "react";
+import Link from "next/link";
 import { type Tile } from "@/lib/tiles";
 import { useTiles } from "@/components/StoreProvider";
 import TileCatalog from "@/components/visualizer/TileCatalog";
@@ -105,6 +106,22 @@ export default function VisualizerApp() {
             </span>
           </button>
         ))}
+        <Link
+          href={`/visualizer/360?tile=${tile.id}`}
+          className="flex-1 rounded-xl border border-dashed border-white/20 px-4 py-3 text-left text-white/60 transition-all hover:border-green/60 hover:bg-white/5 hover:text-white/90"
+        >
+          <span className="flex items-center gap-2 font-display text-sm font-bold">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+              <ellipse cx="12" cy="12" rx="8.5" ry="3.6" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M20.2 14.6 22 12.2l-2.9-.9" />
+              <circle cx="12" cy="12" r="2.3" fill="currentColor" stroke="none" />
+            </svg>
+            360° Room View
+          </span>
+          <span className="mt-0.5 block text-[0.68rem] text-white/40">
+            stand inside a furnished room
+          </span>
+        </Link>
       </div>
 
       {/* ── Catalog + active mode ────────────────── */}
