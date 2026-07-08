@@ -129,7 +129,7 @@ export default function Nav() {
             onClick={() => setOpen(!open)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
-            className="ml-auto flex h-10 w-10 flex-col items-center justify-center gap-[5px] lg:hidden"
+            className="hidden" // replaced by the mobile bottom tab bar; desktop shows inline links
           >
             <span className={`block h-0.5 w-6 rounded bg-white transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${open ? "translate-y-[7px] rotate-45" : ""}`} />
             <span className={`block h-0.5 w-6 rounded bg-white transition-opacity duration-200 ${open ? "opacity-0" : ""}`} />

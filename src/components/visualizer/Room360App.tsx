@@ -177,7 +177,7 @@ export default function Room360App({ initialTileId }: { initialTileId?: string }
       </div>
 
       {/* ── Surface picker panel ────────────────── */}
-      <div className="absolute inset-x-3 bottom-3 sm:inset-x-auto sm:bottom-auto sm:right-4 sm:top-1/2 sm:w-[290px] sm:-translate-y-1/2">
+      <div className="absolute inset-x-3 bottom-20 sm:inset-x-auto sm:bottom-auto sm:right-4 sm:top-1/2 sm:w-[290px] sm:-translate-y-1/2">
         <div className="rounded-2xl border border-white/10 bg-ink/75 p-3 backdrop-blur-md">
           <div className="flex gap-1.5 rounded-xl bg-white/5 p-1">
             {(
