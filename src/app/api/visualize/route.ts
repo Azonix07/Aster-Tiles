@@ -1,4 +1,5 @@
 import { getTiles } from "@/lib/db";
+import { currentUser } from "@/lib/auth";
 
 export const maxDuration = 60;
 
@@ -10,6 +11,10 @@ const SURFACES = new Set(["floor", "walls", "both"]);
  * Proxies to the OpenAI Images Edit API (gpt-image-1) and returns a data URL.
  */
 export async function POST(req: Request): Promise<Response> {
+  if (!(await currentUser())) {
+    return Response.json({ error: "Sign in to use AI redesign." }, { status: 401 });
+  }
+
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
     return Response.json(

@@ -18,15 +18,20 @@ export default function ShowroomScene() {
       poster={media.showroomVideo.poster}
       pinHeight={240}
     >
-      <div className="absolute inset-0 z-10 bg-gradient-to-b from-ink/55 via-transparent to-ink/65" />
+      <div className="absolute inset-0 z-10 bg-gradient-to-b from-ink/55 via-ink/20 to-ink/65" />
 
       {/* Chapter 1 — welcome to the floor */}
       <div
         data-window="0.04,0.4"
         className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center"
       >
+        {/* scrim keeps the headline readable over bright video frames */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_62%_48%_at_50%_50%,rgba(7,23,42,0.62),transparent_74%)]"
+        />
         <p className="label text-green">{home.showroomLabel}</p>
-        <h2 className="display mt-4 max-w-3xl text-4xl text-white sm:text-6xl">
+        <h2 className="display mt-4 max-w-3xl text-4xl text-white drop-shadow-[0_2px_18px_rgba(7,23,42,0.7)] sm:text-6xl">
           <Accent text={home.showroomHeadline} />
         </h2>
       </div>
@@ -36,6 +41,10 @@ export default function ShowroomScene() {
         data-window="0.5,0.95"
         className="absolute inset-0 z-20 flex items-end justify-center pb-28 px-6"
       >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_75%_45%_at_50%_88%,rgba(7,23,42,0.66),transparent_76%)]"
+        />
         <div className="flex flex-wrap justify-center gap-12 border-t border-white/15 pt-9 sm:gap-20">
           {site.stats.map((s) => (
             <div key={s.label} className="text-center">

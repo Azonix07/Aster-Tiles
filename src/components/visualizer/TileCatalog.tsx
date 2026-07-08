@@ -56,7 +56,7 @@ export default function TileCatalog({
         return false;
       return true;
     });
-  }, [search, category, favsOnly, favorites]);
+  }, [tiles, search, category, favsOnly, favorites]);
 
   return (
     <aside className="flex min-h-0 flex-col rounded-2xl border border-white/10 bg-navy-2/50">

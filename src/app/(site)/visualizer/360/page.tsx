@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import Room360App from "@/components/visualizer/Room360App";
+import { currentUser } from "@/lib/auth";
 
 export const metadata: Metadata = {
   title: "360° Room View",
@@ -13,6 +15,10 @@ export default async function Room360Page({
   searchParams: Promise<{ tile?: string }>;
 }) {
   const { tile } = await searchParams;
+  if (!(await currentUser())) {
+    const dest = tile ? `/visualizer/360?tile=${encodeURIComponent(tile)}` : "/visualizer/360";
+    redirect(`/login?next=${encodeURIComponent(dest)}`);
+  }
   return (
     <div className="bg-ink pt-17">
       <Room360App initialTileId={tile} />

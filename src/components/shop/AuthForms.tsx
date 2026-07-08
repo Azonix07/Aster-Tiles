@@ -11,7 +11,7 @@ const labelCls = "mb-1.5 block font-display text-xs font-bold text-navy";
 
 export function LoginForm({ next }: { next: string }) {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -23,7 +23,7 @@ export function LoginForm({ next }: { next: string }) {
     const res = await fetch("/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ identifier, password }),
     });
     if (res.ok) {
       const data = await res.json().catch(() => null);
@@ -46,15 +46,15 @@ export function LoginForm({ next }: { next: string }) {
 
       <div className="mt-7 space-y-5">
         <div>
-          <label htmlFor="li-email" className={labelCls}>Email</label>
+          <label htmlFor="li-identifier" className={labelCls}>Email or phone</label>
           <input
-            id="li-email"
-            type="email"
+            id="li-identifier"
+            type="text"
             required
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.ie"
+            autoComplete="username"
+            value={identifier}
+            onChange={(e) => setIdentifier(e.target.value)}
+            placeholder="you@example.ie or +353 89 000 0000"
             className={inputCls}
           />
         </div>

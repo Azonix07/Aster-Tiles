@@ -1,5 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { getTiles, type DbTile } from "@/lib/db";
+import { currentUser } from "@/lib/auth";
 
 export const maxDuration = 60;
 
@@ -50,6 +51,9 @@ const suggestionSchema = (tiles: DbTile[]) => ({
  * from our catalogue best suited to it, with reasoning.
  */
 export async function POST(req: Request): Promise<Response> {
+  if (!(await currentUser())) {
+    return Response.json({ error: "Sign in to use AI suggestions." }, { status: 401 });
+  }
   if (!process.env.ANTHROPIC_API_KEY) {
     return Response.json(
       {

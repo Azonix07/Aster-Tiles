@@ -75,6 +75,9 @@ export default function CartProvider({ children }: { children: React.ReactNode }
           localStorage.setItem(storageKey, JSON.stringify(cart));
         }
       }
+      // Hydrating from localStorage must happen in an effect: reading it
+      // during render would diverge from the server-rendered markup.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setItems(cart);
     } catch {
       setItems([]);

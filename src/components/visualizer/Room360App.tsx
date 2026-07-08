@@ -63,11 +63,20 @@ export default function Room360App({ initialTileId }: { initialTileId?: string }
 
   /* Re-skin surfaces when selections change. */
   useEffect(() => {
-    if (ready) void roomRef.current?.setFloorTile(floorTile);
+    if (ready && floorTile) void roomRef.current?.setFloorTile(floorTile);
   }, [ready, floorTile]);
   useEffect(() => {
     if (ready) void roomRef.current?.setWallFinish(wall);
   }, [ready, wall]);
+
+  /* An emptied catalogue (all tiles deleted in admin) has nothing to show. */
+  if (!floorTile) {
+    return (
+      <div className="flex h-[calc(100svh-4.25rem)] min-h-[540px] items-center justify-center bg-ink px-6 text-center text-sm text-white/60">
+        The tile catalogue is empty — add tiles in the admin panel to use the 360° room view.
+      </div>
+    );
+  }
 
   const wallTileId = wall.kind === "tile" ? wall.tile.id : null;
 
@@ -82,7 +91,7 @@ export default function Room360App({ initialTileId }: { initialTileId?: string }
 
   return (
     <div className="relative h-[calc(100svh-4.25rem)] min-h-[540px] w-full overflow-hidden bg-ink">
-      <canvas ref={canvasRef} className="h-full w-full cursor-grab touch-pan-y active:cursor-grabbing" />
+      <canvas ref={canvasRef} className="h-full w-full cursor-grab touch-none active:cursor-grabbing" />
 
       {(!ready || progress < 100) && (
         <div className="pointer-events-none absolute inset-x-0 top-20 flex justify-center sm:top-24">

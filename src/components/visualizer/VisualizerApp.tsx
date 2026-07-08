@@ -3,11 +3,12 @@
 import { useCallback, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { type Tile } from "@/lib/tiles";
-import { useTiles } from "@/components/StoreProvider";
+import { useTiles, useUser } from "@/components/StoreProvider";
 import TileCatalog from "@/components/visualizer/TileCatalog";
 import StudioMode from "@/components/visualizer/StudioMode";
 import PhotoMode from "@/components/visualizer/PhotoMode";
 import AiMode from "@/components/visualizer/AiMode";
+import { LockedPanel, SignInModal } from "@/components/visualizer/SignInGate";
 
 type Mode = "studio" | "photo" | "ai";
 
@@ -75,10 +76,24 @@ const MODES: { key: Mode; label: string; sub: string }[] = [
 
 export default function VisualizerApp() {
   const tiles = useTiles();
+  const user = useUser();
   const [mode, setMode] = useState<Mode>("studio");
   const [tile, setTile] = useState<Tile>(tiles[0]);
   const favorites = useSyncExternalStore(subscribeFavs, readFavs, () => EMPTY_FAVS);
   const toggleFavorite = useCallback((id: string) => toggleFavInStore(id), []);
+  /** sign-in gate modal; `next` set when the visitor was headed somewhere */
+  const [gate, setGate] = useState<{ open: boolean; next?: string }>({ open: false });
+
+  /* An emptied catalogue (all tiles deleted in admin) has nothing to preview. */
+  if (!tile) {
+    return (
+      <div className="mx-auto max-w-[1500px] px-4 sm:px-6">
+        <p className="rounded-2xl border border-white/10 bg-navy-2/50 p-8 text-center text-sm text-white/60">
+          The tile catalogue is empty — add tiles in the admin panel to use the visualizer.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-[1500px] px-4 sm:px-6">
@@ -108,6 +123,12 @@ export default function VisualizerApp() {
         ))}
         <Link
           href={`/visualizer/360?tile=${tile.id}`}
+          onClick={(e) => {
+            if (!user) {
+              e.preventDefault();
+              setGate({ open: true, next: `/visualizer/360?tile=${tile.id}` });
+            }
+          }}
           className="flex-1 rounded-xl border border-dashed border-white/20 px-4 py-3 text-left text-white/60 transition-all hover:border-green/60 hover:bg-white/5 hover:text-white/90"
         >
           <span className="flex items-center gap-2 font-display text-sm font-bold">
@@ -133,19 +154,39 @@ export default function VisualizerApp() {
           onToggleFavorite={toggleFavorite}
         />
 
-        {/* All three modes stay mounted so their state survives tab switches. */}
+        {/* All three modes stay mounted so their state survives tab switches.
+            Guests get Design Studio only — the other modes render blurred
+            behind a sign-in prompt. */}
         <div className="min-w-0">
           <div className={mode === "studio" ? "" : "hidden"}>
             <StudioMode tile={tile} active={mode === "studio"} />
           </div>
           <div className={mode === "photo" ? "" : "hidden"}>
-            <PhotoMode tile={tile} active={mode === "photo"} />
+            {user ? (
+              <PhotoMode tile={tile} active={mode === "photo"} />
+            ) : (
+              <LockedPanel featureName="My Room Photo" onSignIn={() => setGate({ open: true })}>
+                <PhotoMode tile={tile} active={false} />
+              </LockedPanel>
+            )}
           </div>
           <div className={mode === "ai" ? "" : "hidden"}>
-            <AiMode tile={tile} onSelectTile={setTile} active={mode === "ai"} />
+            {user ? (
+              <AiMode tile={tile} onSelectTile={setTile} active={mode === "ai"} />
+            ) : (
+              <LockedPanel featureName="AI Redesign" onSignIn={() => setGate({ open: true })}>
+                <AiMode tile={tile} onSelectTile={setTile} active={false} />
+              </LockedPanel>
+            )}
           </div>
         </div>
       </div>
+
+      <SignInModal
+        open={gate.open}
+        onClose={() => setGate({ open: false })}
+        next={gate.next}
+      />
     </div>
   );
 }

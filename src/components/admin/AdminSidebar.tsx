@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LogoutButton } from "@/components/shop/AuthForms";
@@ -105,10 +105,13 @@ export default function AdminSidebar({ adminName }: { adminName: string }) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
-  // Close mobile menu when route changes
-  useEffect(() => {
+  // Close the mobile menu when the route changes (render-time reset — the
+  // React-recommended alternative to a setState-in-effect cascade).
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
     setIsOpen(false);
-  }, [pathname]);
+  }
 
   return (
     <aside className="sticky top-0 z-50 flex w-full shrink-0 flex-col bg-ink lg:static lg:min-h-screen lg:w-60 lg:border-r">

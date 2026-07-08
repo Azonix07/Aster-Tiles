@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getDb } from "@/lib/db";
 import { money, shortDate } from "@/lib/format";
 import { StatusBadge } from "@/components/shop/OrderBits";
-import { effectivePrice, hasDiscount } from "@/lib/pricing";
+import { hasDiscount } from "@/lib/pricing";
 
 /* ── Inline SVG icons ─────────────────────────── */
 

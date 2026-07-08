@@ -30,7 +30,13 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => setOpen(false), [pathname]);
+  // Close the mobile menu when the route changes (render-time reset — the
+  // React-recommended alternative to a setState-in-effect cascade).
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    setOpen(false);
+  }
 
   useEffect(() => {
     document.documentElement.style.overflow = open ? "hidden" : "";

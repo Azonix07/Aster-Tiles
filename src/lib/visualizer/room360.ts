@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 import { loadImage } from "@/lib/visualizer/engine";
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -272,6 +272,22 @@ function shadowed<T extends THREE.Object3D>(obj: T, cast = true, receive = true)
   return obj;
 }
 
+/** free all geometry, materials and textures under a node */
+function disposeObject(root: THREE.Object3D): void {
+  root.traverse((o) => {
+    if (o instanceof THREE.Mesh) {
+      o.geometry.dispose();
+      const mats = Array.isArray(o.material) ? o.material : [o.material];
+      for (const m of mats) {
+        for (const v of Object.values(m)) {
+          if (v instanceof THREE.Texture) v.dispose();
+        }
+        m.dispose();
+      }
+    }
+  });
+}
+
 /* ── Hand-built props (things with no good free model equivalent) ──── */
 
 function buildTv(): THREE.Group {
@@ -378,12 +394,13 @@ function buildWindow(skyTex: THREE.CanvasTexture): THREE.Group {
   const H = 1.6;
   const frameMat = mat.matte(0xf2f0ec, 0.5);
 
-  // outside world — bright emissive sky behind the glass
+  // outside world — bright emissive sky filling the glazed opening.
+  // It must sit on the room side of the wall plane or the wall hides it.
   const sky = new THREE.Mesh(
-    new THREE.PlaneGeometry(W * 2.2, H * 2.2),
+    new THREE.PlaneGeometry(W - 0.06, H - 0.06),
     new THREE.MeshBasicMaterial({ map: skyTex, toneMapped: false }),
   );
-  sky.position.z = -0.25;
+  sky.position.z = -0.008;
   g.add(sky);
 
   // glass
@@ -397,7 +414,7 @@ function buildWindow(skyTex: THREE.CanvasTexture): THREE.Group {
       opacity: 0.14,
     }),
   );
-  glass.position.z = -0.02;
+  glass.position.z = 0.012;
   g.add(glass);
 
   // frame + mullions
@@ -655,7 +672,7 @@ function furnishProps(scene: THREE.Scene, skyTex: THREE.CanvasTexture, fabricMap
   scene.add(tableLamp);
 
   const window3d = buildWindow(skyTex);
-  window3d.position.set(ROOM_W / 2 + 0.01, 1.7, -0.2);
+  window3d.position.set(ROOM_W / 2 - 0.01, 1.7, -0.2);
   window3d.rotation.y = -Math.PI / 2;
   scene.add(window3d);
 }
@@ -679,7 +696,7 @@ export function createRoom360(canvas: HTMLCanvasElement, opts: Room360Options = 
   camera.position.copy(EYE);
 
   let disposed = false;
-  const TOTAL_ASSETS = PLACEMENTS.length + 1 /* hdri */ + 3 /* plaster */ + 2 /* rug fabric */;
+  const TOTAL_ASSETS = PLACEMENTS.length + 1 /* hdri */ + 2 /* plaster */ + 2 /* rug fabric */;
   let loadedAssets = 0;
   const progress = () => {
     loadedAssets++;
@@ -692,7 +709,7 @@ export function createRoom360(canvas: HTMLCanvasElement, opts: Room360Options = 
   scene.environment = envTex;
   scene.environmentIntensity = 0.35;
 
-  new RGBELoader().loadAsync("/hdri/lebombo_1k.hdr").then((hdr) => {
+  new HDRLoader().loadAsync("/hdri/lebombo_1k.hdr").then((hdr) => {
     if (disposed) {
       hdr.dispose();
       return;
@@ -730,26 +747,23 @@ export function createRoom360(canvas: HTMLCanvasElement, opts: Room360Options = 
   /* room shell */
   const surfaces = buildRoomShell(scene);
 
-  /* plaster PBR maps for painted walls */
+  /* plaster relief maps for painted walls */
   const texLoader = new THREE.TextureLoader();
-  const plaster: { diff: THREE.Texture | null; nor: THREE.Texture | null; rough: THREE.Texture | null } = {
-    diff: null,
+  const plaster: { nor: THREE.Texture | null; rough: THREE.Texture | null } = {
     nor: null,
     rough: null,
   };
   const plasterJobs = (
     [
-      ["diff", "/textures/painted_plaster_wall/painted_plaster_wall_diff_1k.jpg", true],
-      ["nor", "/textures/painted_plaster_wall/painted_plaster_wall_nor_1k.jpg", false],
-      ["rough", "/textures/painted_plaster_wall/painted_plaster_wall_rough_1k.jpg", false],
+      ["nor", "/textures/painted_plaster_wall/painted_plaster_wall_nor_1k.jpg"],
+      ["rough", "/textures/painted_plaster_wall/painted_plaster_wall_rough_1k.jpg"],
     ] as const
-  ).map(([key, url, srgb]) =>
+  ).map(([key, url]) =>
     texLoader
       .loadAsync(url)
       .then((t) => {
         t.wrapS = THREE.RepeatWrapping;
         t.wrapT = THREE.RepeatWrapping;
-        if (srgb) t.colorSpace = THREE.SRGBColorSpace;
         plaster[key] = t;
       })
       .catch(() => { /* painted walls fall back to flat colour */ })
@@ -777,7 +791,9 @@ export function createRoom360(canvas: HTMLCanvasElement, opts: Room360Options = 
 
   const skyTex = skyTexture();
   void fabricReady.then(() => {
-    if (!disposed) furnishProps(scene, skyTex, fabricMaps);
+    if (disposed) return;
+    furnishProps(scene, skyTex, fabricMaps);
+    renderer.shadowMap.needsUpdate = true; // the late-added props must reach the shadow maps
   });
 
   /* glTF furniture */
@@ -789,7 +805,10 @@ export function createRoom360(canvas: HTMLCanvasElement, opts: Room360Options = 
     gltfLoader
       .loadAsync(`/models/${p.slug}/${p.slug}_1k.gltf`)
       .then((gltf) => {
-        if (disposed) return;
+        if (disposed) {
+          disposeObject(gltf.scene); // arrived after unmount — free it
+          return;
+        }
         const obj = gltf.scene;
         obj.rotation.y = p.rotationY ?? 0;
         if (p.scale) obj.scale.setScalar(p.scale);
@@ -981,19 +1000,23 @@ export function createRoom360(canvas: HTMLCanvasElement, opts: Room360Options = 
   };
 
   const applyPaint = () => {
-    surfaces.walls.forEach((wall, i) => {
+    surfaces.walls.forEach((wall) => {
       const m = wall.material;
       const width = wall.geometry.parameters.width;
       m.map?.dispose();
       m.map = null;
-      // plaster detail (if it has loaded) with the paint colour as tint
+      // previous per-wall map clones must be freed before they are replaced
+      m.normalMap?.dispose();
+      m.roughnessMap?.dispose();
+      // plaster relief only (no stained diffuse) so paint colours stay clean.
+      // Always clone the shared base maps — each wall needs its own repeat,
+      // and disposal above must never hit the base texture.
       const rpt = (t: THREE.Texture | null) => {
         if (!t) return null;
-        const c = i === 0 ? t : t.clone();
+        const c = t.clone();
         c.repeat.set(width / 2.2, ROOM_H / 2.2);
         return c;
       };
-      m.map = rpt(plaster.diff);
       m.normalMap = rpt(plaster.nor);
       m.roughnessMap = rpt(plaster.rough);
       m.normalScale.set(0.5, 0.5);
@@ -1044,7 +1067,9 @@ export function createRoom360(canvas: HTMLCanvasElement, opts: Room360Options = 
       const m = wall.material;
       const width = wall.geometry.parameters.width;
       m.map?.dispose();
+      m.normalMap?.dispose();
       m.normalMap = null;
+      m.roughnessMap?.dispose();
       m.roughnessMap = null;
       const t = i === 0 ? tex : tex.clone();
       t.repeat.set(width / baked.coverW, ROOM_H / baked.coverH);
@@ -1083,19 +1108,8 @@ export function createRoom360(canvas: HTMLCanvasElement, opts: Room360Options = 
       canvas.removeEventListener("wheel", onWheel);
       canvas.removeEventListener("touchstart", onTouchStart);
       canvas.removeEventListener("touchmove", onTouchMove);
-      scene.traverse((o) => {
-        if (o instanceof THREE.Mesh) {
-          o.geometry.dispose();
-          const mats = Array.isArray(o.material) ? o.material : [o.material];
-          for (const mm of mats) {
-            for (const v of Object.values(mm)) {
-              if (v instanceof THREE.Texture) v.dispose();
-            }
-            mm.dispose();
-          }
-        }
-      });
-      for (const t of [plaster.diff, plaster.nor, plaster.rough, fabricMaps.normal, fabricMaps.rough]) {
+      disposeObject(scene);
+      for (const t of [plaster.nor, plaster.rough, fabricMaps.normal, fabricMaps.rough]) {
         t?.dispose();
       }
       envTex.dispose();
