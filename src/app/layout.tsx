@@ -3,6 +3,7 @@ import { Sora, Inter } from "next/font/google";
 import "./globals.css";
 import StoreProvider, { type PublicSettings } from "@/components/StoreProvider";
 import CartProvider from "@/components/CartProvider";
+import PostHogProvider from "@/components/PostHogProvider";
 import { getContent, getSettings, getTiles } from "@/lib/db";
 import { currentUser, toPublicUser } from "@/lib/auth";
 
@@ -67,11 +68,13 @@ export default async function RootLayout({
       className={`${sora.variable} ${inter.variable}`}
     >
       <body className="antialiased">
-        <StoreProvider
-          value={{ content, tiles, settings: publicSettings, user }}
-        >
-          <CartProvider>{children}</CartProvider>
-        </StoreProvider>
+        <PostHogProvider user={user}>
+          <StoreProvider
+            value={{ content, tiles, settings: publicSettings, user }}
+          >
+            <CartProvider>{children}</CartProvider>
+          </StoreProvider>
+        </PostHogProvider>
       </body>
     </html>
   );
