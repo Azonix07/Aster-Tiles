@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import posthog from "posthog-js";
 import { useCart, useCartDetails } from "@/components/CartProvider";
 import { useSettings } from "@/components/StoreProvider";
 import { SqmStepper } from "@/components/shop/AddToCart";
@@ -60,7 +61,15 @@ export default function CartView() {
               </p>
               <button
                 type="button"
-                onClick={() => remove(tile.id)}
+                onClick={() => {
+                  posthog.capture("cart_item_removed", {
+                    tile_id: tile.id,
+                    tile_name: tile.name,
+                    sqm,
+                    line_total: lineTotal,
+                  });
+                  remove(tile.id);
+                }}
                 className="text-xs font-bold text-muted transition hover:text-red-500"
               >
                 Remove
@@ -108,7 +117,18 @@ export default function CartView() {
             <p className="mt-1 text-muted">{settings.maintenanceMessage}</p>
           </div>
         ) : (
-          <Link href="/checkout" className="btn btn-green mt-6 w-full justify-center">
+          <Link
+            href="/checkout"
+            className="btn btn-green mt-6 w-full justify-center"
+            onClick={() =>
+              posthog.capture("checkout_started", {
+                item_count: lines.length,
+                subtotal,
+                delivery_fee: deliveryFee,
+                total,
+              })
+            }
+          >
             Checkout →
           </Link>
         )}

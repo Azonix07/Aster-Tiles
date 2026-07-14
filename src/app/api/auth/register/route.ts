@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { hashPassword, mutateDb, newId, type User } from "@/lib/db";
 import { createAndSetSession } from "@/lib/auth";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
@@ -46,5 +47,17 @@ export async function POST(request: Request) {
   }
 
   await createAndSetSession(user);
+
+  const distinctId = request.headers.get("X-POSTHOG-DISTINCT-ID") || user.id;
+  const sessionId = request.headers.get("X-POSTHOG-SESSION-ID") || undefined;
+  const posthog = getPostHogClient();
+  posthog.identify({ distinctId, properties: { name: user.name } });
+  posthog.capture({
+    distinctId,
+    event: "user_registered",
+    properties: { user_id: user.id, $session_id: sessionId },
+  });
+  await posthog.flush();
+
   return NextResponse.json({ ok: true });
 }

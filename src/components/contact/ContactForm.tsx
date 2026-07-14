@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import posthog from "posthog-js";
 import { useSite } from "@/components/StoreProvider";
 
 const INTERESTS = [
@@ -74,6 +75,10 @@ export default function ContactForm() {
       `Website enquiry — ${interest}`,
     )}&body=${encodeURIComponent(lines.join("\n"))}`;
 
+    posthog.capture("contact_enquiry_sent", {
+      interest_area: interest,
+      has_room_photo: !!file,
+    });
     window.location.href = href;
     setSentTo(name.trim().split(/\s+/)[0]);
   };

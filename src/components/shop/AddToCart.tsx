@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import posthog from "posthog-js";
 import { useCart } from "@/components/CartProvider";
 import { useSettings } from "@/components/StoreProvider";
 import { money } from "@/lib/format";
@@ -93,6 +94,12 @@ export default function AddToCart({
             add(tileId, sqm);
             setAdded(true);
             setTimeout(() => setAdded(false), 2500);
+            posthog.capture("tile_added_to_cart", {
+              tile_id: tileId,
+              sqm,
+              price_per_sqm: pricePerSqm,
+              line_total: Math.round(pricePerSqm * sqm * 100) / 100,
+            });
           }}
         >
           {added ? "Added ✓" : "Add to cart"}

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import posthog from "posthog-js";
 
 const inputCls =
   "w-full rounded-xl border border-mist bg-off px-4 py-3 text-sm text-navy outline-none transition placeholder:text-muted/50 focus:border-green focus:ring-2 focus:ring-green/20";
@@ -22,11 +23,16 @@ export function LoginForm({ next }: { next: string }) {
     setError(null);
     const res = await fetch("/api/auth/login", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "X-POSTHOG-DISTINCT-ID": posthog.get_distinct_id() ?? "",
+        "X-POSTHOG-SESSION-ID": posthog.get_session_id() ?? "",
+      },
       body: JSON.stringify({ identifier, password }),
     });
     if (res.ok) {
       const data = await res.json().catch(() => null);
+      posthog.capture("user_logged_in", { is_admin: data?.isAdmin ?? false });
       // admins land on their dashboard unless they were headed somewhere specific
       router.push(data?.isAdmin && next === "/" ? "/admin" : next);
       router.refresh();
@@ -104,10 +110,15 @@ export function RegisterForm({ next }: { next: string }) {
     setError(null);
     const res = await fetch("/api/auth/register", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "X-POSTHOG-DISTINCT-ID": posthog.get_distinct_id() ?? "",
+        "X-POSTHOG-SESSION-ID": posthog.get_session_id() ?? "",
+      },
       body: JSON.stringify({ name, email, phone, password }),
     });
     if (res.ok) {
+      posthog.capture("user_registered");
       router.push(next);
       router.refresh();
     } else {
@@ -203,6 +214,8 @@ export function LogoutButton({ className }: { className?: string }) {
       type="button"
       className={className ?? "btn btn-ghost-dark"}
       onClick={async () => {
+        posthog.capture("user_logged_out");
+        posthog.reset();
         await fetch("/api/auth/logout", { method: "POST" });
         router.push("/");
         router.refresh();

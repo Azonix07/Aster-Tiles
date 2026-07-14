@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import posthog from "posthog-js";
 import { type Tile } from "@/lib/tiles";
 import { useTiles } from "@/components/StoreProvider";
 
@@ -160,7 +161,17 @@ export default function AiMode({
         setKeyNotice(json.error ?? KEY_NOTICE);
       } else if (!res.ok || !json.image) {
         setError(json.error ?? "The AI redesign failed. Please try again in a moment.");
+        posthog.captureException(new Error(json.error ?? "AI redesign failed"), {
+          tile_id: tile.id,
+          surface,
+        });
       } else {
+        posthog.capture("ai_redesign_generated", {
+          tile_id: tile.id,
+          tile_name: tile.name,
+          surface,
+          has_style_notes: notes.trim().length > 0,
+        });
         setResultUrl(json.image);
       }
     } catch {
@@ -188,7 +199,11 @@ export default function AiMode({
         setKeyNotice(json.error ?? KEY_NOTICE);
       } else if (!res.ok || !json.suggestions) {
         setError(json.error ?? "Couldn't get suggestions for this room. Please try again.");
+        posthog.captureException(new Error(json.error ?? "AI tile suggestions failed"));
       } else {
+        posthog.capture("ai_tile_suggestions_requested", {
+          suggestions_count: json.suggestions.length,
+        });
         setSuggestions(json.suggestions);
       }
     } catch {

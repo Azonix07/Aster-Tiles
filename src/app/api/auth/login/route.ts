@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getDb, verifyPassword } from "@/lib/db";
 import { createAndSetSession } from "@/lib/auth";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 /** Loose phone comparison: digits only, ignore leading zeros and country
  *  prefixes ("+353 89 428 8016" matches "089 428 8016"). */
@@ -29,5 +30,17 @@ export async function POST(request: Request) {
   }
 
   await createAndSetSession(user);
+
+  const distinctId = request.headers.get("X-POSTHOG-DISTINCT-ID") || user.id;
+  const sessionId = request.headers.get("X-POSTHOG-SESSION-ID") || undefined;
+  const posthog = getPostHogClient();
+  posthog.identify({ distinctId, properties: { name: user.name } });
+  posthog.capture({
+    distinctId,
+    event: "user_logged_in",
+    properties: { is_admin: user.isAdmin, $session_id: sessionId },
+  });
+  await posthog.flush();
+
   return NextResponse.json({ ok: true, isAdmin: user.isAdmin });
 }
