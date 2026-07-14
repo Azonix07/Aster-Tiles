@@ -8,6 +8,7 @@ import {
   type OrderItem,
 } from "@/lib/db";
 import { currentUser } from "@/lib/auth";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 interface OrderRequest {
   items: { tileId: string; sqm: number }[];
@@ -147,5 +148,26 @@ export async function POST(request: Request) {
   if (result.error || !result.order) {
     return NextResponse.json({ error: result.error }, { status: result.status ?? 400 });
   }
-  return NextResponse.json({ ok: true, orderId: result.order.id, number: result.order.number });
+
+  const order = result.order;
+  const distinctId = request.headers.get("X-POSTHOG-DISTINCT-ID") || user.id;
+  const sessionId = request.headers.get("X-POSTHOG-SESSION-ID") || undefined;
+  const posthog = getPostHogClient();
+  posthog.capture({
+    distinctId,
+    event: "order_placed",
+    properties: {
+      order_id: order.id,
+      order_number: order.number,
+      item_count: order.items.length,
+      subtotal: order.subtotal,
+      delivery_fee: order.deliveryFee,
+      total: order.total,
+      payment_method: order.paymentMethod,
+      $session_id: sessionId,
+    },
+  });
+  await posthog.flush();
+
+  return NextResponse.json({ ok: true, orderId: order.id, number: order.number });
 }

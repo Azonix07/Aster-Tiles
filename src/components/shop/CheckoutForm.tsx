@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import posthog from "posthog-js";
 import { useCart, useCartDetails } from "@/components/CartProvider";
 import { useSettings, useUser } from "@/components/StoreProvider";
 import { money } from "@/lib/format";
@@ -86,9 +87,21 @@ export default function CheckoutForm({ savedAddresses }: { savedAddresses: Addre
     });
     const data = await res.json().catch(() => null);
     if (res.ok && data?.orderId) {
+      posthog.capture("order_placed", {
+        order_id: data.orderId,
+        order_number: data.number,
+        item_count: lines.length,
+        subtotal,
+        delivery_fee: deliveryFee,
+        total,
+        payment_method: payment,
+      });
       clear();
       router.push(`/account/orders/${data.orderId}?placed=1`);
     } else {
+      posthog.captureException(new Error(data?.error ?? "Order placement failed"), {
+        order_error: data?.error,
+      });
       setError(data?.error ?? "Something went wrong — please try again.");
       setBusy(false);
     }
