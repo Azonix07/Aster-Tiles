@@ -28,13 +28,13 @@ export default async function AccountPage() {
   const outstanding = totalSpent - paid;
 
   return (
-    <section className="min-h-screen bg-off pt-28 pb-20">
+    <section className="min-h-[70vh] bg-off pt-12 pb-20">
       <div className="mx-auto max-w-6xl px-6">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="label text-green">My account</p>
             <h1 className="display mt-2 text-4xl text-navy sm:text-5xl">
-              Hello, <em className="accent-italic text-green">{user.name.split(" ")[0]}</em>
+              Hello, <em className="not-italic text-green">{user.name.split(" ")[0]}</em>
             </h1>
           </div>
           <LogoutButton />

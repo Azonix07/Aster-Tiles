@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Reveal, { RevealLines } from "@/components/scroll/Reveal";
 import Parallax from "@/components/scroll/Parallax";
+import Rings from "@/components/decor/Rings";
 import CollectionScene from "@/components/collections/CollectionScene";
 import TileGrid from "@/components/collections/TileGrid";
 import { getContent } from "@/lib/db";
@@ -21,44 +22,25 @@ export default function CollectionsPage() {
   const { site, staff, collections, media } = getContent();
   return (
     <>
-      {/* ── Hero — the tile aisle ─────────────────────────── */}
-      <section className="grain vignette relative h-[70vh] min-h-[520px] overflow-hidden bg-ink">
-        <video
-          key={media.collectionsVideo.src}
-          className="absolute inset-0 h-full w-full object-cover"
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster={media.collectionsVideo.poster}
-          aria-hidden="true"
-        >
-          <source src={media.collectionsVideo.src} type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 z-10 bg-gradient-to-b from-ink/75 via-ink/35 to-ink/85" />
-
-        <Reveal className="relative z-20 flex h-full flex-col items-center justify-center px-6 text-center">
-          <p data-reveal className="label text-green">
+      {/* ── Page header ───────────────────────────────────── */}
+      <section className="relative overflow-hidden border-b border-mist bg-white">
+        <Rings id="collections-rings" className="absolute -top-24 -right-24 h-80 w-80 opacity-15" />
+        <Rings id="collections-rings-2" className="absolute -bottom-40 -left-32 h-96 w-96 opacity-10" />
+        <Reveal className="relative mx-auto flex max-w-7xl flex-col items-center px-6 pt-20 pb-16 text-center lg:pt-28">
+          <p data-reveal className="label text-green-2">
             500+ ranges in stock
           </p>
           <RevealLines
             as="h1"
             text="The Collections"
-            className="display mt-4 text-5xl text-white sm:text-6xl lg:text-7xl"
+            className="display mt-4 text-5xl text-navy sm:text-6xl lg:text-7xl"
           />
-          <p data-reveal className="mt-6 max-w-xl text-white/70">
+          <p data-reveal className="mt-6 max-w-xl text-muted">
             Floor tiles, feature walls, bathrooms, wooden floors, outdoor
             porcelain and kitchens — six rooms of inspiration under one
             Lifford roof.
           </p>
         </Reveal>
-
-        {/* scroll cue */}
-        <div className="absolute bottom-8 left-1/2 z-20 -translate-x-1/2">
-          <div className="flex h-12 w-7 items-start justify-center rounded-full border-2 border-white/40 p-1.5">
-            <div className="h-2.5 w-1 animate-bounce rounded-full bg-green" />
-          </div>
-        </div>
       </section>
 
       {/* ── Six category chapters ─────────────────────────── */}
@@ -106,11 +88,11 @@ export default function CollectionsPage() {
             className="object-cover"
           />
         </Parallax>
-        <div className="absolute inset-0 bg-gradient-to-b from-ink/70 via-ink/45 to-navy" />
+        <div className="absolute inset-0 bg-gradient-to-b from-navy/60 via-navy/45 to-navy" />
 
         <Reveal className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
           <blockquote data-reveal className="max-w-3xl">
-            <p className="accent-italic text-3xl leading-snug text-white sm:text-4xl lg:text-5xl">
+            <p className="display not-italic text-3xl leading-snug text-white sm:text-4xl lg:text-5xl">
               “A room gets repainted every few years. A floor is chosen once —
               so choose it with your hands, in real light.”
             </p>
@@ -135,7 +117,7 @@ export default function CollectionsPage() {
           >
             Can&apos;t decide?
             <br />
-            <em className="accent-italic text-green">The kettle&apos;s on.</em>
+            <em className="not-italic text-green">The kettle&apos;s on.</em>
           </h2>
           <p data-reveal className="mt-6 max-w-xl text-white/65">
             Bring a photo of your room to {site.address.line1} and leave with

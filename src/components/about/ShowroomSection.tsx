@@ -8,7 +8,7 @@ import { getContent } from "@/lib/db";
 export default function ShowroomSection() {
   const { site, media } = getContent();
   return (
-    <section className="relative overflow-hidden bg-ink py-24 sm:py-28">
+    <section className="relative overflow-hidden bg-gradient-to-br from-navy to-navy-2 py-24 sm:py-28">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_25%_20%,rgba(45,184,124,0.1),transparent_55%)]" />
 
       <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-6 lg:grid-cols-2 lg:gap-20">
@@ -45,7 +45,7 @@ export default function ShowroomSection() {
           </span>
           <h2 data-reveal className="display mt-3 text-4xl text-white sm:text-5xl">
             Come see it{" "}
-            <em className="accent-italic text-green">in person</em>
+            <em className="not-italic text-green">in person</em>
           </h2>
           <p data-reveal className="mt-5 max-w-md text-white/65">
             Photos only get you so far. Stand on the tile, feel the finish and

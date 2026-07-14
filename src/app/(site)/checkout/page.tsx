@@ -17,7 +17,7 @@ export default async function CheckoutPage() {
   const settings = getSettings();
 
   return (
-    <section className="min-h-screen bg-off pt-28 pb-20">
+    <section className="min-h-[70vh] bg-off pt-12 pb-20">
       <div className="mx-auto max-w-6xl px-6">
         <p className="label text-green">Nearly there</p>
         <h1 className="display mt-2 text-4xl text-navy sm:text-5xl">Checkout</h1>

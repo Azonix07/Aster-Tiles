@@ -1,25 +1,26 @@
 import { getContent } from "@/lib/db";
 
+/**
+ * Static USP bar under the hero — the admin-editable trust points laid out
+ * like a retailer's service strip. Square green chips echo the tile motif;
+ * no animation, everything readable at a glance.
+ */
 export default function TrustMarquee() {
   const items = getContent().home.marquee;
-  const row = items.map((t, i) => (
-    <span key={i} className="flex items-center gap-6 pr-6">
-      <span className="font-display text-sm font-semibold tracking-wide text-white/70">
-        {t}
-      </span>
-      <span className="text-green" aria-hidden="true">
-        ◆
-      </span>
-    </span>
-  ));
 
   return (
-    <div className="overflow-hidden border-y border-white/8 bg-ink py-4">
-      <div className="marquee-track" aria-hidden="true">
-        {row}
-        {row}
-      </div>
-      <span className="sr-only">{items.join(" · ")}</span>
+    <div className="border-y border-mist bg-white">
+      <ul className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-10 gap-y-3 px-6 py-4">
+        {items.map((t) => (
+          <li
+            key={t}
+            className="flex items-center gap-2.5 font-display text-[0.8rem] font-semibold tracking-wide text-body"
+          >
+            <span className="h-1.5 w-1.5 shrink-0 bg-green" aria-hidden="true" />
+            {t}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

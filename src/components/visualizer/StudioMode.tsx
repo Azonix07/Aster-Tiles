@@ -97,7 +97,7 @@ export default function StudioMode({ tile, active }: { tile: Tile; active: boole
       {/* ── Canvas stage ─────────────────────────── */}
       <div
         ref={stageRef}
-        className="relative overflow-hidden rounded-2xl border border-white/10 bg-navy-2/40"
+        className="relative overflow-hidden rounded-2xl border border-mist bg-off"
       >
         <canvas
           ref={canvasRef}
@@ -128,7 +128,7 @@ export default function StudioMode({ tile, active }: { tile: Tile; active: boole
       {/* ── Controls panel ───────────────────────── */}
       <div
         data-lenis-prevent
-        className="thin-scroll space-y-5 overflow-y-auto rounded-2xl border border-white/10 bg-navy-2/50 p-5 xl:max-h-[540px]"
+        className="thin-scroll space-y-5 overflow-y-auto rounded-2xl border border-mist bg-white p-5 shadow-sm xl:max-h-[540px]"
       >
         {/* Selected tile */}
         <div className="flex items-center gap-3">
@@ -136,8 +136,8 @@ export default function StudioMode({ tile, active }: { tile: Tile; active: boole
             <Image src={tile.texture} alt={tile.name} fill sizes="64px" className="object-cover" />
           </div>
           <div className="min-w-0">
-            <div className="truncate font-display text-sm font-bold text-white">{tile.name}</div>
-            <div className="mt-0.5 text-[0.7rem] text-white/50">
+            <div className="truncate font-display text-sm font-bold text-navy">{tile.name}</div>
+            <div className="mt-0.5 text-[0.7rem] text-muted">
               {tile.material} · {tile.finish}
             </div>
             <div className="mt-0.5 text-[0.75rem] font-semibold text-green">
@@ -157,7 +157,7 @@ export default function StudioMode({ tile, active }: { tile: Tile; active: boole
               ] as const
             ).map(([label, value, set]) => (
               <label key={label} className="block">
-                <span className="mb-1 block text-[0.68rem] text-white/55">{label}</span>
+                <span className="mb-1 block text-[0.68rem] text-muted">{label}</span>
                 <input
                   type="number"
                   min={0.5}
@@ -168,7 +168,7 @@ export default function StudioMode({ tile, active }: { tile: Tile; active: boole
                     const v = parseFloat(e.target.value);
                     if (!Number.isNaN(v)) set(clampRoom(v));
                   }}
-                  className="w-full rounded-lg border border-white/10 bg-ink/60 px-3 py-2 text-sm text-white outline-none transition-colors focus:border-green/60"
+                  className="w-full rounded-lg border border-mist bg-off px-3 py-2 text-sm text-navy outline-none transition-colors focus:border-green/60"
                 />
               </label>
             ))}
@@ -193,7 +193,7 @@ export default function StudioMode({ tile, active }: { tile: Tile; active: boole
                 className={`rounded-lg border px-3 py-2 text-xs font-semibold transition-colors ${
                   layout === key
                     ? "border-green bg-green/15 text-green"
-                    : "border-white/10 text-white/55 hover:border-white/30 hover:text-white/85"
+                    : "border-mist text-muted hover:border-navy/30 hover:text-navy"
                 }`}
               >
                 {label}
@@ -214,9 +214,9 @@ export default function StudioMode({ tile, active }: { tile: Tile; active: boole
               aria-label="Grout colour"
             />
             <div className="flex-1">
-              <div className="mb-1 flex justify-between text-[0.68rem] text-white/55">
+              <div className="mb-1 flex justify-between text-[0.68rem] text-muted">
                 <span>Width</span>
-                <span className="text-white/85">{groutPx}px</span>
+                <span className="font-semibold text-navy">{groutPx}px</span>
               </div>
               <input
                 type="range"
@@ -236,25 +236,25 @@ export default function StudioMode({ tile, active }: { tile: Tile; active: boole
           <div className="label mb-3 text-[0.62rem] text-green">Coverage Estimate</div>
           <dl className="space-y-1.5 text-sm">
             <div className="flex justify-between">
-              <dt className="text-white/55">Floor area</dt>
-              <dd className="font-semibold text-white">{coverage.area.toFixed(1)} m²</dd>
+              <dt className="text-muted">Floor area</dt>
+              <dd className="font-semibold text-navy">{coverage.area.toFixed(1)} m²</dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-white/55">Tiles needed</dt>
-              <dd className="font-semibold text-white">{coverage.tiles}</dd>
+              <dt className="text-muted">Tiles needed</dt>
+              <dd className="font-semibold text-navy">{coverage.tiles}</dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-white/55">Order qty (+10%)</dt>
-              <dd className="font-semibold text-white">{coverage.orderQty} tiles</dd>
+              <dt className="text-muted">Order qty (+10%)</dt>
+              <dd className="font-semibold text-navy">{coverage.orderQty} tiles</dd>
             </div>
             <div className="mt-1 flex justify-between border-t border-green/20 pt-2">
-              <dt className="text-white/55">Est. cost</dt>
+              <dt className="text-muted">Est. cost</dt>
               <dd className="font-display font-bold text-green">
                 €{estCost.toLocaleString("en-IE", { maximumFractionDigits: 0 })}
               </dd>
             </div>
           </dl>
-          <p className="mt-2 text-[0.65rem] leading-relaxed text-white/40">
+          <p className="mt-2 text-[0.65rem] leading-relaxed text-muted/80">
             Guide price for tiles only. Adhesive, grout and fitting quoted separately.
           </p>
         </div>
@@ -263,7 +263,7 @@ export default function StudioMode({ tile, active }: { tile: Tile; active: boole
           <button type="button" onClick={download} className="btn btn-green w-full justify-center">
             Download Preview
           </button>
-          <Link href="/contact" className="btn btn-outline w-full justify-center">
+          <Link href="/contact" className="btn btn-ghost-dark w-full justify-center">
             Request a Quote
           </Link>
         </div>

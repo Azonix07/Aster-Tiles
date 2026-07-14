@@ -4,6 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Reveal from "@/components/scroll/Reveal";
+import Parallax from "@/components/scroll/Parallax";
+import Rings from "@/components/decor/Rings";
 import { useStore, useTiles } from "@/components/StoreProvider";
 
 const featured = ["venus-bianco", "torano-gold", "heritage-oak", "laurent-black", "moroccan-star"];
@@ -20,24 +22,24 @@ export default function VisualizerTeaser() {
   const [active, setActive] = useState(options[0]);
 
   return (
-    <section className="relative overflow-hidden bg-ink py-24">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_70%_30%,rgba(45,184,124,0.12),transparent_60%)]" />
+    <section className="relative overflow-hidden py-20 lg:py-28">
+      <Rings id="viz-rings" className="absolute -left-40 top-10 h-96 w-96 opacity-10" />
       <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-6 lg:grid-cols-2">
         <Reveal>
-          <span data-reveal className="label text-green">
+          <span data-reveal className="label text-green-2">
             AI-Powered Tool
           </span>
-          <h2 data-reveal className="display mt-3 text-4xl text-white sm:text-5xl">
-            See it <em className="accent-italic text-green">before</em>
+          <h2 data-reveal className="display mt-3 text-4xl text-navy sm:text-5xl">
+            See it <em className="not-italic text-green-2">before</em>
             <br />
             you buy it
           </h2>
-          <p data-reveal className="mt-5 max-w-md text-white/65">
+          <p data-reveal className="mt-5 max-w-md text-muted">
             Design a room from scratch, overlay tiles onto a photo of your own
             home, or let our AI re-imagine your space — complete with a tile
             count and an order quantity.
           </p>
-          <ul data-reveal className="mt-7 space-y-3 text-sm text-white/75">
+          <ul data-reveal className="mt-7 space-y-3 text-sm text-body">
             {[
               "Perspective room preview at true tile scale",
               "Upload your room photo — mask walls or floors",
@@ -59,14 +61,16 @@ export default function VisualizerTeaser() {
 
         <Reveal>
           <div data-reveal className="relative">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-white/10">
-              <Image
-                src={media.visualizerTeaserImage}
-                alt="Room preview"
-                fill
-                sizes="(min-width: 1024px) 45vw, 90vw"
-                className="object-cover"
-              />
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-mist shadow-lift">
+              <Parallax speed={-0.12} className="absolute inset-x-0 -inset-y-[12%]">
+                <Image
+                  src={media.visualizerTeaserImage}
+                  alt="Room preview"
+                  fill
+                  sizes="(min-width: 1024px) 45vw, 90vw"
+                  className="object-cover"
+                />
+              </Parallax>
               {/* floor repaint strip */}
               <div
                 className="absolute inset-x-0 bottom-0 h-2/5"
@@ -85,7 +89,7 @@ export default function VisualizerTeaser() {
                   }}
                 />
               </div>
-              <div className="absolute top-4 left-4 rounded-full bg-ink/70 px-3.5 py-1.5 font-display text-[0.68rem] font-bold tracking-wide text-white backdrop-blur">
+              <div className="glass-dark absolute top-4 left-4 rounded-full px-3.5 py-1.5 font-display text-[0.68rem] font-bold tracking-wide text-white">
                 Previewing · {active.name}
               </div>
             </div>
@@ -100,13 +104,13 @@ export default function VisualizerTeaser() {
                   className={`relative h-14 w-14 overflow-hidden rounded-xl border-2 transition-all duration-200 ${
                     active.id === t.id
                       ? "scale-110 border-green shadow-[0_0_0_3px_rgba(45,184,124,0.25)]"
-                      : "border-white/15 hover:border-white/40"
+                      : "border-mist hover:border-green/60"
                   }`}
                 >
                   <Image src={t.texture} alt={t.name} fill sizes="56px" className="object-cover" />
                 </button>
               ))}
-              <span className="ml-2 hidden text-xs text-white/45 sm:block">
+              <span className="ml-2 hidden text-xs text-muted sm:block">
                 Tap a tile — try it live
               </span>
             </div>

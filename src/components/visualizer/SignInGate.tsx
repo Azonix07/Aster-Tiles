@@ -102,7 +102,7 @@ export function SignInModal({
           <LockIcon />
         </span>
         <h2 className="display mt-4 text-2xl text-navy">
-          Sign in to access <em className="accent-italic text-green">this feature</em>
+          Sign in to access <em className="not-italic text-green">this feature</em>
         </h2>
         <p className="mt-2 text-sm text-muted">
           It&apos;s free — your designs, favourites and orders stay saved to your account.

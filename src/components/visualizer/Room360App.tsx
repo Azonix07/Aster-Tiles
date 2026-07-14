@@ -72,7 +72,7 @@ export default function Room360App({ initialTileId }: { initialTileId?: string }
   /* An emptied catalogue (all tiles deleted in admin) has nothing to show. */
   if (!floorTile) {
     return (
-      <div className="flex h-[calc(100svh-4.25rem)] min-h-[540px] items-center justify-center bg-ink px-6 text-center text-sm text-white/60">
+      <div className="flex h-[calc(100svh-4.25rem)] min-h-[540px] items-center justify-center px-6 text-center text-sm text-muted">
         The tile catalogue is empty — add tiles in the admin panel to use the 360° room view.
       </div>
     );
@@ -90,7 +90,7 @@ export default function Room360App({ initialTileId }: { initialTileId?: string }
   };
 
   return (
-    <div className="relative h-[calc(100svh-4.25rem)] min-h-[540px] w-full overflow-hidden bg-ink">
+    <div className="relative h-[calc(100svh-4.25rem)] min-h-[540px] w-full overflow-hidden bg-off">
       <canvas ref={canvasRef} className="h-full w-full cursor-grab touch-none active:cursor-grabbing" />
 
       {(!ready || progress < 100) && (

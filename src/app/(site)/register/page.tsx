@@ -21,8 +21,8 @@ export default async function RegisterPage({
   if (await currentUser()) redirect(next === "/" ? "/account" : next);
 
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-navy px-6 py-28">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_-20%,rgba(45,184,124,0.18),transparent_60%)]" />
+    <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden px-6 py-20">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_-20%,rgba(45,184,124,0.1),transparent_60%)]" />
       <div className="relative w-full max-w-md">
         <RegisterForm next={next} />
       </div>

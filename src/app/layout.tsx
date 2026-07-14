@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Sora, Inter, Instrument_Serif } from "next/font/google";
+import { Sora, Inter } from "next/font/google";
 import "./globals.css";
 import StoreProvider, { type PublicSettings } from "@/components/StoreProvider";
 import CartProvider from "@/components/CartProvider";
@@ -8,12 +8,6 @@ import { currentUser, toPublicUser } from "@/lib/auth";
 
 const sora = Sora({ subsets: ["latin"], variable: "--font-sora" });
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const instrument = Instrument_Serif({
-  subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
-  variable: "--font-instrument",
-});
 
 export async function generateMetadata(): Promise<Metadata> {
   const { site, media } = getContent();
@@ -67,10 +61,12 @@ export default async function RootLayout({
   };
 
   return (
-    <html lang="en" data-scroll-behavior="smooth">
-      <body
-        className={`${sora.variable} ${inter.variable} ${instrument.variable} antialiased`}
-      >
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      className={`${sora.variable} ${inter.variable}`}
+    >
+      <body className="antialiased">
         <StoreProvider
           value={{ content, tiles, settings: publicSettings, user }}
         >

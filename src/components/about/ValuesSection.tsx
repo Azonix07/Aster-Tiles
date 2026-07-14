@@ -44,7 +44,7 @@ export default function ValuesSection() {
             What We Stand For
           </span>
           <h2 data-reveal className="display mx-auto mt-3 max-w-xl text-4xl text-navy sm:text-5xl">
-            The Aster <em className="accent-italic text-green">way</em>
+            The Aster <em className="not-italic text-green">way</em>
           </h2>
         </Reveal>
 

@@ -88,7 +88,7 @@ export default function VisualizerApp() {
   if (!tile) {
     return (
       <div className="mx-auto max-w-[1500px] px-4 sm:px-6">
-        <p className="rounded-2xl border border-white/10 bg-navy-2/50 p-8 text-center text-sm text-white/60">
+        <p className="rounded-2xl border border-mist bg-white p-8 text-center text-sm text-muted">
           The tile catalogue is empty — add tiles in the admin panel to use the visualizer.
         </p>
       </div>
@@ -101,7 +101,7 @@ export default function VisualizerApp() {
       <div
         role="tablist"
         aria-label="Visualizer modes"
-        className="flex flex-col gap-2 rounded-2xl border border-white/10 bg-navy-2/50 p-2 sm:flex-row"
+        className="flex flex-col gap-2 rounded-2xl border border-mist bg-white p-2 shadow-sm sm:flex-row"
       >
         {MODES.map((m) => (
           <button
@@ -112,11 +112,11 @@ export default function VisualizerApp() {
             className={`flex-1 rounded-xl px-4 py-3 text-left transition-all ${
               mode === m.key
                 ? "bg-green text-white shadow-green"
-                : "text-white/60 hover:bg-white/5 hover:text-white/90"
+                : "text-muted hover:bg-navy/5 hover:text-navy"
             }`}
           >
             <span className="block font-display text-sm font-bold">{m.label}</span>
-            <span className={`mt-0.5 block text-[0.68rem] ${mode === m.key ? "text-white/80" : "text-white/40"}`}>
+            <span className={`mt-0.5 block text-[0.68rem] ${mode === m.key ? "text-white/80" : "text-muted/70"}`}>
               {m.sub}
             </span>
           </button>
@@ -129,7 +129,7 @@ export default function VisualizerApp() {
               setGate({ open: true, next: `/visualizer/360?tile=${tile.id}` });
             }
           }}
-          className="flex-1 rounded-xl border border-dashed border-white/20 px-4 py-3 text-left text-white/60 transition-all hover:border-green/60 hover:bg-white/5 hover:text-white/90"
+          className="flex-1 rounded-xl border border-dashed border-mist px-4 py-3 text-left text-muted transition-all hover:border-green/60 hover:bg-green/5 hover:text-navy"
         >
           <span className="flex items-center gap-2 font-display text-sm font-bold">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
@@ -139,7 +139,7 @@ export default function VisualizerApp() {
             </svg>
             360° Room View
           </span>
-          <span className="mt-0.5 block text-[0.68rem] text-white/40">
+          <span className="mt-0.5 block text-[0.68rem] text-muted/70">
             stand inside a furnished room
           </span>
         </Link>

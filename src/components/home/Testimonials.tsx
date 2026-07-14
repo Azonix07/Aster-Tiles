@@ -1,10 +1,14 @@
+import Image from "next/image";
 import Reveal from "@/components/scroll/Reveal";
 import { getContent } from "@/lib/db";
 
 export default function Testimonials() {
   const { testimonials } = getContent();
   return (
-    <section className="bg-off py-24">
+    <section className="relative overflow-hidden border-t border-mist bg-white py-24">
+      <div className="pointer-events-none absolute inset-0 opacity-[0.03] mix-blend-multiply">
+        <Image src="/media/abstract_texture.png" alt="" fill sizes="100vw" className="object-cover" />
+      </div>
       <div className="mx-auto max-w-7xl px-6">
         <Reveal className="text-center">
           <span data-reveal className="label text-green">

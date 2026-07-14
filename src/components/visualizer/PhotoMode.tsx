@@ -416,27 +416,27 @@ export default function PhotoMode({ tile, active }: { tile: Tile; active: boolea
                   step === s.n
                     ? "border-green bg-green/15 text-green"
                     : step > s.n
-                      ? "border-white/10 bg-white/5 text-white/60"
-                      : "border-white/10 text-white/35"
+                      ? "border-mist bg-off text-body"
+                      : "border-mist/60 text-muted/60"
                 }`}
               >
                 <span
                   className={`flex h-4 w-4 items-center justify-center rounded-full text-[0.6rem] font-bold ${
-                    step > s.n ? "bg-green text-ink" : step === s.n ? "bg-green/30 text-green" : "bg-white/10 text-white/45"
+                    step > s.n ? "bg-green text-white" : step === s.n ? "bg-green/20 text-green-2" : "bg-navy/8 text-muted/70"
                   }`}
                 >
                   {step > s.n ? "✓" : s.n}
                 </span>
                 {s.label}
               </span>
-              {i < steps.length - 1 && <span className="hidden h-px w-4 bg-white/15 sm:block" />}
+              {i < steps.length - 1 && <span className="hidden h-px w-4 bg-mist sm:block" />}
             </li>
           ))}
         </ol>
 
         <div
           ref={stageRef}
-          className="relative flex min-h-[380px] items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-navy-2/40 p-3"
+          className="relative flex min-h-[380px] items-center justify-center overflow-hidden rounded-2xl border border-mist bg-off p-3"
         >
           {!photo ? (
             <label
@@ -451,7 +451,7 @@ export default function PhotoMode({ tile, active }: { tile: Tile; active: boolea
                 acceptFile(e.dataTransfer.files?.[0]);
               }}
               className={`flex w-full max-w-lg cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-8 py-16 text-center transition-colors ${
-                dragOver ? "border-green bg-green/10" : "border-white/20 hover:border-green/60 hover:bg-white/[0.03]"
+                dragOver ? "border-green bg-green/10" : "border-mist hover:border-green/60 hover:bg-green/5"
               }`}
             >
               <input
@@ -466,10 +466,10 @@ export default function PhotoMode({ tile, active }: { tile: Tile; active: boolea
                   <circle cx="12" cy="13" r="4" />
                 </svg>
               </span>
-              <span className="mt-4 font-display text-sm font-bold text-white">
+              <span className="mt-4 font-display text-sm font-bold text-navy">
                 Drop a room photo here
               </span>
-              <span className="mt-1 text-xs text-white/50">
+              <span className="mt-1 text-xs text-muted">
                 or click to browse — JPG or PNG, straight-on shots work best
               </span>
             </label>
@@ -526,9 +526,9 @@ export default function PhotoMode({ tile, active }: { tile: Tile; active: boolea
           )}
         </div>
 
-        <p className="mt-3 flex items-center gap-2 text-xs text-white/55" aria-live="polite">
+        <p className="mt-3 flex items-center gap-2 text-xs text-muted" aria-live="polite">
           <span
-            className={`h-2 w-2 shrink-0 rounded-full ${applied ? "bg-green" : photo ? "bg-gold" : "bg-white/25"}`}
+            className={`h-2 w-2 shrink-0 rounded-full ${applied ? "bg-green" : photo ? "bg-gold" : "bg-mist"}`}
           />
           {hint}
         </p>
@@ -537,7 +537,7 @@ export default function PhotoMode({ tile, active }: { tile: Tile; active: boolea
       {/* ── Controls ─────────────────────────────── */}
       <div
         data-lenis-prevent
-        className="thin-scroll space-y-5 overflow-y-auto rounded-2xl border border-white/10 bg-navy-2/50 p-5 xl:max-h-[640px]"
+        className="thin-scroll space-y-5 overflow-y-auto rounded-2xl border border-mist bg-white p-5 shadow-sm xl:max-h-[640px]"
       >
         <div>
           <div className="label mb-2 text-[0.62rem] text-green">Surface</div>
@@ -559,22 +559,22 @@ export default function PhotoMode({ tile, active }: { tile: Tile; active: boolea
                 className={`rounded-lg border px-3 py-2.5 text-left transition-colors ${
                   surface === key
                     ? "border-green bg-green/15"
-                    : "border-white/10 hover:border-white/30"
+                    : "border-mist hover:border-navy/30"
                 }`}
               >
-                <span className={`block text-xs font-bold ${surface === key ? "text-green" : "text-white/80"}`}>
+                <span className={`block text-xs font-bold ${surface === key ? "text-green-2" : "text-body"}`}>
                   {label}
                 </span>
-                <span className="mt-0.5 block text-[0.62rem] text-white/45">{sub}</span>
+                <span className="mt-0.5 block text-[0.62rem] text-muted/80">{sub}</span>
               </button>
             ))}
           </div>
         </div>
 
         <div>
-          <div className="mb-1 flex justify-between text-[0.68rem] text-white/55">
+          <div className="mb-1 flex justify-between text-[0.68rem] text-muted">
             <span>Tile size on photo</span>
-            <span className="text-white/85">{tilesAcross} across</span>
+            <span className="font-semibold text-navy">{tilesAcross} across</span>
           </div>
           <input
             type="range"
@@ -588,9 +588,9 @@ export default function PhotoMode({ tile, active }: { tile: Tile; active: boolea
         </div>
 
         <div>
-          <div className="mb-1 flex justify-between text-[0.68rem] text-white/55">
+          <div className="mb-1 flex justify-between text-[0.68rem] text-muted">
             <span>Blend opacity</span>
-            <span className="text-white/85">{opacity}%</span>
+            <span className="font-semibold text-navy">{opacity}%</span>
           </div>
           <input
             type="range"
@@ -615,7 +615,7 @@ export default function PhotoMode({ tile, active }: { tile: Tile; active: boolea
                 className={`rounded-lg border px-3 py-2 text-xs font-semibold transition-colors ${
                   rotation === deg
                     ? "border-green bg-green/15 text-green"
-                    : "border-white/10 text-white/55 hover:border-white/30 hover:text-white/85"
+                    : "border-mist text-muted hover:border-navy/30 hover:text-navy"
                 }`}
               >
                 {deg}°
@@ -635,9 +635,9 @@ export default function PhotoMode({ tile, active }: { tile: Tile; active: boolea
               aria-label="Grout colour"
             />
             <div className="flex-1">
-              <div className="mb-1 flex justify-between text-[0.68rem] text-white/55">
+              <div className="mb-1 flex justify-between text-[0.68rem] text-muted">
                 <span>Width</span>
-                <span className="text-white/85">{groutW}px</span>
+                <span className="font-semibold text-navy">{groutW}px</span>
               </div>
               <input
                 type="range"
@@ -657,7 +657,7 @@ export default function PhotoMode({ tile, active }: { tile: Tile; active: boolea
             type="button"
             onClick={undo}
             disabled={points.length === 0}
-            className="rounded-lg border border-white/15 px-3 py-2 text-xs font-semibold text-white/70 transition-colors hover:border-white/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-35"
+            className="rounded-lg border border-mist px-3 py-2 text-xs font-semibold text-body transition-colors hover:border-navy/40 hover:text-navy disabled:cursor-not-allowed disabled:opacity-35"
           >
             ↶ Undo point
           </button>
@@ -665,7 +665,7 @@ export default function PhotoMode({ tile, active }: { tile: Tile; active: boolea
             type="button"
             onClick={clearAll}
             disabled={points.length === 0 && !applied}
-            className="rounded-lg border border-white/15 px-3 py-2 text-xs font-semibold text-white/70 transition-colors hover:border-white/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-35"
+            className="rounded-lg border border-mist px-3 py-2 text-xs font-semibold text-body transition-colors hover:border-navy/40 hover:text-navy disabled:cursor-not-allowed disabled:opacity-35"
           >
             ✕ Clear
           </button>
@@ -697,7 +697,7 @@ export default function PhotoMode({ tile, active }: { tile: Tile; active: boolea
             Download Result
           </button>
           {photo && (
-            <label className="block cursor-pointer text-center text-xs text-white/45 underline-offset-2 hover:text-green hover:underline">
+            <label className="block cursor-pointer text-center text-xs text-muted underline-offset-2 hover:text-green hover:underline">
               <input
                 type="file"
                 accept="image/*"
@@ -709,10 +709,10 @@ export default function PhotoMode({ tile, active }: { tile: Tile; active: boolea
           )}
         </div>
 
-        <p className="text-[0.65rem] leading-relaxed text-white/35">
-          Tip: press <kbd className="rounded bg-white/10 px-1">Enter</kbd> to apply,{" "}
-          <kbd className="rounded bg-white/10 px-1">Esc</kbd> to clear,{" "}
-          <kbd className="rounded bg-white/10 px-1">⌘Z</kbd> to undo a point.
+        <p className="text-[0.65rem] leading-relaxed text-muted/80">
+          Tip: press <kbd className="rounded bg-navy/8 px-1 text-navy">Enter</kbd> to apply,{" "}
+          <kbd className="rounded bg-navy/8 px-1 text-navy">Esc</kbd> to clear,{" "}
+          <kbd className="rounded bg-navy/8 px-1 text-navy">⌘Z</kbd> to undo a point.
         </p>
       </div>
     </div>

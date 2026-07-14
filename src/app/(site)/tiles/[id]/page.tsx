@@ -70,7 +70,7 @@ export default async function TilePage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <section className="bg-off pt-28 pb-20">
+      <section className="bg-off pt-12 pb-20">
         <div className="mx-auto max-w-7xl px-6">
           {/* breadcrumbs */}
           <nav aria-label="Breadcrumb" className="text-xs text-muted">

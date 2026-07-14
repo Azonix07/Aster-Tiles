@@ -20,7 +20,7 @@ export default async function Room360Page({
     redirect(`/login?next=${encodeURIComponent(dest)}`);
   }
   return (
-    <div className="bg-ink pt-17">
+    <div>
       <Room360App initialTileId={tile} />
     </div>
   );

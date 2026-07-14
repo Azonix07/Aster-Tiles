@@ -22,7 +22,7 @@ export default function StorySection() {
           </span>
           <h2 data-reveal className="display mt-3 text-4xl text-navy sm:text-5xl">
             One belief — everyone deserves{" "}
-            <em className="accent-italic text-green">a beautiful home</em>
+            <em className="not-italic text-green">a beautiful home</em>
           </h2>
           <p data-reveal className="mt-6 leading-relaxed text-muted">
             Aster Tiles opened its doors more than fifteen years ago on The

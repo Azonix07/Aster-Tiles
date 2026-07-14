@@ -21,7 +21,7 @@ export default function MaintenancePage() {
         </div>
         <p className="label mt-10 text-green">Scheduled maintenance</p>
         <h1 className="display mt-4 text-4xl text-white sm:text-5xl">
-          We&apos;re just <em className="accent-italic text-green">regrouting.</em>
+          We&apos;re just <em className="not-italic text-green">regrouting.</em>
         </h1>
         <p className="mx-auto mt-6 max-w-md text-white/65">{settings.maintenance.message}</p>
         <p className="mt-8 text-sm text-white/40">

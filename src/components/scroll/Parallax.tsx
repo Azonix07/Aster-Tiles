@@ -3,46 +3,46 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
 
-/**
- * Scrub-tied vertical parallax. speed < 0 drifts up slower than scroll
- * (background feel), speed > 0 drifts down (foreground feel).
- */
 export default function Parallax({
   children,
-  speed = -0.15,
-  className,
+  speed = 1,
+  className = "",
 }: {
   children: React.ReactNode;
   speed?: number;
   className?: string;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
+  const targetRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+    const triggerEl = triggerRef.current;
+    const targetEl = targetRef.current;
+    if (!triggerEl || !targetEl) return;
+
+    const yValue = window.innerWidth < 768 ? speed * 50 : speed * 150;
+
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        el,
-        { yPercent: -speed * 30 },
-        {
-          yPercent: speed * 30,
-          ease: "none",
-          scrollTrigger: {
-            trigger: el.parentElement ?? el,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
+      gsap.to(targetEl, {
+        y: yValue,
+        ease: "none",
+        scrollTrigger: {
+          trigger: triggerEl,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
         },
-      );
-    }, el);
+      });
+    }, triggerEl);
+
     return () => ctx.revert();
   }, [speed]);
 
   return (
-    <div ref={ref} className={className}>
-      {children}
+    <div ref={triggerRef} className={`overflow-visible ${className}`}>
+      <div ref={targetRef} className="h-full w-full parallax-bg relative">
+        {children}
+      </div>
     </div>
   );
 }

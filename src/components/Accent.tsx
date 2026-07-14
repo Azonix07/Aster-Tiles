@@ -1,12 +1,13 @@
 import { Fragment } from "react";
 
 /**
- * Renders admin-editable headline copy: *word* becomes the accent-italic
- * emphasis and newlines become line breaks.
+ * Renders admin-editable headline copy: *word* becomes the brand-green
+ * emphasis (same typeface and weight — colour only) and newlines become
+ * line breaks.
  */
 export function Accent({
   text,
-  accentClass = "accent-italic text-green",
+  accentClass = "not-italic text-green",
 }: {
   text: string;
   accentClass?: string;

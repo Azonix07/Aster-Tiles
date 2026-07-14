@@ -14,7 +14,7 @@ export default function TeamGrid() {
           </span>
           <h2 data-reveal className="display mx-auto mt-3 max-w-2xl text-4xl text-navy sm:text-5xl">
             Meet the people{" "}
-            <em className="accent-italic text-green">behind the tiles</em>
+            <em className="not-italic text-green">behind the tiles</em>
           </h2>
           <p data-reveal className="mx-auto mt-4 max-w-xl text-muted">
             Four specialists, decades of combined experience — and every one

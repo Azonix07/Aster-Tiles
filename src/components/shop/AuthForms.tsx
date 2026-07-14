@@ -41,7 +41,7 @@ export function LoginForm({ next }: { next: string }) {
     <form onSubmit={submit} className="rounded-2xl bg-white p-6 shadow-lift sm:p-9">
       <p className="label text-green">Welcome back</p>
       <h1 className="display mt-2 text-2xl text-navy sm:text-3xl">
-        Log in to your <em className="accent-italic text-green">account</em>
+        Log in to your <em className="not-italic text-green">account</em>
       </h1>
 
       <div className="mt-7 space-y-5">
@@ -121,7 +121,7 @@ export function RegisterForm({ next }: { next: string }) {
     <form onSubmit={submit} className="rounded-2xl bg-white p-6 shadow-lift sm:p-9">
       <p className="label text-green">Join us</p>
       <h1 className="display mt-2 text-2xl text-navy sm:text-3xl">
-        Create your <em className="accent-italic text-green">account</em>
+        Create your <em className="not-italic text-green">account</em>
       </h1>
 
       <div className="mt-7 space-y-5">

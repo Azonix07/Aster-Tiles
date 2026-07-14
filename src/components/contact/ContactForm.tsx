@@ -107,7 +107,7 @@ export default function ContactForm() {
         </div>
         <h3 className="display mt-6 text-2xl text-navy sm:text-3xl">
           Thanks {sentTo} —{" "}
-          <em className="accent-italic text-green">we’re on it.</em>
+          <em className="not-italic text-green">we’re on it.</em>
         </h3>
         <p className="mt-4 max-w-md text-muted">
           We’ll ring you back within one working day. Your email app should
@@ -135,7 +135,7 @@ export default function ContactForm() {
     >
       <p className="label text-green">Send a message</p>
       <h2 className="display mt-2 text-2xl text-navy sm:text-3xl">
-        Tell us about your <em className="accent-italic text-green">project</em>
+        Tell us about your <em className="not-italic text-green">project</em>
       </h2>
 
       <div className="mt-7 grid gap-5 sm:grid-cols-2">

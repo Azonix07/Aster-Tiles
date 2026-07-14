@@ -31,7 +31,7 @@
         "Bathrooms",
         "Open plan"
       ],
-      "description": "Large-format statuario with bold diagonal veining â€” a statement slab look at a fraction of natural marble cost.",
+      "description": "Large-format statuario with bold diagonal veining — a statement slab look at a fraction of natural marble cost.",
       "inStock": true
     },
     {
@@ -69,7 +69,7 @@
         "Feature walls",
         "Bars"
       ],
-      "description": "Deep black marble-effect with fine gold veins â€” moody, glamorous and unforgettable under warm light.",
+      "description": "Deep black marble-effect with fine gold veins — moody, glamorous and unforgettable under warm light.",
       "inStock": true
     },
     {
@@ -107,7 +107,7 @@
         "Sunrooms",
         "Cottages"
       ],
-      "description": "Warm handmade-look clay with natural tonal variation â€” timeless in Irish cottages and modern farmhouses alike.",
+      "description": "Warm handmade-look clay with natural tonal variation — timeless in Irish cottages and modern farmhouses alike.",
       "inStock": true
     },
     {
@@ -145,7 +145,7 @@
         "Studies",
         "Snugs"
       ],
-      "description": "Rich chocolate walnut planks that ground a room â€” stunning with cream rugs and brass lamplight.",
+      "description": "Rich chocolate walnut planks that ground a room — stunning with cream rugs and brass lamplight.",
       "inStock": true
     },
     {
@@ -202,7 +202,7 @@
         "Bathrooms",
         "Porches"
       ],
-      "description": "Carrara marble hexagon mosaic â€” grippy underfoot, gorgeous from above. A shower-floor favourite.",
+      "description": "Carrara marble hexagon mosaic — grippy underfoot, gorgeous from above. A shower-floor favourite.",
       "inStock": true
     },
     {
@@ -221,7 +221,7 @@
         "Porches",
         "Fireplaces"
       ],
-      "description": "Navy and white star-and-cross encaustic pattern â€” one wall of this and the room designs itself.",
+      "description": "Navy and white star-and-cross encaustic pattern — one wall of this and the room designs itself.",
       "inStock": true
     }
   ],
@@ -305,14 +305,14 @@
         "id": "sean",
         "name": "Seán Gallagher",
         "role": "Flooring Specialist",
-        "bio": "Thirty years of floors â€” laminate, herringbone and luxury vinyl. Seán knows what lasts in an Irish hallway.",
+        "bio": "Thirty years of floors — laminate, herringbone and luxury vinyl. Seán knows what lasts in an Irish hallway.",
         "photo": "/media/staff/sean.jpg"
       },
       {
         "id": "ciaran",
         "name": "Ciarán Byrne",
         "role": "Tile Consultant",
-        "bio": "Ciarán runs our sample library and the visualiser desk â€” bring your room photo and he'll do the rest.",
+        "bio": "Ciarán runs our sample library and the visualiser desk — bring your room photo and he'll do the rest.",
         "photo": "/media/staff/ciaran.jpg"
       },
       {
@@ -330,12 +330,12 @@
         "location": "Letterkenny, Co. Donegal"
       },
       {
-        "quote": "We renovated our kitchen floor with 600×600 porcelain tiles from Aster. The calculator told us exactly how many to order â€” saved us buying too many!",
+        "quote": "We renovated our kitchen floor with 600×600 porcelain tiles from Aster. The calculator told us exactly how many to order — saved us buying too many!",
         "name": "Patrick McGinley",
         "location": "Ballybofey, Co. Donegal"
       },
       {
-        "quote": "Visited the showroom in Lifford â€” staff were incredibly helpful. They showed us samples and used the room visualiser on a photo of our hallway. Perfect result.",
+        "quote": "Visited the showroom in Lifford — staff were incredibly helpful. They showed us samples and used the room visualiser on a photo of our hallway. Perfect result.",
         "name": "Mairéad O'Brien",
         "location": "Derry / Londonderry"
       },
@@ -351,7 +351,7 @@
         "name": "Floor Tiles",
         "blurb": "Porcelain · Large Format · Marble Effect",
         "image": "/media/categories/floor-tiles.jpg",
-        "description": "Large-format porcelain floors that flow from hallway to kitchen â€” polished, matt and anti-slip finishes."
+        "description": "Large-format porcelain floors that flow from hallway to kitchen — polished, matt and anti-slip finishes."
       },
       {
         "id": "wall-tiles",
@@ -365,7 +365,7 @@
         "name": "Bathrooms",
         "blurb": "Suites · Wet Rooms · Vanities",
         "image": "/media/categories/bathrooms.jpg",
-        "description": "Complete bathroom design â€” from zellige walls and terrazzo floors to vanity units and fluted glass."
+        "description": "Complete bathroom design — from zellige walls and terrazzo floors to vanity units and fluted glass."
       },
       {
         "id": "wooden-floors",
@@ -379,7 +379,7 @@
         "name": "Outdoor",
         "blurb": "Patios · Porcelain · Anti-Slip",
         "image": "/media/categories/outdoor.jpg",
-        "description": "20mm anti-slip outdoor porcelain that shrugs off Irish weather â€” patios, paths and steps."
+        "description": "20mm anti-slip outdoor porcelain that shrugs off Irish weather — patios, paths and steps."
       },
       {
         "id": "kitchen",
@@ -483,7 +483,7 @@
     "maintenance": {
       "fullSite": false,
       "payments": false,
-      "message": "We're doing a little regrouting behind the scenes. You can still browse every tile â€” ordering will be back shortly."
+      "message": "We're doing a little regrouting behind the scenes. You can still browse every tile — ordering will be back shortly."
     }
   },
   "users": [
@@ -560,12 +560,12 @@
       "timeline": [
         {
           "status": "pending",
-          "note": "Order placed â€” cash on delivery",
+          "note": "Order placed — cash on delivery",
           "at": "2026-07-03T04:00:42.534Z"
         },
         {
           "status": "shipped",
-          "note": "Courier collected â€” tracking #IE20260703",
+          "note": "Courier collected — tracking #IE20260703",
           "at": "2026-07-03T04:01:48.259Z"
         }
       ],

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Reveal, { RevealLines } from "@/components/scroll/Reveal";
+import Rings from "@/components/decor/Rings";
 import ContactForm from "@/components/contact/ContactForm";
 import { getContent } from "@/lib/db";
 
@@ -35,21 +36,21 @@ export default function ContactPage() {
   return (
     <>
       {/* ── Header ─────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-ink pt-36 pb-20">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_80%_10%,rgba(45,184,124,0.14),transparent_55%)]" />
+      <section className="relative overflow-hidden border-b border-mist bg-white pt-16 pb-16 lg:pt-24">
+        <Rings id="contact-rings" className="absolute -top-24 -right-28 h-96 w-96 opacity-15" />
         <div className="relative mx-auto max-w-7xl px-6">
           <Reveal>
-            <p data-reveal className="label text-green">
+            <p data-reveal className="label text-green-2">
               Get in touch
             </p>
           </Reveal>
           <RevealLines
             as="h1"
             text={"Visit us or\nsend a message"}
-            className="display mt-5 text-5xl text-white sm:text-6xl lg:text-7xl"
+            className="display mt-5 text-5xl text-navy sm:text-6xl lg:text-7xl"
           />
           <Reveal>
-            <p data-reveal className="mt-7 max-w-xl text-lg text-white/65">
+            <p data-reveal className="mt-7 max-w-xl text-lg text-muted">
               Call into the showroom for a wander through 500+ collections, or
               drop us a line below — every enquiry gets a ring back within one
               working day.
@@ -61,7 +62,7 @@ export default function ContactPage() {
                 </svg>
                 {site.phone}
               </a>
-              <a href={site.emailHref} className="btn btn-outline">
+              <a href={site.emailHref} className="btn btn-ghost-dark">
                 Email the team
               </a>
             </div>

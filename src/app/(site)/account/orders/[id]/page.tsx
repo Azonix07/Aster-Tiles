@@ -29,7 +29,7 @@ export default async function OrderDetailPage({
   const justPlaced = (await searchParams).placed === "1";
 
   return (
-    <section className="min-h-screen bg-off pt-28 pb-20">
+    <section className="min-h-[70vh] bg-off pt-12 pb-20">
       <div className="mx-auto max-w-5xl px-6">
         {justPlaced && (
           <div className="mb-8 flex items-start gap-4 rounded-2xl border border-green/40 bg-green/10 p-6">

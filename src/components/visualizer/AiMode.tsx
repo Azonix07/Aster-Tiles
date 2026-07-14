@@ -62,7 +62,7 @@ function BeforeAfter({ before, after }: { before: string; after: string }) {
   return (
     <div
       ref={wrapRef}
-      className="relative select-none overflow-hidden rounded-xl border border-white/10 touch-none"
+      className="relative select-none overflow-hidden rounded-xl border border-mist touch-none"
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={after} alt="AI redesigned room" className="block w-full" draggable={false} />
@@ -210,7 +210,7 @@ export default function AiMode({
     <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_300px]">
       {/* ── Stage ────────────────────────────────── */}
       <div className="min-w-0 space-y-4">
-        <div className="relative flex min-h-[380px] items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-navy-2/40 p-3">
+        <div className="relative flex min-h-[380px] items-center justify-center overflow-hidden rounded-2xl border border-mist bg-off p-3">
           {!previewUrl ? (
             <label
               onDragOver={(e) => {
@@ -224,7 +224,7 @@ export default function AiMode({
                 acceptFile(e.dataTransfer.files?.[0]);
               }}
               className={`flex w-full max-w-lg cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-8 py-16 text-center transition-colors ${
-                dragOver ? "border-green bg-green/10" : "border-white/20 hover:border-green/60 hover:bg-white/[0.03]"
+                dragOver ? "border-green bg-green/10" : "border-mist hover:border-green/60 hover:bg-green/5"
               }`}
             >
               <input
@@ -238,10 +238,10 @@ export default function AiMode({
                   <path d="M12 3l1.912 5.813a2 2 0 001.275 1.275L21 12l-5.813 1.912a2 2 0 00-1.275 1.275L12 21l-1.912-5.813a2 2 0 00-1.275-1.275L3 12l5.813-1.912a2 2 0 001.275-1.275L12 3z" />
                 </svg>
               </span>
-              <span className="mt-4 font-display text-sm font-bold text-white">
+              <span className="mt-4 font-display text-sm font-bold text-navy">
                 Drop a room photo for an AI redesign
               </span>
-              <span className="mt-1 text-xs text-white/50">
+              <span className="mt-1 text-xs text-muted">
                 Our AI re-imagines your room with {tile.name} — furniture and light untouched
               </span>
             </label>
@@ -257,10 +257,10 @@ export default function AiMode({
                   />
                 ))}
               </div>
-              <p className="mt-6 text-center text-sm text-white/70" aria-live="polite">
+              <p className="mt-6 text-center text-sm text-body" aria-live="polite">
                 {LOADING_COPY[copyIdx]}
               </p>
-              <p className="mt-1 text-center text-[0.68rem] text-white/40">
+              <p className="mt-1 text-center text-[0.68rem] text-muted/80">
                 AI redesigns usually take 15–40 seconds
               </p>
             </div>
@@ -293,8 +293,8 @@ export default function AiMode({
             </span>
             <div>
               <p className="text-sm font-semibold text-gold">AI mode is not configured yet</p>
-              <p className="mt-1 text-xs leading-relaxed text-white/65">{keyNotice}</p>
-              <p className="mt-1 text-xs text-white/45">
+              <p className="mt-1 text-xs leading-relaxed text-muted">{keyNotice}</p>
+              <p className="mt-1 text-xs text-muted/70">
                 The Design Studio and My Room Photo modes work without any keys.
               </p>
             </div>
@@ -315,7 +315,7 @@ export default function AiMode({
 
         {/* Suggestions */}
         {suggestions && suggestions.length > 0 && (
-          <div className="rounded-2xl border border-white/10 bg-navy-2/50 p-5">
+          <div className="rounded-2xl border border-mist bg-white p-5 shadow-sm">
             <div className="label mb-3 text-[0.62rem] text-green">AI Picks For This Room</div>
             <div className="grid gap-3 sm:grid-cols-3">
               {suggestions.map((s) => {
@@ -329,7 +329,7 @@ export default function AiMode({
                     className={`group rounded-xl border p-3 text-left transition-all ${
                       t.id === tile.id
                         ? "border-green/70 bg-green/10"
-                        : "border-white/10 bg-ink/40 hover:border-green/50 hover:bg-ink/70"
+                        : "border-mist bg-off hover:border-green/50 hover:bg-white"
                     }`}
                   >
                     <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg">
@@ -344,8 +344,8 @@ export default function AiMode({
                         {s.surface}
                       </span>
                     </div>
-                    <div className="mt-2 text-sm font-semibold text-white">{t.name}</div>
-                    <p className="mt-1 text-[0.68rem] leading-relaxed text-white/55">{s.reason}</p>
+                    <div className="mt-2 text-sm font-semibold text-navy">{t.name}</div>
+                    <p className="mt-1 text-[0.68rem] leading-relaxed text-muted">{s.reason}</p>
                     <span className="mt-2 inline-block text-[0.65rem] font-bold text-green">
                       {t.id === tile.id ? "Selected ✓" : "Use this tile →"}
                     </span>
@@ -360,18 +360,18 @@ export default function AiMode({
       {/* ── Controls ─────────────────────────────── */}
       <div
         data-lenis-prevent
-        className="thin-scroll space-y-5 overflow-y-auto rounded-2xl border border-white/10 bg-navy-2/50 p-5 xl:max-h-[640px]"
+        className="thin-scroll space-y-5 overflow-y-auto rounded-2xl border border-mist bg-white p-5 shadow-sm xl:max-h-[640px]"
       >
         <div className="flex items-center gap-3">
           <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl">
             <Image src={tile.texture} alt={tile.name} fill sizes="64px" className="object-cover" />
           </div>
           <div className="min-w-0">
-            <div className="truncate font-display text-sm font-bold text-white">{tile.name}</div>
-            <div className="mt-0.5 text-[0.7rem] text-white/50">
+            <div className="truncate font-display text-sm font-bold text-navy">{tile.name}</div>
+            <div className="mt-0.5 text-[0.7rem] text-muted">
               {tile.widthMm} × {tile.heightMm} mm · {tile.finish}
             </div>
-            <div className="mt-0.5 text-[0.68rem] text-white/40">picked from the library ←</div>
+            <div className="mt-0.5 text-[0.68rem] text-muted/70">picked from the library ←</div>
           </div>
         </div>
 
@@ -393,7 +393,7 @@ export default function AiMode({
                 className={`rounded-lg border px-2 py-2 text-xs font-semibold transition-colors ${
                   surface === key
                     ? "border-green bg-green/15 text-green"
-                    : "border-white/10 text-white/55 hover:border-white/30 hover:text-white/85"
+                    : "border-mist text-muted hover:border-navy/30 hover:text-navy"
                 }`}
               >
                 {label}
@@ -410,7 +410,7 @@ export default function AiMode({
             rows={3}
             maxLength={400}
             placeholder="e.g. keep it bright and airy, warm lamplight in the evening…"
-            className="w-full resize-none rounded-lg border border-white/10 bg-ink/60 px-3 py-2 text-sm text-white placeholder:text-white/30 outline-none transition-colors focus:border-green/60"
+            className="w-full resize-none rounded-lg border border-mist bg-off px-3 py-2 text-sm text-navy placeholder:text-muted/50 outline-none transition-colors focus:border-green/60"
           />
         </label>
 
@@ -446,14 +446,14 @@ export default function AiMode({
               <button
                 type="button"
                 onClick={() => setResultUrl(null)}
-                className="block w-full text-center text-xs text-white/45 underline-offset-2 hover:text-green hover:underline"
+                className="block w-full text-center text-xs text-muted underline-offset-2 hover:text-green hover:underline"
               >
                 Try another tile — pick one from the library, then regenerate
               </button>
             </>
           )}
           {previewUrl && (
-            <label className="block cursor-pointer text-center text-xs text-white/45 underline-offset-2 hover:text-green hover:underline">
+            <label className="block cursor-pointer text-center text-xs text-muted underline-offset-2 hover:text-green hover:underline">
               <input
                 type="file"
                 accept="image/*"
@@ -465,7 +465,7 @@ export default function AiMode({
           )}
         </div>
 
-        <p className="text-[0.65rem] leading-relaxed text-white/35">
+        <p className="text-[0.65rem] leading-relaxed text-muted/80">
           The AI keeps your furniture, layout and lighting, and re-surfaces only what you ask for.
           Results are a visual guide — colours may vary from physical samples.
         </p>

@@ -113,7 +113,7 @@ export default function MobileTabBar() {
           {/* ── popup — grows out of the menu icon ─────────────── */}
           <div
             id="mobile-menu-popup"
-            className={`absolute right-0 bottom-[calc(100%+0.7rem)] w-60 origin-bottom-right rounded-2xl border border-white/12 bg-navy-2/95 p-2 shadow-[0_18px_50px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            className={`absolute right-0 bottom-[calc(100%+0.7rem)] w-60 origin-bottom-right rounded-2xl border border-mist bg-white/95 p-2 shadow-[0_18px_50px_rgba(12,35,64,0.22)] backdrop-blur-xl transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
               open
                 ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
                 : "pointer-events-none translate-y-4 scale-[0.4] opacity-0"
@@ -124,12 +124,12 @@ export default function MobileTabBar() {
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className={`flex items-center gap-3 rounded-xl px-3.5 py-3 transition-all duration-300 hover:bg-white/8 ${
+                className={`flex items-center gap-3 rounded-xl px-3.5 py-3 transition-all duration-300 hover:bg-navy/5 ${
                   open ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
-                } ${pathname === l.href ? "text-green" : "text-white/85"}`}
+                } ${pathname === l.href ? "text-green-2" : "text-body"}`}
                 style={{ transitionDelay: open ? `${60 + i * 35}ms` : "0ms" }}
               >
-                <span className={`flex h-8 w-8 items-center justify-center rounded-lg ${pathname === l.href ? "bg-green/15 text-green" : "bg-white/6 text-white/70"}`}>
+                <span className={`flex h-8 w-8 items-center justify-center rounded-lg ${pathname === l.href ? "bg-green/15 text-green-2" : "bg-navy/6 text-muted"}`}>
                   <SmallIcon d={l.d} />
                 </span>
                 <span className="font-display text-sm font-bold">{l.label}</span>
@@ -143,24 +143,24 @@ export default function MobileTabBar() {
             {/* little tail pointing at the menu icon */}
             <span
               aria-hidden="true"
-              className="absolute -bottom-1.5 right-7 h-3 w-3 rotate-45 rounded-[3px] border-r border-b border-white/12 bg-navy-2/95"
+              className="absolute -bottom-1.5 right-7 h-3 w-3 rotate-45 rounded-[3px] border-r border-b border-mist bg-white/95"
             />
           </div>
 
           {/* ── the bar ─────────────────────────────────────────── */}
-          <div className="grid grid-cols-4 overflow-hidden rounded-2xl border border-white/12 bg-ink/92 shadow-[0_10px_36px_rgba(0,0,0,0.45)] backdrop-blur-xl">
+          <div className="grid grid-cols-4 overflow-hidden rounded-2xl border border-mist bg-white/92 shadow-[0_10px_36px_rgba(12,35,64,0.18)] backdrop-blur-xl">
             <Link
               href="/"
-              className={`${tabCls} ${pathname === "/" ? "text-green" : "text-white/65 hover:text-white"}`}
+              className={`${tabCls} ${pathname === "/" ? "text-green-2" : "text-muted hover:text-navy"}`}
             >
               <HomeIcon />
               Home
             </Link>
-            <a href={site.phoneHref} className={`${tabCls} text-white/65 hover:text-white`}>
+            <a href={site.phoneHref} className={`${tabCls} text-muted hover:text-navy`}>
               <PhoneIcon />
               Call us
             </a>
-            <a href={site.emailHref} className={`${tabCls} text-white/65 hover:text-white`}>
+            <a href={site.emailHref} className={`${tabCls} text-muted hover:text-navy`}>
               <MailIcon />
               Email us
             </a>
@@ -169,7 +169,7 @@ export default function MobileTabBar() {
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
               aria-controls="mobile-menu-popup"
-              className={`${tabCls} cursor-pointer ${open ? "text-green" : "text-white/65 hover:text-white"}`}
+              className={`${tabCls} cursor-pointer ${open ? "text-green-2" : "text-muted hover:text-navy"}`}
             >
               {/* hamburger that folds into an X */}
               <span className="flex h-[22px] w-[22px] flex-col items-center justify-center gap-[4.5px]" aria-hidden="true">
