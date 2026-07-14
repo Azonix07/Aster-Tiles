@@ -31,7 +31,11 @@ async function fullSiteMaintenanceOn(request: NextRequest): Promise<boolean> {
     if (!res.ok) return false;
     const data = (await res.json()) as { maintenance?: { fullSite?: boolean } };
     return Boolean(data.maintenance?.fullSite);
-  } catch {
+  } catch (err) {
+    // Fail open (site stays up) but never silently: a store that's unreachable or
+    // misconfigured must be distinguishable from "maintenance is simply off",
+    // otherwise a broken production store looks identical to a working toggle.
+    console.error("[proxy] maintenance check failed; treating site as live:", err);
     return false;
   }
 }

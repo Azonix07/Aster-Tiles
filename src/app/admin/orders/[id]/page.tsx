@@ -2,9 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDb } from "@/lib/db";
+import { effectivePrice } from "@/lib/pricing";
 import { money, dateTime } from "@/lib/format";
 import { StatusBadge, Timeline } from "@/components/shop/OrderBits";
 import OrderControls from "@/components/admin/OrderControls";
+import OrderEditor from "@/components/admin/OrderEditor";
 import { requirePermission } from "@/lib/adminGuard";
 
 export default async function AdminOrderDetail({
@@ -14,8 +16,17 @@ export default async function AdminOrderDetail({
 }) {
   await requirePermission("orders");
   const { id } = await params;
-  const order = (await getDb()).orders.find((o) => o.id === id);
+  const db = await getDb();
+  const order = db.orders.find((o) => o.id === id);
   if (!order) notFound();
+
+  const catalog = db.tiles.map((t) => ({
+    id: t.id,
+    name: t.name,
+    price: effectivePrice(t),
+    image: t.texture,
+    inStock: t.inStock,
+  }));
 
   return (
     <div className="mx-auto max-w-6xl">
@@ -30,6 +41,10 @@ export default async function AdminOrderDetail({
           </p>
         </div>
         <StatusBadge status={order.status} />
+      </div>
+
+      <div className="mt-4">
+        <OrderEditor order={order} catalog={catalog} />
       </div>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[1.7fr_1fr] lg:items-start">
@@ -114,6 +129,21 @@ export default async function AdminOrderDetail({
                 <br />
                 {order.address.postcode}
               </address>
+              {(order.carrier || order.trackingNumber) && (
+                <p className="mt-3 rounded-lg bg-green/5 px-3 py-2 text-xs text-navy">
+                  <span className="font-bold">Tracking:</span> {order.carrier}
+                  {order.carrier && order.trackingNumber ? " · " : ""}
+                  {order.trackingNumber}
+                  {order.trackingUrl && (
+                    <>
+                      {" · "}
+                      <a href={order.trackingUrl} target="_blank" rel="noopener noreferrer" className="text-green underline">
+                        link
+                      </a>
+                    </>
+                  )}
+                </p>
+              )}
             </div>
           </div>
 
@@ -121,7 +151,7 @@ export default async function AdminOrderDetail({
           <div className="rounded-2xl border border-mist bg-white p-6 shadow-sm">
             <h2 className="display text-xl text-navy">Timeline</h2>
             <div className="mt-4">
-              <Timeline order={order} />
+              <Timeline events={order.timeline} />
             </div>
             {order.adminNote && (
               <p className="mt-4 rounded-lg bg-gold/10 px-3 py-2 text-xs text-navy">

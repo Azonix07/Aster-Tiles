@@ -57,7 +57,7 @@ export default async function OrderDetailPage({
         </div>
 
         <div className="mt-8 rounded-2xl bg-white p-6 shadow-lift sm:p-8">
-          <OrderProgress order={order} />
+          <OrderProgress status={order.status} />
         </div>
 
         <div className="mt-8 grid gap-8 lg:grid-cols-[1.7fr_1fr] lg:items-start">
@@ -107,7 +107,7 @@ export default async function OrderDetailPage({
             <div className="rounded-2xl bg-white p-6 shadow-lift sm:p-8">
               <h2 className="display text-xl text-navy">Order history</h2>
               <div className="mt-5">
-                <Timeline order={order} />
+                <Timeline events={order.timeline} />
               </div>
             </div>
           </div>

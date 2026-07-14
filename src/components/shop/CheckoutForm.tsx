@@ -53,6 +53,15 @@ export default function CheckoutForm({ savedAddresses }: { savedAddresses: Addre
   const [note, setNote] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  // Stable across retries of this checkout attempt so a double-click or network
+  // retry can't create two orders; a fresh mount (new checkout) gets a new key.
+  const [idempotencyKey] = useState(() => {
+    try {
+      return crypto.randomUUID();
+    } catch {
+      return `co-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    }
+  });
 
   const set = (field: keyof AddressFields) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setAddress((prev) => ({ ...prev, [field]: e.target.value }));
@@ -83,6 +92,7 @@ export default function CheckoutForm({ savedAddresses }: { savedAddresses: Addre
         paymentMethod: payment,
         customerNote: note,
         saveAddress: selectedSaved === "new" && saveAddress,
+        idempotencyKey,
       }),
     });
     const data = await res.json().catch(() => null);

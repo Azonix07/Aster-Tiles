@@ -30,15 +30,15 @@ const PROGRESS: OrderStatus[] = [
   "delivered",
 ];
 
-export function OrderProgress({ order }: { order: Order }) {
-  if (order.status === "cancelled") {
+export function OrderProgress({ status }: { status: OrderStatus }) {
+  if (status === "cancelled") {
     return (
       <div className="rounded-xl border border-red-200 bg-red-50 px-5 py-4">
         <p className="font-display text-sm font-bold text-red-600">This order was cancelled.</p>
       </div>
     );
   }
-  const currentIdx = PROGRESS.indexOf(order.status);
+  const currentIdx = PROGRESS.indexOf(status);
   return (
     <ol className="flex flex-wrap items-center gap-y-3">
       {PROGRESS.map((step, i) => {
@@ -76,8 +76,8 @@ export function OrderProgress({ order }: { order: Order }) {
   );
 }
 
-export function Timeline({ order }: { order: Order }) {
-  const events = [...order.timeline].reverse();
+export function Timeline({ events: input }: { events: Order["timeline"] }) {
+  const events = [...input].reverse();
   return (
     <ol className="space-y-4">
       {events.map((e, i) => (

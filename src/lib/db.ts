@@ -381,11 +381,32 @@ async function saveRaw(db: Db): Promise<void> {
     await kv(["SET", KV_DB_KEY, JSON.stringify(db)]);
     return;
   }
+  // On a serverless host (Vercel) the filesystem is read-only and /tmp is wiped
+  // between invocations, so a file write either throws or silently vanishes on the
+  // next cold start — this is exactly the "admin changes don't persist / maintenance
+  // toggle does nothing" bug. Fail loudly rather than pretend the write succeeded.
+  if (STORE_STATUS.productionWithoutStore) {
+    throw new Error(
+      "No durable store configured — set KV_REST_API_URL and KV_REST_API_TOKEN " +
+        "(add the Upstash Redis integration in your Vercel project). Refusing to " +
+        "write to the ephemeral file store in production, where it would silently vanish.",
+    );
+  }
   await fsp.mkdir(DATA_DIR, { recursive: true });
   const tmp = `${DB_FILE}.${process.pid}.tmp`;
   await fsp.writeFile(tmp, JSON.stringify(db, null, 2), "utf8");
   await fsp.rename(tmp, DB_FILE);
 }
+
+/**
+ * Whether writes will actually persist. `productionWithoutStore` is the danger
+ * state: a deployed build with no Redis, where every admin edit is silently lost.
+ * The admin UI surfaces this so it can never masquerade as "the toggle doesn't work".
+ */
+export const STORE_STATUS = {
+  durable: USE_KV,
+  productionWithoutStore: process.env.NODE_ENV === "production" && !USE_KV,
+} as const;
 
 /** First-run seed: prefer the bundled data/db.json, else build from the TS sources. */
 async function seedInitial(): Promise<Db> {
@@ -420,11 +441,28 @@ export async function getDb(): Promise<Db> {
   return loadDb();
 }
 
-/** Read-modify-write helper; always reads fresh to avoid clobbering concurrent edits. */
+/**
+ * Serializes read-modify-write calls within this instance. Without this, two
+ * concurrent mutations can interleave (read, read, write, write) so the later
+ * write clobbers the earlier one — losing an order or colliding on an
+ * AT-YYYY-NNNN number. The queue makes each mutation see the previous one's
+ * result. Cross-instance safety (multiple serverless lambdas hitting the same
+ * Redis doc) is a separate concern noted in the README.
+ */
+let writeQueue: Promise<unknown> = Promise.resolve();
+
+/** Read-modify-write helper; reads fresh and serializes to avoid clobbering concurrent edits. */
 export async function mutateDb<T>(fn: (db: Db) => T): Promise<T> {
-  const db = await readDbFresh();
-  const result = fn(db);
-  await saveRaw(db);
+  const run = async (): Promise<T> => {
+    const db = await readDbFresh();
+    const result = fn(db);
+    await saveRaw(db);
+    return result;
+  };
+  // Chain onto the queue whether or not the previous op resolved, so one failed
+  // mutation never wedges the whole queue.
+  const result = writeQueue.then(run, run) as Promise<T>;
+  writeQueue = result.catch(() => {});
   return result;
 }
 
@@ -444,6 +482,23 @@ export async function getContent(): Promise<SiteContent> {
 
 export async function getSettings(): Promise<Settings> {
   return (await getDb()).settings;
+}
+
+/**
+ * Public, login-free order lookup for the tracking page. Requires BOTH the order
+ * number and the email that placed it — order numbers are sequential and guessable
+ * (AT-2026-0042), so the email is the shared secret that authorizes the lookup.
+ */
+export async function findOrderForTracking(
+  numberInput: string,
+  emailInput: string,
+): Promise<Order | undefined> {
+  const number = numberInput.trim().toLowerCase();
+  const email = emailInput.trim().toLowerCase();
+  if (!number || !email) return undefined;
+  return (await getDb()).orders.find(
+    (o) => o.number.toLowerCase() === number && o.customerEmail.toLowerCase() === email,
+  );
 }
 
 /* ── Orders ────────────────────────────────────────── */

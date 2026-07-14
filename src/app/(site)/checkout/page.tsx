@@ -23,7 +23,7 @@ export default async function CheckoutPage() {
         <h1 className="display mt-2 text-4xl text-navy sm:text-5xl">Checkout</h1>
 
         <div className="mt-10">
-          {settings.maintenance.payments ? (
+          {settings.maintenance.payments || settings.maintenance.fullSite ? (
             <div className="rounded-2xl bg-white p-10 text-center shadow-lift">
               <p className="display text-2xl text-navy">Ordering is paused for a moment</p>
               <p className="mx-auto mt-3 max-w-md text-sm text-muted">

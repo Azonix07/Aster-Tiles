@@ -53,6 +53,9 @@ export async function sendEmail(opts: {
 const esc = (s: string) =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
+/** Attribute-safe escaping for values placed inside an HTML attribute (e.g. href). */
+const escAttr = (s: string) => esc(s).replace(/"/g, "&quot;");
+
 function shell(title: string, inner: string): string {
   return `<div style="font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;max-width:560px;margin:0 auto;color:#0c2340">
     <div style="background:#0c2340;padding:20px 24px;border-radius:12px 12px 0 0">
@@ -108,5 +111,82 @@ export async function sendTicketReply(opts: {
     subject: `Re: ${opts.subject} [${opts.ticketNumber}]`,
     html: shell(`Update on ${opts.ticketNumber}`, inner),
     text: `${opts.body}\n\n— ${opts.agentName}, Aster Tiles`,
+  });
+}
+
+/* ── Orders ─────────────────────────────────────────── */
+
+type OrderEmailItem = { name: string; sqm: number; pricePerSqm: number; lineTotal: number };
+
+const money = (n: number, symbol: string) =>
+  `${symbol}${n.toLocaleString("en-IE", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+function itemsTable(items: OrderEmailItem[], symbol: string): string {
+  const rows = items
+    .map(
+      (i) => `<tr>
+        <td style="padding:8px 0;font-size:13px;color:#0c2340">${esc(i.name)}<br/><span style="color:#4a5f78">${i.sqm} m² × ${money(i.pricePerSqm, symbol)}/m²</span></td>
+        <td style="padding:8px 0;font-size:13px;color:#0c2340;text-align:right;white-space:nowrap">${money(i.lineTotal, symbol)}</td>
+      </tr>`,
+    )
+    .join("");
+  return `<table style="width:100%;border-collapse:collapse;margin:8px 0">${rows}</table>`;
+}
+
+export async function sendOrderConfirmation(opts: {
+  to: string;
+  customerName: string;
+  orderNumber: string;
+  items: OrderEmailItem[];
+  subtotal: number;
+  deliveryFee: number;
+  total: number;
+  currencySymbol: string;
+  paymentMethod: "cod" | "razorpay";
+  trackingUrl?: string;
+}): Promise<SendResult> {
+  const s = opts.currencySymbol;
+  const inner = `
+    <p style="margin:0 0 12px;font-size:14px;line-height:1.6">Hi ${esc(opts.customerName)}, thanks for your order — we've received it and will be in touch to arrange delivery.</p>
+    <p style="margin:0 0 4px;font-size:13px;color:#4a5f78">Order <strong style="color:#0c2340">${esc(opts.orderNumber)}</strong></p>
+    ${itemsTable(opts.items, s)}
+    <table style="width:100%;border-collapse:collapse;border-top:1px solid #e6ebf1;margin-top:8px">
+      <tr><td style="padding:6px 0;font-size:13px;color:#4a5f78">Subtotal</td><td style="padding:6px 0;font-size:13px;text-align:right;color:#0c2340">${money(opts.subtotal, s)}</td></tr>
+      <tr><td style="padding:6px 0;font-size:13px;color:#4a5f78">Delivery</td><td style="padding:6px 0;font-size:13px;text-align:right;color:#0c2340">${opts.deliveryFee === 0 ? "Free" : money(opts.deliveryFee, s)}</td></tr>
+      <tr><td style="padding:8px 0;font-size:15px;font-weight:700;color:#0c2340;border-top:1px solid #e6ebf1">Total</td><td style="padding:8px 0;font-size:15px;font-weight:700;text-align:right;color:#0c2340;border-top:1px solid #e6ebf1">${money(opts.total, s)}</td></tr>
+    </table>
+    <p style="margin:14px 0 0;font-size:13px;color:#4a5f78">Payment: ${opts.paymentMethod === "cod" ? "Cash on Delivery — pay the driver when your tiles arrive." : "Online (Razorpay)."}</p>
+    ${opts.trackingUrl ? `<a href="${escAttr(opts.trackingUrl)}" style="display:inline-block;margin-top:16px;background:#2db87c;color:#fff;text-decoration:none;padding:10px 18px;border-radius:8px;font-weight:700;font-size:14px">Track your order</a>` : ""}`;
+  return sendEmail({
+    to: opts.to,
+    subject: `Order confirmed — ${opts.orderNumber}`,
+    html: shell(`Order ${opts.orderNumber} confirmed`, inner),
+    text: `Hi ${opts.customerName}, thanks for your order ${opts.orderNumber}. Total ${money(opts.total, s)}, ${opts.paymentMethod === "cod" ? "cash on delivery" : "paid online"}.${opts.trackingUrl ? ` Track it: ${opts.trackingUrl}` : ""}`,
+  });
+}
+
+export async function sendOrderStatusUpdate(opts: {
+  to: string;
+  customerName: string;
+  orderNumber: string;
+  statusLabel: string;
+  note?: string;
+  trackingNumber?: string;
+  carrier?: string;
+  trackingUrl?: string;
+}): Promise<SendResult> {
+  const inner = `
+    <p style="margin:0 0 12px;font-size:14px;line-height:1.6">Hi ${esc(opts.customerName)}, there's an update on your order <strong>${esc(opts.orderNumber)}</strong>.</p>
+    <div style="border-left:3px solid #2db87c;padding:8px 0 8px 14px;margin:16px 0">
+      <p style="margin:0;font-size:15px;font-weight:700;color:#0c2340">${esc(opts.statusLabel)}</p>
+      ${opts.note ? `<p style="margin:4px 0 0;font-size:13px;color:#4a5f78">${esc(opts.note)}</p>` : ""}
+      ${opts.carrier || opts.trackingNumber ? `<p style="margin:6px 0 0;font-size:13px;color:#4a5f78">${opts.carrier ? esc(opts.carrier) : "Tracking"}${opts.trackingNumber ? `: <strong style="color:#0c2340">${esc(opts.trackingNumber)}</strong>` : ""}</p>` : ""}
+    </div>
+    ${opts.trackingUrl ? `<a href="${escAttr(opts.trackingUrl)}" style="display:inline-block;background:#2db87c;color:#fff;text-decoration:none;padding:10px 18px;border-radius:8px;font-weight:700;font-size:14px">View order status</a>` : ""}`;
+  return sendEmail({
+    to: opts.to,
+    subject: `Order ${opts.orderNumber}: ${opts.statusLabel}`,
+    html: shell(`Order ${opts.orderNumber} update`, inner),
+    text: `Hi ${opts.customerName}, your order ${opts.orderNumber} is now: ${opts.statusLabel}.${opts.note ? ` ${opts.note}` : ""}${opts.trackingNumber ? ` Tracking: ${opts.trackingNumber}` : ""}${opts.trackingUrl ? ` ${opts.trackingUrl}` : ""}`,
   });
 }

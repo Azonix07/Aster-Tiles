@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useSettings, useTiles, useUser } from "@/components/StoreProvider";
+import { effectivePrice } from "@/lib/pricing";
 import type { DbTile } from "@/lib/db";
 
 export interface CartItem {
@@ -136,7 +137,9 @@ export function useCartDetails() {
   const lines: CartLine[] = items.flatMap((item) => {
     const tile = tiles.find((t) => t.id === item.tileId);
     if (!tile) return [];
-    return [{ tile, sqm: item.sqm, lineTotal: Math.round(tile.pricePerSqm * item.sqm * 100) / 100 }];
+    // Use the discounted price so cart, checkout summary and the server order agree.
+    const unit = effectivePrice(tile);
+    return [{ tile, sqm: item.sqm, lineTotal: Math.round(unit * item.sqm * 100) / 100 }];
   });
 
   const subtotal = Math.round(lines.reduce((sum, l) => sum + l.lineTotal, 0) * 100) / 100;

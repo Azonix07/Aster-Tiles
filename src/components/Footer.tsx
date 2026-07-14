@@ -22,6 +22,11 @@ export default async function Footer() {
                 </Link>
               </li>
             ))}
+            <li>
+              <Link href="/track" className="transition-colors hover:text-green">
+                Track order
+              </Link>
+            </li>
           </ul>
         </div>
 

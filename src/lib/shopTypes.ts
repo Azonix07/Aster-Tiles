@@ -85,6 +85,14 @@ export interface Order {
   timeline: { status: OrderStatus; note?: string; at: string }[];
   customerNote?: string;
   adminNote?: string;
+  /** courier / tracking details, set by staff when the order ships */
+  carrier?: string;
+  trackingNumber?: string;
+  trackingUrl?: string;
+  /** ISO date string for an estimated delivery, shown on the tracking page */
+  estimatedDelivery?: string;
+  /** de-dupes double-submitted checkouts; set once at creation */
+  idempotencyKey?: string;
   createdAt: string;
   updatedAt: string;
 }
