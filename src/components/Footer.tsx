@@ -27,6 +27,11 @@ export default async function Footer() {
                 Track order
               </Link>
             </li>
+            <li>
+              <Link href="/account/support" className="transition-colors hover:text-green">
+                Support
+              </Link>
+            </li>
           </ul>
         </div>
 

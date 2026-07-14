@@ -88,6 +88,15 @@ export default function Nav() {
               </Link>
             )}
             <Link
+              href="/account/support"
+              className="flex items-center gap-2 rounded-md px-3 py-2 text-[0.85rem] font-medium text-body transition-colors hover:bg-navy/5 hover:text-navy"
+            >
+              <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 5.636a9 9 0 010 12.728m-12.728 0a9 9 0 010-12.728m9.9 9.9a5 5 0 010-7.072m-7.072 0a5 5 0 010 7.072M12 12h.01" />
+              </svg>
+              Support
+            </Link>
+            <Link
               href={accountHref}
               className="flex items-center gap-2 rounded-md px-3 py-2 text-[0.85rem] font-medium text-body transition-colors hover:bg-navy/5 hover:text-navy"
             >
@@ -167,6 +176,9 @@ export default function Nav() {
           </Link>
           <Link href={accountHref} className="text-lg font-bold text-body">
             {accountLabel}
+          </Link>
+          <Link href="/account/support" className="text-lg font-bold text-body">
+            Support
           </Link>
           {user?.isAdmin && (
             <Link href="/admin" className="text-lg font-bold text-gold">
