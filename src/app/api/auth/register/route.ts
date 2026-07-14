@@ -23,7 +23,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Password must be at least 8 characters." }, { status: 400 });
   }
 
-  const user = mutateDb((db): User | null => {
+  const user = await mutateDb((db): User | null => {
     if (db.users.some((u) => u.email === email)) return null;
     const created: User = {
       id: newId(),
@@ -32,6 +32,9 @@ export async function POST(request: Request) {
       phone,
       passwordHash: hashPassword(password),
       isAdmin: false,
+      role: "customer",
+      permissions: [],
+      active: true,
       addresses: [],
       createdAt: new Date().toISOString(),
     };

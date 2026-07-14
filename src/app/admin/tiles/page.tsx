@@ -2,9 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { getDb } from "@/lib/db";
 import { money } from "@/lib/format";
+import { requirePermission } from "@/lib/adminGuard";
 
-export default function AdminTilesPage() {
-  const db = getDb();
+export default async function AdminTilesPage() {
+  await requirePermission("tiles");
+  const db = await getDb();
   const symbol = db.settings.currencySymbol;
 
   return (

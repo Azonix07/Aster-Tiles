@@ -9,9 +9,9 @@ import { money } from "@/lib/format";
 import { effectivePrice, hasDiscount } from "@/lib/pricing";
 
 /** One favourite from each style — a taste of the catalogue, linked to the shop. */
-export default function FeaturedTiles() {
-  const tiles = getTiles();
-  const settings = getSettings();
+export default async function FeaturedTiles() {
+  const tiles = await getTiles();
+  const settings = await getSettings();
 
   const order: TileCategory[] = ["stone", "wood", "metro", "pattern"];
   const featured = order.flatMap((cat) => {

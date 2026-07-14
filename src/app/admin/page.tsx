@@ -81,8 +81,8 @@ function PlusIcon() {
 
 /* ── Dashboard ────────────────────────────────── */
 
-export default function AdminDashboard() {
-  const db = getDb();
+export default async function AdminDashboard() {
+  const db = await getDb();
   const orders = [...db.orders].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   const active = orders.filter((o) => !["delivered", "cancelled"].includes(o.status));
   const delivered = orders.filter((o) => o.status === "delivered");

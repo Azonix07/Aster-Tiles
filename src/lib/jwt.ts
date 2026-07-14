@@ -32,6 +32,8 @@ export interface SessionPayload {
   phone: string;
   createdAt: string;
   isAdmin: boolean;
+  /** Role for back-office access: admin | manager | staff | customer. */
+  role?: string;
   exp: number; // unix seconds
 }
 

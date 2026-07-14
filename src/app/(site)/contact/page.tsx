@@ -31,8 +31,8 @@ const iconProps = {
   "aria-hidden": true,
 } as const;
 
-export default function ContactPage() {
-  const { site } = getContent();
+export default async function ContactPage() {
+  const { site } = await getContent();
   return (
     <>
       {/* ── Header ─────────────────────────────────── */}

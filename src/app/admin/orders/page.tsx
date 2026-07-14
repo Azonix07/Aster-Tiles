@@ -2,18 +2,20 @@ import Link from "next/link";
 import { getDb, ORDER_STATUSES, type OrderStatus } from "@/lib/db";
 import { money, shortDate, STATUS_LABELS } from "@/lib/format";
 import { StatusBadge } from "@/components/shop/OrderBits";
+import { requirePermission } from "@/lib/adminGuard";
 
 export default async function AdminOrdersPage({
   searchParams,
 }: {
   searchParams: Promise<{ status?: string }>;
 }) {
+  await requirePermission("orders");
   const { status } = await searchParams;
   const filter = ORDER_STATUSES.includes(status as OrderStatus)
     ? (status as OrderStatus)
     : undefined;
 
-  const all = [...getDb().orders].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  const all = [...(await getDb()).orders].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   const orders = filter ? all.filter((o) => o.status === filter) : all;
 
   return (

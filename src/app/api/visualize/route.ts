@@ -44,7 +44,7 @@ export async function POST(req: Request): Promise<Response> {
   if (photo.size > 20 * 1024 * 1024) {
     return Response.json({ error: "Photo too large — please use an image under 20MB." }, { status: 400 });
   }
-  const tile = getTiles().find((t) => t.id === tileId);
+  const tile = (await getTiles()).find((t) => t.id === tileId);
   if (!tile) {
     return Response.json({ error: "Unknown tile." }, { status: 400 });
   }

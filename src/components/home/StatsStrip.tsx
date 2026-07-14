@@ -7,9 +7,9 @@ import { getContent, getTiles } from "@/lib/db";
  * sits on a real tile texture with a white sample-label plate, the way
  * swatches are tagged on the Lifford sample boards.
  */
-export default function StatsStrip() {
-  const { site } = getContent();
-  const textures = getTiles()
+export default async function StatsStrip() {
+  const { site } = await getContent();
+  const textures = (await getTiles())
     .map((t) => t.texture)
     .slice(0, site.stats.length);
 

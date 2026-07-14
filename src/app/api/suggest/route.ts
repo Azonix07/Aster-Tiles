@@ -91,7 +91,7 @@ export async function POST(req: Request): Promise<Response> {
   const data = Buffer.from(await photo.arrayBuffer()).toString("base64");
   const mediaType = photo.type as ImageMediaType;
 
-  const tiles = getTiles();
+  const tiles = await getTiles();
   const catalogue = tiles
     .map(
       (t) =>

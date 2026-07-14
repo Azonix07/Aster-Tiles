@@ -4,8 +4,8 @@ import Parallax from "@/components/scroll/Parallax";
 import { getContent } from "@/lib/db";
 
 /** Inspiration wall — real-home shots with gentle parallax drift. */
-export default function GalleryWall() {
-  const { gallery } = getContent();
+export default async function GalleryWall() {
+  const { gallery } = await getContent();
   return (
     <section className="py-20 lg:py-24">
       <div className="mx-auto max-w-7xl px-6">

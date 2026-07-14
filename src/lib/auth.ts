@@ -1,5 +1,6 @@
 import { cookies, headers } from "next/headers";
 import { getDb, type User } from "@/lib/db";
+import type { Role, Permission } from "@/lib/roles";
 import { signSession, verifySession } from "@/lib/jwt";
 
 export const SESSION_COOKIE = "aster_session";
@@ -15,9 +16,10 @@ export async function currentUser(): Promise<User | null> {
   if (!payload) return null;
   // Fetch the live user record so name / isAdmin changes propagate.
   // If not found (e.g. Vercel ephemeral /tmp wiped), reconstruct from JWT payload.
-  const dbUser = getDb().users.find((u) => u.id === payload.userId);
+  const dbUser = (await getDb()).users.find((u) => u.id === payload.userId);
   if (dbUser) return dbUser;
 
+  // Degraded fallback (store unreachable): rebuild from the signed token.
   return {
     id: payload.userId,
     name: payload.name || "User",
@@ -25,6 +27,9 @@ export async function currentUser(): Promise<User | null> {
     phone: payload.phone || "",
     passwordHash: "",
     isAdmin: payload.isAdmin,
+    role: (payload.role as Role) ?? (payload.isAdmin ? "admin" : "customer"),
+    permissions: [],
+    active: true,
     addresses: [],
     createdAt: payload.createdAt || new Date().toISOString(),
   };
@@ -37,12 +42,22 @@ export interface PublicUser {
   email: string;
   phone: string;
   isAdmin: boolean;
+  role: Role;
+  permissions: Permission[];
 }
 
 export function toPublicUser(user: User | null): PublicUser | null {
   if (!user) return null;
-  const { id, name, email, phone, isAdmin } = user;
-  return { id, name, email, phone: phone ?? "", isAdmin };
+  const { id, name, email, phone, isAdmin, role, permissions } = user;
+  return {
+    id,
+    name,
+    email,
+    phone: phone ?? "",
+    isAdmin,
+    role: role ?? (isAdmin ? "admin" : "customer"),
+    permissions: permissions ?? [],
+  };
 }
 
 /**
@@ -66,6 +81,7 @@ export async function createAndSetSession(user: User): Promise<void> {
     phone: user.phone || "",
     createdAt: user.createdAt,
     isAdmin: user.isAdmin,
+    role: user.role ?? (user.isAdmin ? "admin" : "customer"),
     exp,
   });
   const store = await cookies();

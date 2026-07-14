@@ -11,7 +11,7 @@ const sora = Sora({ subsets: ["latin"], variable: "--font-sora" });
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { site, media } = getContent();
+  const { site, media } = await getContent();
   return {
     metadataBase: new URL("https://astertiles.ie"),
     title: {
@@ -46,9 +46,9 @@ export const viewport: Viewport = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const content = getContent();
-  const tiles = getTiles();
-  const settings = getSettings();
+  const content = await getContent();
+  const tiles = await getTiles();
+  const settings = await getSettings();
   const user = toPublicUser(await currentUser());
 
   const publicSettings: PublicSettings = {

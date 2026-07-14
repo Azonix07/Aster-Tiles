@@ -6,8 +6,8 @@ import StatsStrip from "@/components/home/StatsStrip";
 import { getContent } from "@/lib/db";
 
 /** The six departments as a clean card grid with deep parallax and glass elements. */
-export default function CollectionsGrid() {
-  const { collections } = getContent();
+export default async function CollectionsGrid() {
+  const { collections } = await getContent();
   return (
     <section className="relative py-24 lg:py-32 overflow-hidden bg-off">
       {/* Background Graphic Texture */}

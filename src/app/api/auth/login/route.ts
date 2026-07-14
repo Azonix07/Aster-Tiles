@@ -19,7 +19,7 @@ export async function POST(request: Request) {
   const password = String(body?.password ?? "");
 
   const isEmail = identifier.includes("@");
-  const user = getDb().users.find((u) =>
+  const user = (await getDb()).users.find((u) =>
     isEmail ? u.email === identifier : phonesMatch(u.phone, identifier),
   );
   if (!user || !verifyPassword(password, user.passwordHash)) {

@@ -50,7 +50,7 @@ export async function POST(request: Request) {
     }
   }
 
-  const result = mutateDb((db): { order?: Order; error?: string; status?: number } => {
+  const result = await mutateDb((db): { order?: Order; error?: string; status?: number } => {
     const { settings } = db;
 
     if (settings.maintenance.fullSite || settings.maintenance.payments) {

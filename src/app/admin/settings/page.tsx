@@ -1,8 +1,10 @@
 import { getSettings } from "@/lib/db";
 import SettingsForm from "@/components/admin/SettingsForm";
+import { requirePermission } from "@/lib/adminGuard";
 
-export default function AdminSettingsPage() {
-  const settings = getSettings();
+export default async function AdminSettingsPage() {
+  await requirePermission("settings");
+  const settings = await getSettings();
 
   return (
     <div className="mx-auto max-w-3xl">

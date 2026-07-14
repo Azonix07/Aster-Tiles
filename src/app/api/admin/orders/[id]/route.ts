@@ -1,13 +1,15 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { mutateDb, ORDER_STATUSES, type OrderStatus } from "@/lib/db";
 import { currentUser } from "@/lib/auth";
+import { can } from "@/lib/roles";
 
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
   const user = await currentUser();
-  if (!user?.isAdmin) return NextResponse.json({ error: "Admins only." }, { status: 403 });
+  if (!can(user, "orders")) return NextResponse.json({ error: "Not allowed." }, { status: 403 });
 
   const { id } = await params;
   const body = (await request.json().catch(() => null)) as {
@@ -18,7 +20,7 @@ export async function PATCH(
   } | null;
   if (!body) return NextResponse.json({ error: "Bad request." }, { status: 400 });
 
-  const ok = mutateDb((db) => {
+  const ok = await mutateDb((db) => {
     const order = db.orders.find((o) => o.id === id);
     if (!order) return false;
 
@@ -46,5 +48,6 @@ export async function PATCH(
   });
 
   if (!ok) return NextResponse.json({ error: "Order not found." }, { status: 404 });
+  revalidatePath("/admin/orders");
   return NextResponse.json({ ok: true });
 }

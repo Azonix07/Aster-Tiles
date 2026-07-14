@@ -494,7 +494,8 @@
       "passwordHash": "ef57801669d80cf157228f185ae71273:085d105347fad1d90da3c236b8e77581b964fce9d3c66da9962fb2935ab7d5e25d9a4ee2e927b0be9413b82fe0bd5fbfa87207ccb46fee5014b550dee557a8aa",
       "isAdmin": true,
       "addresses": [],
-      "createdAt": "2026-07-03T03:57:04.243Z"
+      "createdAt": "2026-07-03T03:57:04.243Z",
+      "role": "admin"
     },
     {
       "id": "7f826106e5bb5be4ecaf",
@@ -514,7 +515,8 @@
           "postcode": "F92 AB12"
         }
       ],
-      "createdAt": "2026-07-03T03:59:44.149Z"
+      "createdAt": "2026-07-03T03:59:44.149Z",
+      "role": "customer"
     }
   ],
   "sessions": [
@@ -574,6 +576,8 @@
     }
   ],
   "counters": {
-    "order": 1
-  }
+    "order": 1,
+    "ticket": 0
+  },
+  "tickets": []
 }

@@ -1,13 +1,26 @@
-import fs from "fs";
+import fsp from "fs/promises";
 import path from "path";
 import crypto from "crypto";
+import { cache } from "react";
 import { tiles as seedTiles, collections as seedCollections, gallery as seedGallery, type Tile } from "@/lib/tiles";
 import { site as seedSite, staff as seedStaff, testimonials as seedTestimonials } from "@/lib/site";
-import { ORDER_STATUSES, type Address, type Order, type OrderItem, type OrderStatus } from "@/lib/shopTypes";
+import {
+  ORDER_STATUSES,
+  TICKET_STATUSES,
+  type Address,
+  type Order,
+  type OrderItem,
+  type OrderStatus,
+  type Ticket,
+  type TicketMessage,
+  type TicketStatus,
+} from "@/lib/shopTypes";
+import type { Role, Permission } from "@/lib/roles";
 
 // Server-side re-exports; client components import these from "@/lib/shopTypes".
-export { ORDER_STATUSES };
-export type { Address, Order, OrderItem, OrderStatus };
+export { ORDER_STATUSES, TICKET_STATUSES };
+export type { Address, Order, OrderItem, OrderStatus, Ticket, TicketMessage, TicketStatus };
+export type { Role, Permission } from "@/lib/roles";
 
 /* ── Types ─────────────────────────────────────────── */
 
@@ -132,7 +145,14 @@ export interface User {
   /** optional for accounts created before phone was collected at registration */
   phone?: string;
   passwordHash: string;
+  /** legacy flag, kept in sync with role === "admin" */
   isAdmin: boolean;
+  /** back-office role; absent on pre-RBAC accounts (backfilled by migrate) */
+  role: Role;
+  /** granular permissions for staff; admins & managers get all implicitly */
+  permissions?: Permission[];
+  /** false disables back-office access without deleting the account */
+  active?: boolean;
   addresses: Address[];
   createdAt: string;
 }
@@ -150,7 +170,8 @@ export interface Db {
   users: User[];
   sessions: Session[];
   orders: Order[];
-  counters: { order: number };
+  tickets: Ticket[];
+  counters: { order: number; ticket: number };
 }
 
 /* ── Password hashing (used here for the seeded admin) ── */
@@ -175,12 +196,22 @@ export function newId(): string {
 
 /* ── Store ─────────────────────────────────────────── */
 
-// On Vercel the project root is read-only; /tmp is the only writable dir.
-const IS_VERCEL = process.env.VERCEL === "1";
-const DATA_DIR = IS_VERCEL ? "/tmp" : path.join(process.cwd(), "data");
+/**
+ * Storage backend. In production (Vercel) the filesystem is read-only and /tmp is
+ * wiped between invocations, so the whole DB lives in Upstash Redis (via the Vercel
+ * KV integration). When those env vars are absent — i.e. local dev — we transparently
+ * fall back to a JSON file under ./data so the project runs with zero setup.
+ */
+const KV_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+const KV_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+export const USE_KV = Boolean(KV_URL && KV_TOKEN);
+/** Single Redis key holding the entire serialized Db document. */
+export const KV_DB_KEY = "aster:db";
+
+const DATA_DIR = path.join(process.cwd(), "data");
 const DB_FILE = path.join(DATA_DIR, "db.json");
-// Bundled seed file shipped with the deployment (always readable).
-const SEED_FILE = path.join(process.cwd(), "data", "db.json");
+// Bundled seed file shipped with the deployment (always readable, used to seed KV).
+const SEED_FILE = DB_FILE;
 
 export const DEFAULT_ADMIN = { email: "admin@astertiles.ie", password: "admin123" };
 
@@ -265,18 +296,22 @@ function seed(): Db {
         email: DEFAULT_ADMIN.email,
         passwordHash: hashPassword(DEFAULT_ADMIN.password),
         isAdmin: true,
+        role: "admin",
+        permissions: [],
+        active: true,
         addresses: [],
         createdAt: new Date().toISOString(),
       },
     ],
     sessions: [],
     orders: [],
-    counters: { order: 0 },
+    tickets: [],
+    counters: { order: 0, ticket: 0 },
   };
 }
 
-/** Backfill sections added after a db.json was first written. */
-function migrate(db: Db): Db {
+/** Backfill sections added after a db was first written. Returns whether it changed. */
+function migrate(db: Db): { db: Db; changed: boolean } {
   let changed = false;
   if (!db.content.media) {
     db.content.media = structuredClone(DEFAULT_MEDIA);
@@ -286,65 +321,129 @@ function migrate(db: Db): Db {
     db.content.home = structuredClone(DEFAULT_HOME);
     changed = true;
   }
-  if (changed) writeDb(db);
+  // RBAC: give every pre-existing account a role derived from the legacy flag.
+  for (const u of db.users) {
+    if (!u.role) {
+      u.role = u.isAdmin ? "admin" : "customer";
+      changed = true;
+    }
+  }
+  // Support tickets store.
+  if (!db.tickets) {
+    db.tickets = [];
+    changed = true;
+  }
+  if (db.counters.ticket === undefined) {
+    db.counters.ticket = 0;
+    changed = true;
+  }
+  return { db, changed };
+}
+
+/* ── Low-level store I/O (Redis in prod, file in dev) ── */
+
+/** Run a single Upstash Redis REST command, e.g. ["GET", key]. */
+async function kv<T = unknown>(command: (string | number)[]): Promise<T> {
+  const res = await fetch(KV_URL!, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${KV_TOKEN}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(command),
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    throw new Error(`Redis ${command[0]} failed: ${res.status} ${await res.text().catch(() => "")}`);
+  }
+  const data = (await res.json()) as { result: T; error?: string };
+  if (data.error) throw new Error(`Redis ${command[0]} error: ${data.error}`);
+  return data.result;
+}
+
+/** Load the raw Db from the backing store, or null if it has never been written. */
+async function loadRaw(): Promise<Db | null> {
+  if (USE_KV) {
+    const raw = await kv<string | null>(["GET", KV_DB_KEY]);
+    if (!raw) return null;
+    return JSON.parse(typeof raw === "string" ? raw : JSON.stringify(raw)) as Db;
+  }
+  try {
+    return JSON.parse(await fsp.readFile(DB_FILE, "utf8")) as Db;
+  } catch {
+    return null;
+  }
+}
+
+/** Persist the Db to the backing store. */
+async function saveRaw(db: Db): Promise<void> {
+  if (USE_KV) {
+    await kv(["SET", KV_DB_KEY, JSON.stringify(db)]);
+    return;
+  }
+  await fsp.mkdir(DATA_DIR, { recursive: true });
+  const tmp = `${DB_FILE}.${process.pid}.tmp`;
+  await fsp.writeFile(tmp, JSON.stringify(db, null, 2), "utf8");
+  await fsp.rename(tmp, DB_FILE);
+}
+
+/** First-run seed: prefer the bundled data/db.json, else build from the TS sources. */
+async function seedInitial(): Promise<Db> {
+  try {
+    const bundled = JSON.parse(await fsp.readFile(SEED_FILE, "utf8")) as Db;
+    return migrate(bundled).db;
+  } catch {
+    return seed();
+  }
+}
+
+/** Read the current Db (uncached), seeding/migrating and persisting as needed. */
+async function readDbFresh(): Promise<Db> {
+  const existing = await loadRaw();
+  if (!existing) {
+    const fresh = await seedInitial();
+    await saveRaw(fresh);
+    return fresh;
+  }
+  const { db, changed } = migrate(existing);
+  if (changed) await saveRaw(db);
   return db;
 }
 
-function readDb(): Db {
-  if (!fs.existsSync(DB_FILE)) {
-    // On Vercel: copy the bundled seed file into /tmp so subsequent reads work.
-    if (IS_VERCEL && fs.existsSync(SEED_FILE)) {
-      const db = migrate(JSON.parse(fs.readFileSync(SEED_FILE, "utf8")) as Db);
-      writeDb(db);
-      return db;
-    }
-    const db = seed();
-    writeDb(db);
-    return db;
-  }
-  return migrate(JSON.parse(fs.readFileSync(DB_FILE, "utf8")) as Db);
+/**
+ * Per-request-memoized read. React's cache() dedupes the many getContent/getTiles/…
+ * calls a single page render makes down to one store round-trip.
+ */
+const loadDb = cache(readDbFresh);
+
+export async function getDb(): Promise<Db> {
+  return loadDb();
 }
 
-function writeDb(db: Db): void {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
-  // On Vercel /tmp rename across devices can fail; write directly.
-  if (IS_VERCEL) {
-    fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2), "utf8");
-  } else {
-    const tmp = `${DB_FILE}.${process.pid}.tmp`;
-    fs.writeFileSync(tmp, JSON.stringify(db, null, 2), "utf8");
-    fs.renameSync(tmp, DB_FILE);
-  }
-}
-
-export function getDb(): Db {
-  return readDb();
-}
-
-/** Read-modify-write helper; returns whatever the mutator returns. */
-export function mutateDb<T>(fn: (db: Db) => T): T {
-  const db = readDb();
+/** Read-modify-write helper; always reads fresh to avoid clobbering concurrent edits. */
+export async function mutateDb<T>(fn: (db: Db) => T): Promise<T> {
+  const db = await readDbFresh();
   const result = fn(db);
-  writeDb(db);
+  await saveRaw(db);
   return result;
 }
 
 /* ── Convenience getters ───────────────────────────── */
 
-export function getTiles(): DbTile[] {
-  return getDb().tiles;
+export async function getTiles(): Promise<DbTile[]> {
+  return (await getDb()).tiles;
 }
 
-export function getTile(id: string): DbTile | undefined {
-  return getDb().tiles.find((t) => t.id === id);
+export async function getTile(id: string): Promise<DbTile | undefined> {
+  return (await getDb()).tiles.find((t) => t.id === id);
 }
 
-export function getContent(): SiteContent {
-  return getDb().content;
+export async function getContent(): Promise<SiteContent> {
+  return (await getDb()).content;
 }
 
-export function getSettings(): Settings {
-  return getDb().settings;
+export async function getSettings(): Promise<Settings> {
+  return (await getDb()).settings;
 }
 
 /* ── Orders ────────────────────────────────────────── */
@@ -352,4 +451,9 @@ export function getSettings(): Settings {
 export function nextOrderNumber(db: Db): string {
   db.counters.order += 1;
   return `AT-${new Date().getFullYear()}-${String(db.counters.order).padStart(4, "0")}`;
+}
+
+export function nextTicketNumber(db: Db): string {
+  db.counters.ticket += 1;
+  return `ST-${new Date().getFullYear()}-${String(db.counters.ticket).padStart(4, "0")}`;
 }

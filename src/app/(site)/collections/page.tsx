@@ -18,8 +18,8 @@ export const metadata: Metadata = {
  * The Collections — six category chapters, the full tile range, and an
  * invitation to the showroom.
  */
-export default function CollectionsPage() {
-  const { site, staff, collections, media } = getContent();
+export default async function CollectionsPage() {
+  const { site, staff, collections, media } = await getContent();
   return (
     <>
       {/* ── Page header ───────────────────────────────────── */}

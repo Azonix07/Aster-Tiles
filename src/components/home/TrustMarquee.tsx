@@ -5,8 +5,8 @@ import { getContent } from "@/lib/db";
  * like a retailer's service strip. Square green chips echo the tile motif;
  * no animation, everything readable at a glance.
  */
-export default function TrustMarquee() {
-  const items = getContent().home.marquee;
+export default async function TrustMarquee() {
+  const items = (await getContent()).home.marquee;
 
   return (
     <div className="border-y border-mist bg-white">

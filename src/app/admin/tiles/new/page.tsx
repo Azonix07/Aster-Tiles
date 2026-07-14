@@ -1,7 +1,9 @@
 import Link from "next/link";
 import TileForm from "@/components/admin/TileForm";
+import { requirePermission } from "@/lib/adminGuard";
 
-export default function NewTilePage() {
+export default async function NewTilePage() {
+  await requirePermission("tiles");
   return (
     <div className="mx-auto max-w-6xl">
       <Link href="/admin/tiles" className="text-xs font-bold text-muted hover:text-green">

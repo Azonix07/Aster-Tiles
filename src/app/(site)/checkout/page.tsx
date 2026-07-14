@@ -14,7 +14,7 @@ export default async function CheckoutPage() {
   const user = await currentUser();
   if (!user) redirect("/login?next=/checkout");
 
-  const settings = getSettings();
+  const settings = await getSettings();
 
   return (
     <section className="min-h-[70vh] bg-off pt-12 pb-20">

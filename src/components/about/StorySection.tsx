@@ -11,8 +11,8 @@ const promises = [
 ];
 
 /** The founding story — words on the left, the shopfront on the right. */
-export default function StorySection() {
-  const { media } = getContent();
+export default async function StorySection() {
+  const { media } = await getContent();
   return (
     <section className="bg-off py-24 sm:py-28">
       <div className="mx-auto grid max-w-7xl items-center gap-14 px-6 lg:grid-cols-2 lg:gap-20">

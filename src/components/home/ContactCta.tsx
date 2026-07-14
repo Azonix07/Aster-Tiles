@@ -6,8 +6,8 @@ import Rings from "@/components/decor/Rings";
 import { getContent } from "@/lib/db";
 
 /** Closing band: visit details on brand navy, leading into the footer. */
-export default function ContactCta() {
-  const { site } = getContent();
+export default async function ContactCta() {
+  const { site } = await getContent();
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-navy to-navy-2">
       {/* floating glass crystals — the black ground disappears via screen blend */}

@@ -9,8 +9,8 @@ import Rings from "@/components/decor/Rings";
 import { LogoMark } from "@/components/Logo";
 
 /** Immersive full-screen video hero: glass panel, depth layers, scroll choreography. */
-export default function HomeHero() {
-  const { site, home } = getContent();
+export default async function HomeHero() {
+  const { site, home } = await getContent();
 
   return (
     <section className="relative -mt-17 flex min-h-[100svh] w-full flex-col justify-center overflow-hidden">

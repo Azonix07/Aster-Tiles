@@ -8,9 +8,9 @@ export const metadata: Metadata = {
   robots: { index: false },
 };
 
-export default function MaintenancePage() {
-  const settings = getSettings();
-  const { site } = getContent();
+export default async function MaintenancePage() {
+  const settings = await getSettings();
+  const { site } = await getContent();
 
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-ink px-6">

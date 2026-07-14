@@ -2,14 +2,16 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import TileForm from "@/components/admin/TileForm";
 import { getTile } from "@/lib/db";
+import { requirePermission } from "@/lib/adminGuard";
 
 export default async function EditTilePage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
+  await requirePermission("tiles");
   const { id } = await params;
-  const tile = getTile(id);
+  const tile = await getTile(id);
   if (!tile) notFound();
 
   return (

@@ -34,6 +34,38 @@ export interface OrderItem {
   lineTotal: number;
 }
 
+export const TICKET_STATUSES = ["open", "pending", "resolved", "closed"] as const;
+export type TicketStatus = (typeof TICKET_STATUSES)[number];
+
+export interface TicketMessage {
+  id: string;
+  /** "customer" for the person who opened it, "staff" for an admin/manager/staff reply */
+  author: "customer" | "staff";
+  authorName: string;
+  body: string;
+  createdAt: string;
+  /** true when this staff reply was successfully emailed to the customer */
+  emailed?: boolean;
+}
+
+export interface Ticket {
+  id: string;
+  /** human-friendly ticket number, e.g. ST-2026-0007 */
+  number: string;
+  subject: string;
+  category: string;
+  customerName: string;
+  customerEmail: string;
+  /** set when opened by a signed-in customer */
+  userId?: string;
+  /** optionally references an order the ticket is about */
+  orderId?: string;
+  status: TicketStatus;
+  messages: TicketMessage[];
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Order {
   id: string;
   /** human-friendly order number, e.g. AT-2026-0042 */

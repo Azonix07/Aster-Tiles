@@ -1,15 +1,17 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { mutateDb } from "@/lib/db";
 import { currentUser } from "@/lib/auth";
+import { can } from "@/lib/roles";
 
 export async function PUT(request: Request) {
   const user = await currentUser();
-  if (!user?.isAdmin) return NextResponse.json({ error: "Admins only." }, { status: 403 });
+  if (!can(user, "settings")) return NextResponse.json({ error: "Not allowed." }, { status: 403 });
 
   const raw = (await request.json().catch(() => null)) as Record<string, unknown> | null;
   if (!raw) return NextResponse.json({ error: "Bad request." }, { status: 400 });
 
-  mutateDb((db) => {
+  await mutateDb((db) => {
     const s = db.settings;
     if (typeof raw.currencySymbol === "string" && raw.currencySymbol.trim()) {
       s.currencySymbol = raw.currencySymbol.trim().slice(0, 4);
@@ -32,6 +34,8 @@ export async function PUT(request: Request) {
       }
     }
   });
+
+  revalidatePath("/", "layout");
 
   return NextResponse.json({ ok: true });
 }

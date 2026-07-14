@@ -3,8 +3,8 @@ import Reveal from "@/components/scroll/Reveal";
 import { getContent } from "@/lib/db";
 
 /** The four faces of Aster — portrait cards with a gradient nameplate. */
-export default function TeamGrid() {
-  const { staff } = getContent();
+export default async function TeamGrid() {
+  const { staff } = await getContent();
   return (
     <section className="bg-off py-24 sm:py-28">
       <div className="mx-auto max-w-7xl px-6">

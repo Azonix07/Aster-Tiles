@@ -5,14 +5,16 @@ import { getDb } from "@/lib/db";
 import { money, dateTime } from "@/lib/format";
 import { StatusBadge, Timeline } from "@/components/shop/OrderBits";
 import OrderControls from "@/components/admin/OrderControls";
+import { requirePermission } from "@/lib/adminGuard";
 
 export default async function AdminOrderDetail({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
+  await requirePermission("orders");
   const { id } = await params;
-  const order = getDb().orders.find((o) => o.id === id);
+  const order = (await getDb()).orders.find((o) => o.id === id);
   if (!order) notFound();
 
   return (

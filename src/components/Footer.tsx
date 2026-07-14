@@ -2,8 +2,8 @@ import Link from "next/link";
 import { Logo } from "@/components/Logo";
 import { getContent } from "@/lib/db";
 
-export default function Footer() {
-  const { site } = getContent();
+export default async function Footer() {
+  const { site } = await getContent();
   return (
     <footer className="border-t border-white/10 bg-ink text-white/60">
       <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 md:grid-cols-[1.4fr_1fr_1fr_1.2fr]">

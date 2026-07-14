@@ -1,8 +1,10 @@
 import { getContent } from "@/lib/db";
 import { HomeTextForm, MediaForm } from "@/components/admin/AppearanceForms";
+import { requirePermission } from "@/lib/adminGuard";
 
-export default function AdminAppearancePage() {
-  const content = getContent();
+export default async function AdminAppearancePage() {
+  await requirePermission("appearance");
+  const content = await getContent();
 
   return (
     <div className="mx-auto max-w-4xl">

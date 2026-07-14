@@ -2,8 +2,8 @@ import Image from "next/image";
 import Reveal from "@/components/scroll/Reveal";
 import { getContent } from "@/lib/db";
 
-export default function Testimonials() {
-  const { testimonials } = getContent();
+export default async function Testimonials() {
+  const { testimonials } = await getContent();
   return (
     <section className="relative overflow-hidden border-t border-mist bg-white py-24">
       <div className="pointer-events-none absolute inset-0 opacity-[0.03] mix-blend-multiply">

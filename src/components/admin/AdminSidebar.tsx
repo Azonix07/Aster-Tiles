@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LogoutButton } from "@/components/shop/AuthForms";
+import { canManageTeam, ROLE_LABELS, type Permission, type Role } from "@/lib/roles";
 
 /* ── SVG icon components ──────────────────────── */
 
@@ -76,6 +77,33 @@ function SettingsIcon() {
   );
 }
 
+function SupportIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+    </svg>
+  );
+}
+
+function TeamIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+    </svg>
+  );
+}
+
+function ProfileIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </svg>
+  );
+}
+
 function SiteIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -103,19 +131,43 @@ function MenuIcon({ isOpen }: { isOpen: boolean }) {
   );
 }
 
-const LINKS = [
+type NavLink = {
+  href: string;
+  label: string;
+  Icon: () => React.ReactElement;
+  perm?: Permission;
+  team?: boolean;
+};
+
+const LINKS: NavLink[] = [
   { href: "/admin", label: "Dashboard", Icon: DashboardIcon },
-  { href: "/admin/orders", label: "Orders", Icon: OrdersIcon },
-  { href: "/admin/analytics", label: "Analytics", Icon: AnalyticsIcon },
-  { href: "/admin/tiles", label: "Tiles", Icon: TilesIcon },
-  { href: "/admin/content", label: "Site Content", Icon: ContentIcon },
-  { href: "/admin/appearance", label: "Appearance", Icon: AppearanceIcon },
-  { href: "/admin/settings", label: "Settings", Icon: SettingsIcon },
+  { href: "/admin/orders", label: "Orders", Icon: OrdersIcon, perm: "orders" },
+  { href: "/admin/support", label: "Support", Icon: SupportIcon, perm: "tickets" },
+  { href: "/admin/analytics", label: "Analytics", Icon: AnalyticsIcon, perm: "analytics" },
+  { href: "/admin/tiles", label: "Tiles", Icon: TilesIcon, perm: "tiles" },
+  { href: "/admin/content", label: "Site Content", Icon: ContentIcon, perm: "content" },
+  { href: "/admin/appearance", label: "Appearance", Icon: AppearanceIcon, perm: "appearance" },
+  { href: "/admin/settings", label: "Settings", Icon: SettingsIcon, perm: "settings" },
+  { href: "/admin/team", label: "Team", Icon: TeamIcon, team: true },
 ];
 
-export default function AdminSidebar({ adminName }: { adminName: string }) {
+export default function AdminSidebar({
+  adminName,
+  role,
+  permissions,
+}: {
+  adminName: string;
+  role: Role;
+  permissions: Permission[];
+}) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+
+  const links = LINKS.filter((l) => {
+    if (l.team) return canManageTeam(role);
+    if (l.perm) return permissions.includes(l.perm);
+    return true;
+  });
 
   // Close the mobile menu when the route changes (render-time reset — the
   // React-recommended alternative to a setState-in-effect cascade).
@@ -173,7 +225,7 @@ export default function AdminSidebar({ adminName }: { adminName: string }) {
           </span>
           <div className="min-w-0 flex-1">
             <p className="truncate text-xs font-semibold text-white/90">{adminName}</p>
-            <p className="text-[0.6rem] text-white/40">Administrator</p>
+            <p className="text-[0.6rem] text-white/40">{ROLE_LABELS[role]}</p>
           </div>
         </div>
 
@@ -182,7 +234,7 @@ export default function AdminSidebar({ adminName }: { adminName: string }) {
           <p className="mb-1 hidden px-3 text-[0.6rem] font-bold tracking-[0.12em] text-white/30 uppercase lg:block">
             Manage
           </p>
-          {LINKS.map((l) => {
+          {links.map((l) => {
             const active =
               l.href === "/admin" ? pathname === "/admin" : pathname.startsWith(l.href);
             return (
@@ -207,6 +259,17 @@ export default function AdminSidebar({ adminName }: { adminName: string }) {
 
         {/* Footer */}
         <div className="mt-6 flex flex-col gap-2 border-t border-white/8 pt-5 lg:mt-auto">
+          <Link
+            href="/admin/profile"
+            className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-semibold transition ${
+              pathname.startsWith("/admin/profile")
+                ? "bg-green/15 text-green"
+                : "text-white/45 hover:bg-white/5 hover:text-green"
+            }`}
+          >
+            <ProfileIcon />
+            My profile
+          </Link>
           <Link
             href="/"
             className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold text-white/45 transition hover:bg-white/5 hover:text-green"

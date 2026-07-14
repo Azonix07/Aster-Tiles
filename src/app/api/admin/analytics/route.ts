@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { currentUser } from "@/lib/auth";
+import { can } from "@/lib/roles";
 import { getAnalytics, posthogConfigured } from "@/lib/posthog";
 
 export const dynamic = "force-dynamic";
@@ -11,8 +12,8 @@ export const dynamic = "force-dynamic";
  */
 export async function GET(request: Request) {
   const user = await currentUser();
-  if (!user?.isAdmin) {
-    return NextResponse.json({ error: "Admins only." }, { status: 403 });
+  if (!can(user, "analytics")) {
+    return NextResponse.json({ error: "Not allowed." }, { status: 403 });
   }
 
   if (!posthogConfigured()) {

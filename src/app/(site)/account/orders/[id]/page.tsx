@@ -23,7 +23,7 @@ export default async function OrderDetailPage({
   const { id } = await params;
   if (!user) redirect(`/login?next=${encodeURIComponent(`/account/orders/${id}`)}`);
 
-  const order = getDb().orders.find((o) => o.id === id);
+  const order = (await getDb()).orders.find((o) => o.id === id);
   if (!order || (order.userId !== user.id && !user.isAdmin)) notFound();
 
   const justPlaced = (await searchParams).placed === "1";

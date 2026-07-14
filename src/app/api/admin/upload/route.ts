@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { currentUser } from "@/lib/auth";
+import { can } from "@/lib/roles";
 import fs from "fs";
 import path from "path";
 
@@ -24,8 +25,8 @@ const MAX_VIDEO_BYTES = 200 * 1024 * 1024; // 200 MB
 
 export async function POST(request: Request) {
   const user = await currentUser();
-  if (!user?.isAdmin) {
-    return NextResponse.json({ error: "Admins only." }, { status: 403 });
+  if (!can(user, "tiles") && !can(user, "content") && !can(user, "appearance")) {
+    return NextResponse.json({ error: "Not allowed." }, { status: 403 });
   }
 
   const formData = await request.formData().catch(() => null);

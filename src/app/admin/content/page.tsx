@@ -6,9 +6,11 @@ import {
   StaffForm,
   TestimonialsForm,
 } from "@/components/admin/ContentForms";
+import { requirePermission } from "@/lib/adminGuard";
 
-export default function AdminContentPage() {
-  const content = getContent();
+export default async function AdminContentPage() {
+  await requirePermission("content");
+  const content = await getContent();
 
   return (
     <div className="mx-auto max-w-4xl">

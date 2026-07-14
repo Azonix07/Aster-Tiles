@@ -5,8 +5,8 @@ import Rings from "@/components/decor/Rings";
 import { getContent } from "@/lib/db";
 
 /** Light opening: the story headline, then the showroom wide shot. */
-export default function AboutHero() {
-  const { media } = getContent();
+export default async function AboutHero() {
+  const { media } = await getContent();
   return (
     <section className="relative overflow-hidden border-b border-mist bg-white">
       <Rings id="about-rings" className="absolute -top-28 -right-28 h-96 w-96 opacity-15" />

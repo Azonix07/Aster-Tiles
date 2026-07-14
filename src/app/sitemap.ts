@@ -3,7 +3,7 @@ import { getTiles } from "@/lib/db";
 
 const BASE = "https://astertiles.ie";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     { url: BASE, changeFrequency: "weekly", priority: 1 },
     { url: `${BASE}/collections`, changeFrequency: "weekly", priority: 0.9 },
@@ -12,7 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/contact`, changeFrequency: "monthly", priority: 0.6 },
   ];
 
-  const tilePages: MetadataRoute.Sitemap = getTiles().map((t) => ({
+  const tilePages: MetadataRoute.Sitemap = (await getTiles()).map((t) => ({
     url: `${BASE}/tiles/${t.id}`,
     changeFrequency: "weekly",
     priority: 0.8,

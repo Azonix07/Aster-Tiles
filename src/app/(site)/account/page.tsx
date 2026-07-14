@@ -17,7 +17,7 @@ export default async function AccountPage() {
   const user = await currentUser();
   if (!user) redirect("/login?next=/account");
 
-  const orders = getDb()
+  const orders = (await getDb())
     .orders.filter((o) => o.userId === user.id)
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 
@@ -158,6 +158,18 @@ export default async function AccountPage() {
               <div className="mt-5">
                 <AddressBook addresses={user.addresses} />
               </div>
+            </div>
+
+            {/* support */}
+            <div className="rounded-2xl bg-white p-6 shadow-lift sm:p-8">
+              <h2 className="display text-xl text-navy">Need a hand?</h2>
+              <p className="mt-2 text-sm text-muted">
+                Questions about an order, delivery or a product? Open an enquiry and we&apos;ll
+                reply by email.
+              </p>
+              <Link href="/account/support" className="btn btn-green mt-5">
+                Contact support
+              </Link>
             </div>
           </aside>
         </div>

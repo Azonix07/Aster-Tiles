@@ -23,7 +23,7 @@ export async function POST(request: Request) {
     postcode: String(body.postcode).trim(),
   };
 
-  mutateDb((db) => {
+  await mutateDb((db) => {
     const dbUser = db.users.find((u) => u.id === user.id);
     if (dbUser) dbUser.addresses.push(address);
   });
@@ -38,7 +38,7 @@ export async function DELETE(request: Request) {
   const { id } = (await request.json().catch(() => ({}))) as { id?: string };
   if (!id) return NextResponse.json({ error: "Missing address id." }, { status: 400 });
 
-  mutateDb((db) => {
+  await mutateDb((db) => {
     const dbUser = db.users.find((u) => u.id === user.id);
     if (dbUser) dbUser.addresses = dbUser.addresses.filter((a) => a.id !== id);
   });

@@ -102,6 +102,10 @@ export default function AnalyticsDashboard() {
   }, []);
 
   useEffect(() => {
+    // Fetch-on-mount / on-range-change. load() sets a loading state before the
+    // async request; that synchronous setState is intentional here (the component
+    // also initialises to "loading"), so this rule is a false positive.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     load(days);
   }, [days, load]);
 

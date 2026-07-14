@@ -15,9 +15,9 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const tile = getTile(id);
+  const tile = await getTile(id);
   if (!tile) return { title: "Tile not found" };
-  const settings = getSettings();
+  const settings = await getSettings();
   return {
     title: `${tile.name} — ${tile.material} tile, ${money(tile.pricePerSqm, settings.currencySymbol)}/m²`,
     description: tile.description,
@@ -35,11 +35,11 @@ export default async function TilePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const tile = getTile(id);
+  const tile = await getTile(id);
   if (!tile) notFound();
 
-  const settings = getSettings();
-  const related = getTiles()
+  const settings = await getSettings();
+  const related = (await getTiles())
     .filter((t) => t.id !== tile.id && t.category === tile.category)
     .slice(0, 4);
 
