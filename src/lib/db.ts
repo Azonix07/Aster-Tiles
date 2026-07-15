@@ -321,6 +321,15 @@ function migrate(db: Db): { db: Db; changed: boolean } {
     db.content.home = structuredClone(DEFAULT_HOME);
     changed = true;
   }
+  // One-off: adopt the new minimal hero copy on stores that still hold the
+  // original default wording. Guarded on the exact old headline so a site that
+  // customised its hero in the admin keeps its own copy untouched.
+  if (db.content.home.heroHeadline === "Transform your *space*\nwith premium tiles") {
+    db.content.home.heroBadge = DEFAULT_HOME.heroBadge;
+    db.content.home.heroHeadline = DEFAULT_HOME.heroHeadline;
+    db.content.home.heroSub = DEFAULT_HOME.heroSub;
+    changed = true;
+  }
   // RBAC: give every pre-existing account a role derived from the legacy flag.
   for (const u of db.users) {
     if (!u.role) {
