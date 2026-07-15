@@ -432,12 +432,15 @@ export default function ChatWidget() {
       </div>
 
       {/* ── Launcher ─────────────────────────────── */}
+      {/* Green, like every other primary action here: navy read as part of the artwork
+          on the dark hero photos and disappeared. The ring keeps it separated from
+          whatever image happens to be behind it. */}
       <button
         type="button"
         onClick={() => (open ? setOpen(false) : openChat("launcher"))}
         aria-label={open ? "Close chat" : "Chat with the showroom assistant"}
         aria-expanded={open}
-        className="flex h-14 w-14 items-center justify-center rounded-full bg-navy text-white shadow-lift transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-navy-2 hover:shadow-green"
+        className="flex h-14 w-14 items-center justify-center rounded-full bg-green text-white ring-2 ring-white/70 shadow-green transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-green-2 hover:shadow-lift motion-reduce:transition-none"
       >
         <span className={`transition-transform duration-300 ${open ? "rotate-90" : ""}`}>
           <Icon d={open ? icon.close : icon.chat} size={22} />
