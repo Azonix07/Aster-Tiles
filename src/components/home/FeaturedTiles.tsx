@@ -53,7 +53,7 @@ export default async function FeaturedTiles() {
               <Link
                 href={`/tiles/${t.id}`}
                 data-reveal
-                className="group flex h-full flex-col overflow-hidden rounded-3xl border border-mist/50 bg-white/60 backdrop-blur-md transition-all duration-500 hover:border-green/50 hover:shadow-[0_20px_40px_rgba(45,184,124,0.12)]"
+                className="group flex h-full flex-col overflow-hidden rounded-3xl border border-mist bg-white transition-all duration-500 hover:-translate-y-1.5 hover:border-green/50 hover:shadow-lift"
               >
                 <div className="relative aspect-square overflow-hidden bg-mist/30">
                   <Image

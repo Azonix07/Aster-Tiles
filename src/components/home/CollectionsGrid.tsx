@@ -42,7 +42,7 @@ export default async function CollectionsGrid() {
               key={c.id}
               href={`/collections#${c.id}`}
               data-reveal
-              className="group overflow-hidden rounded-3xl border border-mist/50 bg-white/60 backdrop-blur-md transition-all duration-500 hover:-translate-y-2 hover:border-green/50 hover:shadow-[0_20px_40px_rgba(45,184,124,0.12)]"
+              className="group overflow-hidden rounded-3xl border border-mist bg-white transition-all duration-500 hover:-translate-y-1.5 hover:border-green/50 hover:shadow-lift"
             >
               <div className="relative aspect-[4/3] overflow-hidden rounded-t-3xl">
                 <Parallax speed={0.2} className="relative -top-[12%] h-[125%]">

@@ -26,8 +26,8 @@ export default function HeroFx() {
       } as const;
 
       gsap.to(section.querySelector("[data-hero-media]"), {
-        scale: 1.18,
-        yPercent: 8,
+        scale: 1.08,
+        yPercent: 4,
         ease: "none",
         scrollTrigger: scrub,
       });

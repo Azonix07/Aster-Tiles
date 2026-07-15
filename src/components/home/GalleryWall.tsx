@@ -52,7 +52,7 @@ export default async function GalleryWall() {
                 />
               </Parallax>
               <div className="absolute inset-0 flex items-end bg-gradient-to-t from-navy/50 via-transparent to-transparent p-4 opacity-80 transition-opacity duration-300 group-hover:opacity-100">
-                <span className="rounded-sm bg-ink/85 px-2.5 py-1 font-display text-[0.68rem] font-bold tracking-wide text-white backdrop-blur-sm">
+                <span className="rounded-sm bg-ink/90 px-2.5 py-1 font-display text-[0.68rem] font-bold tracking-wide text-white">
                   {g.tag}
                 </span>
               </div>

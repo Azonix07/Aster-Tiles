@@ -73,7 +73,7 @@ export default function Nav() {
         className={`fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,box-shadow] duration-300 ${
           overHero
             ? "border-transparent bg-transparent"
-            : "border-mist bg-white/95 shadow-[0_4px_20px_rgba(16,18,24,0.06)] backdrop-blur-md"
+            : "border-mist bg-white shadow-[0_4px_20px_rgba(16,18,24,0.06)]"
         }`}
       >
         <div className="mx-auto flex h-17 max-w-7xl items-center gap-8 px-6">

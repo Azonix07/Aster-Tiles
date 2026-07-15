@@ -155,7 +155,7 @@ export default function MobileTabBar() {
           </div>
 
           {/* ── the bar ─────────────────────────────────────────── */}
-          <div className="grid grid-cols-4 overflow-hidden rounded-2xl border border-mist bg-white/92 shadow-[0_10px_36px_rgba(12,35,64,0.18)] backdrop-blur-xl">
+          <div className="grid grid-cols-4 overflow-hidden rounded-2xl border border-mist bg-white shadow-[0_10px_36px_rgba(16,18,24,0.16)]">
             <Link
               href="/"
               className={`${tabCls} ${pathname === "/" ? "text-green-2" : "text-muted hover:text-navy"}`}
