@@ -139,7 +139,11 @@ export default function ChatWidget() {
   useEffect(() => {
     if (!open) return;
     const el = transcriptRef.current;
-    if (el) el.scrollTop = el.scrollHeight;
+    if (!el) return;
+    // Only the greeting so far: stay at the top. Jumping to the bottom here scrolls
+    // the greeting half out of sight on a short screen, which is the first thing a
+    // visitor sees. Once there's a conversation, follow the newest message.
+    el.scrollTop = turns.length <= 1 ? 0 : el.scrollHeight;
   }, [turns, sending, open]);
 
   const openChat = (source: string) => {
@@ -210,6 +214,14 @@ export default function ChatWidget() {
     }
   };
 
+  // The panel is pinned above the launcher, so its height has to be whatever is left
+  // between the fixed h-17 nav and the launcher — otherwise a short screen (a small
+  // Android, or any phone in landscape) pushes its top off the top of the window and
+  // the header disappears. Sum of what sits below it, plus the nav, plus a margin.
+  const maxPanelHeight = paymentsDown
+    ? "max-h-[calc(100svh-18rem-env(safe-area-inset-bottom))] lg:max-h-[calc(100svh-13rem)]"
+    : "max-h-[calc(100svh-15rem-env(safe-area-inset-bottom))] lg:max-h-[calc(100svh-10.5rem)]";
+
   return (
     <div
       // Clears the mobile tab bar, and steps up again over the payments banner —
@@ -229,7 +241,7 @@ export default function ChatWidget() {
         role="dialog"
         aria-label="Chat with the Aster showroom assistant"
         inert={!open}
-        className={`absolute right-0 bottom-[calc(100%+0.75rem)] flex h-[min(70vh,34rem)] w-[calc(100vw-2rem)] origin-bottom-right flex-col overflow-hidden rounded-2xl border border-mist bg-white/95 shadow-[0_18px_50px_rgba(12,35,64,0.22)] backdrop-blur-xl transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none sm:w-[24rem] ${
+        className={`absolute right-0 bottom-[calc(100%+0.75rem)] flex h-[min(70svh,34rem)] w-[calc(100vw-2rem)] origin-bottom-right flex-col overflow-hidden rounded-2xl border border-mist bg-white/95 shadow-[0_18px_50px_rgba(12,35,64,0.22)] backdrop-blur-xl transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none sm:w-[24rem] ${maxPanelHeight} ${
           open
             ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
             : "pointer-events-none translate-y-4 scale-[0.4] opacity-0"
@@ -432,12 +444,15 @@ export default function ChatWidget() {
       </div>
 
       {/* ── Launcher ─────────────────────────────── */}
+      {/* Dark rather than green: green + a speech bubble reads as WhatsApp. The white
+          ring is what keeps it off the dark hero photos, which is where a plain navy
+          circle disappeared. */}
       <button
         type="button"
         onClick={() => (open ? setOpen(false) : openChat("launcher"))}
         aria-label={open ? "Close chat" : "Chat with the showroom assistant"}
         aria-expanded={open}
-        className="flex h-14 w-14 items-center justify-center rounded-full bg-navy text-white shadow-lift transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-navy-2 hover:shadow-green"
+        className="flex h-14 w-14 items-center justify-center rounded-full bg-navy text-white ring-2 ring-white/70 shadow-lift transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-navy-2 hover:shadow-green motion-reduce:transition-none"
       >
         <span className={`transition-transform duration-300 ${open ? "rotate-90" : ""}`}>
           <Icon d={open ? icon.close : icon.chat} size={22} />
