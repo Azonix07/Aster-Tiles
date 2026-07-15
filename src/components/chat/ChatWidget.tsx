@@ -35,10 +35,7 @@ const OPENERS = [
 ];
 
 const icon = {
-  // The four-point sparkle already stands for "AI" here — AiMode and TileForm both
-  // use it. A speech bubble in a green circle reads as WhatsApp, not as us.
-  sparkle:
-    "M12 3l1.912 5.813a2 2 0 001.275 1.275L21 12l-5.813 1.912a2 2 0 00-1.275 1.275L12 21l-1.912-5.813a2 2 0 00-1.275-1.275L3 12l5.813-1.912a2 2 0 001.275-1.275L12 3z",
+  chat: "M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z",
   close: "M18 6L6 18M6 6l12 12",
   send: "M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z",
   arrow: "M5 12h14M12 5l7 7-7 7",
@@ -240,8 +237,8 @@ export default function ChatWidget() {
       >
         {/* header */}
         <div className="flex items-center gap-3 border-b border-mist bg-navy px-4 py-3.5">
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-green/20 text-green">
-            <Icon d={icon.sparkle} size={17} />
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-green/20 text-green">
+            <Icon d={icon.chat} size={17} />
           </span>
           <div className="min-w-0 flex-1">
             <p className="font-display text-sm font-bold text-white">Showroom Assistant</p>
@@ -435,18 +432,19 @@ export default function ChatWidget() {
       </div>
 
       {/* ── Launcher ─────────────────────────────── */}
-      {/* The same .btn .btn-green the hero CTAs use — a green circle holding a speech
-          bubble reads as WhatsApp, and a circle fights the 6px geometry the rest of
-          the site now uses. Labelled, because a lone glyph makes people guess. */}
+      {/* Dark rather than green: green + a speech bubble reads as WhatsApp. The white
+          ring is what keeps it off the dark hero photos, which is where a plain navy
+          circle disappeared. */}
       <button
         type="button"
         onClick={() => (open ? setOpen(false) : openChat("launcher"))}
-        aria-label={open ? "Close chat" : "Ask the showroom assistant"}
+        aria-label={open ? "Close chat" : "Chat with the showroom assistant"}
         aria-expanded={open}
-        className="btn btn-green shadow-lift"
+        className="flex h-14 w-14 items-center justify-center rounded-full bg-navy text-white ring-2 ring-white/70 shadow-lift transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-navy-2 hover:shadow-green motion-reduce:transition-none"
       >
-        <Icon d={open ? icon.close : icon.sparkle} size={16} />
-        {open ? "Close" : "Ask Aster"}
+        <span className={`transition-transform duration-300 ${open ? "rotate-90" : ""}`}>
+          <Icon d={open ? icon.close : icon.chat} size={22} />
+        </span>
       </button>
     </div>
   );
