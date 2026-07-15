@@ -113,37 +113,44 @@ export default function MobileTabBar() {
           {/* ── popup — grows out of the menu icon ─────────────── */}
           <div
             id="mobile-menu-popup"
-            className={`absolute right-0 bottom-[calc(100%+0.7rem)] w-60 origin-bottom-right rounded-2xl border border-mist bg-white/95 p-2 shadow-[0_18px_50px_rgba(12,35,64,0.22)] backdrop-blur-xl transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            className={`absolute right-0 bottom-[calc(100%+0.7rem)] w-64 origin-bottom-right rounded-xl border border-mist bg-white shadow-[0_18px_50px_rgba(11,14,13,0.20)] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
               open
                 ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
                 : "pointer-events-none translate-y-4 scale-[0.4] opacity-0"
             }`}
           >
-            {menuLinks.map((l, i) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className={`flex items-center gap-3 rounded-xl px-3.5 py-3 transition-all duration-300 hover:bg-navy/5 ${
-                  open ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
-                } ${pathname === l.href ? "text-green-2" : "text-body"}`}
-                style={{ transitionDelay: open ? `${60 + i * 35}ms` : "0ms" }}
-              >
-                <span className={`flex h-8 w-8 items-center justify-center rounded-lg ${pathname === l.href ? "bg-green/15 text-green-2" : "bg-navy/6 text-muted"}`}>
-                  <SmallIcon d={l.d} />
-                </span>
-                <span className="font-display text-sm font-bold">{l.label}</span>
-                {l.badge > 0 && (
-                  <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-green px-1.5 font-display text-[0.65rem] font-bold text-white">
-                    {l.badge}
-                  </span>
-                )}
-              </Link>
-            ))}
+            <p className="border-b border-mist px-4 pt-3 pb-2.5 font-display text-[0.6rem] font-bold tracking-[0.2em] text-muted uppercase">
+              Menu
+            </p>
+            <div className="p-1.5">
+              {menuLinks.map((l) => {
+                const active = pathname === l.href;
+                return (
+                  <Link
+                    key={l.href}
+                    href={l.href}
+                    onClick={() => setOpen(false)}
+                    className={`group flex items-center gap-3.5 rounded-md px-3 py-2.5 transition-colors ${
+                      active ? "bg-green/8 text-green-2" : "text-body hover:bg-off"
+                    }`}
+                  >
+                    <span className={`flex w-5 shrink-0 justify-center ${active ? "text-green-2" : "text-muted group-hover:text-navy"}`}>
+                      <SmallIcon d={l.d} />
+                    </span>
+                    <span className="font-display text-[0.9rem] font-bold">{l.label}</span>
+                    {l.badge > 0 && (
+                      <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-green px-1.5 font-display text-[0.65rem] font-bold text-white">
+                        {l.badge}
+                      </span>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
             {/* little tail pointing at the menu icon */}
             <span
               aria-hidden="true"
-              className="absolute -bottom-1.5 right-7 h-3 w-3 rotate-45 rounded-[3px] border-r border-b border-mist bg-white/95"
+              className="absolute -bottom-1.5 right-7 h-3 w-3 rotate-45 rounded-[2px] border-r border-b border-mist bg-white"
             />
           </div>
 

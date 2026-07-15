@@ -242,10 +242,10 @@ export const DEFAULT_MEDIA: SiteMedia = {
 };
 
 export const DEFAULT_HOME: HomeText = {
-  heroBadge: "Donegal's Premier Tile Showroom",
-  heroHeadline: "Transform your *space*\nwith premium tiles",
+  heroBadge: "Premium Tiles & Flooring · Donegal",
+  heroHeadline: "Where every room\n*begins*",
   heroSub:
-    "Exquisite tiles, wooden floors and bathroom solutions — serving all of Ireland from our Lifford showroom.",
+    "Premium tiles and flooring, from our Lifford showroom to homes across Ireland.",
   heroAddressLabel: "The Haw · Lifford · Co. Donegal",
   heroAddressHeadline: "Fifteen years on the same street,\n*five thousand* happy homes",
   heroClosingHeadline: "Step *inside*",

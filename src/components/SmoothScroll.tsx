@@ -19,8 +19,10 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     if (prefersReduced) return;
 
     const lenis = new Lenis({
-      duration: 0.95,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      // lerp = frame-independent smoothing; higher catches up faster (snappier),
+      // and the wheel multiplier moves more per notch → smooth but fast.
+      lerp: 0.13,
+      wheelMultiplier: 1.25,
       smoothWheel: true,
       touchMultiplier: 2,
     });

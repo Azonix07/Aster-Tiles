@@ -19,7 +19,7 @@ export function LogoMark({
     >
       <polygon
         points="10,52 28,12 46,52 40,52 28,22 16,52"
-        fill={onLight ? "#0c2340" : "#ffffff"}
+        fill={onLight ? "#16181d" : "#ffffff"}
       />
       <polygon points="28,30 44,52 28,52" fill="#2db87c" />
       <rect
@@ -27,7 +27,7 @@ export function LogoMark({
         y="42"
         width="24"
         height="5"
-        fill={onLight ? "#ffffff" : "#0c2340"}
+        fill={onLight ? "#ffffff" : "#16181d"}
       />
     </svg>
   );
@@ -44,7 +44,7 @@ export function Logo({
     <span className={`flex items-center gap-2.5 ${className ?? ""}`}>
       <LogoMark className="h-9 w-auto shrink-0" onLight={dark} />
       <span
-        className={`font-display text-2xl font-extrabold tracking-wide ${
+        className={`font-display text-2xl font-extrabold tracking-[-0.03em] ${
           dark ? "text-navy" : "text-white"
         }`}
       >

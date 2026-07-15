@@ -5,10 +5,9 @@ import { gsap } from "@/lib/gsap";
 
 /**
  * Scroll choreography for the hero. As the section scrolls away:
- * the video slowly zooms and sinks, the glass panel lifts out faster
- * than the page, the rings rotate and drift down, and the scroll cue
- * fades. Layers are tagged with data-hero-* attributes on the section.
- * No-op for reduced motion.
+ * the video slowly zooms and sinks, the centred content lifts and fades
+ * out faster than the page, and the scroll cue fades. Layers are tagged
+ * with data-hero-* attributes on the section. No-op for reduced motion.
  */
 export default function HeroFx() {
   const ref = useRef<HTMLDivElement>(null);
@@ -32,16 +31,11 @@ export default function HeroFx() {
         ease: "none",
         scrollTrigger: scrub,
       });
-      gsap.to(section.querySelector("[data-hero-panel]"), {
-        y: -90,
+      gsap.to(section.querySelector("[data-hero-content]"), {
+        y: -60,
+        opacity: 0,
         ease: "none",
-        scrollTrigger: scrub,
-      });
-      gsap.to(section.querySelector("[data-hero-rings]"), {
-        y: 140,
-        rotation: 25,
-        ease: "none",
-        scrollTrigger: scrub,
+        scrollTrigger: { ...scrub, end: "60% top" },
       });
       gsap.to(section.querySelector("[data-hero-cue]"), {
         opacity: 0,

@@ -13,7 +13,7 @@ export default function Nav() {
   const { count } = useCart();
   const pathname = usePathname();
   const router = useRouter();
-  const [scrolled, setScrolled] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
   const [open, setOpen] = useState(false);
 
   const logout = async () => {
@@ -24,7 +24,8 @@ export default function Nav() {
   };
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    // Flip to the solid nav once we've scrolled past most of the hero.
+    const onScroll = () => setPastHero(window.scrollY > window.innerHeight * 0.8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -48,69 +49,65 @@ export default function Nav() {
   const accountHref = user ? "/account" : "/login";
   const accountLabel = user ? "My Account" : "Log in";
 
+  // The homepage hero is the only dark-at-top surface, so the nav is only
+  // transparent (white text over video) at the top of "/". Everywhere else it's
+  // the solid light bar with dark text.
+  const overHero = pathname === "/" && !pastHero;
+  const shadow = overHero ? "[text-shadow:0_1px_12px_rgba(0,0,0,0.4)]" : "";
+
+  // A nav link with an underline that wipes in on hover (persistent when active).
+  const navLink = (active: boolean) =>
+    `relative px-3.5 py-2 text-[0.85rem] font-medium transition-colors after:absolute after:inset-x-3.5 after:-bottom-0.5 after:h-px after:origin-left after:bg-current after:transition-transform after:duration-300 ${shadow} ${
+      active
+        ? `${overHero ? "text-white" : "text-green-2"} after:scale-x-100`
+        : `${overHero ? "text-white/75 hover:text-white" : "text-body hover:text-navy"} after:scale-x-0 hover:after:scale-x-100`
+    }`;
+
+  const utilLink = `flex items-center gap-2 px-3 py-2 text-[0.85rem] font-medium transition-colors ${shadow} ${
+    overHero ? "text-white/75 hover:text-white" : "text-body hover:text-navy"
+  }`;
+
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 ${
-          scrolled
-            ? "border-mist bg-white/95 shadow-[0_4px_20px_rgba(12,35,64,0.06)] backdrop-blur-md"
-            : "border-transparent bg-white"
+        className={`fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,box-shadow] duration-300 ${
+          overHero
+            ? "border-transparent bg-transparent"
+            : "border-mist bg-white/95 shadow-[0_4px_20px_rgba(16,18,24,0.06)] backdrop-blur-md"
         }`}
       >
         <div className="mx-auto flex h-17 max-w-7xl items-center gap-8 px-6">
-          <Link href="/" aria-label={`${site.name} home`} className="shrink-0">
-            <Logo dark />
+          <Link href="/" aria-label={`${site.name} home`} className={`shrink-0 ${shadow}`}>
+            <Logo dark={!overHero} />
           </Link>
 
           <nav className="hidden flex-1 items-center justify-center gap-1 lg:flex" aria-label="Main">
             {site.nav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`rounded-md px-3.5 py-2 text-[0.85rem] font-medium transition-colors ${
-                  pathname === item.href
-                    ? "bg-green/10 text-green-2"
-                    : "text-body hover:bg-navy/5 hover:text-navy"
-                }`}
-              >
+              <Link key={item.href} href={item.href} className={navLink(pathname === item.href)}>
                 {item.label}
               </Link>
             ))}
           </nav>
 
-          <div className="ml-auto hidden items-center gap-3 lg:flex">
+          <div className="ml-auto hidden items-center gap-2 lg:flex">
             {user?.isAdmin && (
               <Link
                 href="/admin"
-                className="rounded-md px-3 py-2 text-[0.8rem] font-bold text-gold transition-colors hover:bg-navy/5"
+                className={`px-3 py-2 text-[0.8rem] font-bold transition-colors ${shadow} ${
+                  overHero ? "text-white/80 hover:text-white" : "text-gold hover:text-navy"
+                }`}
               >
                 Admin
               </Link>
             )}
-            <Link
-              href="/account/support"
-              className="flex items-center gap-2 rounded-md px-3 py-2 text-[0.85rem] font-medium text-body transition-colors hover:bg-navy/5 hover:text-navy"
-            >
-              <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 5.636a9 9 0 010 12.728m-12.728 0a9 9 0 010-12.728m9.9 9.9a5 5 0 010-7.072m-7.072 0a5 5 0 010 7.072M12 12h.01" />
-              </svg>
-              Support
-            </Link>
-            <Link
-              href={accountHref}
-              className="flex items-center gap-2 rounded-md px-3 py-2 text-[0.85rem] font-medium text-body transition-colors hover:bg-navy/5 hover:text-navy"
-            >
+            <Link href={accountHref} className={utilLink}>
               <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
               {accountLabel}
             </Link>
             {user && (
-              <button
-                type="button"
-                onClick={logout}
-                className="flex items-center gap-2 rounded-md px-3 py-2 text-[0.85rem] font-medium text-body transition-colors hover:bg-navy/5 hover:text-navy"
-              >
+              <button type="button" onClick={logout} className={utilLink}>
                 <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                 </svg>
@@ -120,14 +117,14 @@ export default function Nav() {
             <Link
               href="/cart"
               aria-label={`Cart, ${count} item${count === 1 ? "" : "s"}`}
-              className="relative flex items-center gap-2 rounded-full bg-green px-4 py-2 text-[0.8rem] font-bold text-white transition-colors hover:bg-green-2"
+              className="relative ml-1 flex items-center gap-2 rounded-md bg-green px-4 py-2 text-[0.8rem] font-bold text-white transition-colors hover:bg-green-2"
             >
               <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
               Cart
               {count > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-navy px-1 text-[0.65rem] font-bold text-white">
+                <span className="absolute -top-1.5 -right-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-ink px-1 text-[0.65rem] font-bold text-white">
                   {count}
                 </span>
               )}

@@ -73,7 +73,6 @@ export default async function FeaturedTiles() {
                 </div>
                 <div className="relative flex flex-1 flex-col p-6">
                   {/* Subtle glass effect behind text */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-white/40 to-transparent pointer-events-none" />
                   
                   <span className="relative z-10 text-[0.62rem] font-bold tracking-[0.16em] text-green-2 uppercase">
                     {label(t.category)}
@@ -119,7 +118,6 @@ export default async function FeaturedTiles() {
       </div>
 
       {/* Ambient glass glow circle */}
-      <div className="absolute top-20 -right-20 w-80 h-80 rounded-full bg-green/5 blur-3xl pointer-events-none z-0" />
     </section>
   );
 }

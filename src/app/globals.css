@@ -1,31 +1,41 @@
 @import "tailwindcss";
 
 @theme {
-  /* ── Aster brand ─────────────────────────── */
-  --color-navy: #0c2340;
-  --color-navy-2: #0f2d52;
-  --color-navy-3: #163760;
-  --color-ink: #07172a;
-  --color-green: #2db87c;
-  --color-green-2: #25a06a;
-  --color-gold: #c9a84c;
-  --color-off: #f4f6f9;
-  --color-mist: #d0dae6;
-  --color-body: #1e3148;
-  --color-muted: #4a5f78;
+  /* ── Aster — ink · paper · green ─────────────
+     Token NAMES are unchanged so every existing text-navy/bg-navy/… keeps
+     working; only the VALUES shift the whole site to an ink+white+green look. */
+  --color-navy: #16181d;   /* primary dark — now a near-black ink */
+  --color-navy-2: #21252e; /* dark hover */
+  --color-navy-3: #2d323c; /* dark, lightest */
+  --color-ink: #0b0c0e;    /* truest black (deep bands) */
+  --color-green: #2db87c;  /* brand accent (unchanged) */
+  --color-green-2: #23a06a;/* green hover */
+  --color-gold: #b99a4a;   /* rarely used */
+  --color-off: #f5f5f2;    /* warm paper white */
+  --color-mist: #e4e3dd;   /* warm hairline / border */
+  --color-body: #191b1f;   /* near-black body text */
+  --color-muted: #6b7078;  /* neutral muted text */
 
-  --font-display: var(--font-sora), system-ui, sans-serif;
+  --font-display: var(--font-archivo), system-ui, sans-serif;
   --font-body: var(--font-inter), system-ui, sans-serif;
 
-  --shadow-lift: 0 8px 40px rgba(12, 35, 64, 0.18);
-  --shadow-green: 0 10px 30px rgba(45, 184, 124, 0.35);
+  /* subtle, architectural rounding (was very round: 12–24px) */
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 3px;
+  --radius-xl: 4px;
+  --radius-2xl: 5px;
+  --radius-3xl: 6px;
+
+  --shadow-lift: 0 10px 40px rgba(16, 18, 24, 0.12);
+  --shadow-green: 0 10px 30px rgba(45, 184, 124, 0.28);
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 html {
   scrollbar-width: thin;
-  scrollbar-color: #2db87c #f4f6f9;
+  scrollbar-color: #2db87c #f5f5f2;
   font-size: 100%;
   background: var(--color-off);
 }
@@ -73,64 +83,39 @@ img, video, [data-reveal], [data-rail-card] {
 
 ::selection {
   background: #2db87c;
-  color: #07172a;
+  color: #0b0c0e;
 }
 
 /* ── Typography helpers ──────────────────── */
 .display {
   font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
 }
 .label {
   font-family: var(--font-display);
   font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
 }
 
 /* ── Buttons ─────────────────────────────── */
 .btn {
   position: relative;
-  overflow: hidden;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.85rem 1.9rem;
-  border-radius: 999px;
+  padding: 0.9rem 1.75rem;
+  border-radius: 6px;
   font-family: var(--font-display);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   white-space: nowrap;
   cursor: pointer;
   transition: transform 0.25s var(--ease-out-expo), box-shadow 0.25s, background-color 0.25s, border-color 0.25s, color 0.25s;
-}
-/* light sweep across solid buttons on hover */
-.btn-green::after,
-.btn-navy::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: -150%;
-  width: 55%;
-  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.35), transparent);
-  transform: skewX(-20deg);
-  transition: left 0.7s var(--ease-out-expo);
-  pointer-events: none;
-}
-.btn-green:hover::after,
-.btn-navy:hover::after {
-  left: 150%;
-}
-@media (prefers-reduced-motion: reduce) {
-  .btn-green::after,
-  .btn-navy::after {
-    display: none;
-  }
 }
 .btn-green {
   background: var(--color-green);
@@ -269,7 +254,7 @@ input[type="color"].viz-color::-webkit-color-swatch {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 .glass-dark {
-  background: rgba(7, 23, 42, 0.6);
+  background: rgba(11, 12, 14, 0.55);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.05);
@@ -279,7 +264,7 @@ input[type="color"].viz-color::-webkit-color-swatch {
   inset: 0;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.04;
+  opacity: 0.02;
   mix-blend-mode: overlay;
   z-index: 10;
 }

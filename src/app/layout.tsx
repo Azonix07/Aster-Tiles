@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Sora, Inter } from "next/font/google";
+import { Archivo, Inter } from "next/font/google";
 import "./globals.css";
 import StoreProvider, { type PublicSettings } from "@/components/StoreProvider";
 import CartProvider from "@/components/CartProvider";
@@ -7,7 +7,11 @@ import PostHogProvider from "@/components/PostHogProvider";
 import { getContent, getSettings, getTiles } from "@/lib/db";
 import { currentUser, toPublicUser } from "@/lib/auth";
 
-const sora = Sora({ subsets: ["latin"], variable: "--font-sora" });
+const archivo = Archivo({
+  subsets: ["latin"],
+  variable: "--font-archivo",
+  weight: ["400", "500", "700", "800", "900"],
+});
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -40,7 +44,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#0c2340",
+  themeColor: "#16181d",
 };
 
 export default async function RootLayout({
@@ -65,7 +69,7 @@ export default async function RootLayout({
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${sora.variable} ${inter.variable}`}
+      className={`${archivo.variable} ${inter.variable}`}
     >
       <body className="antialiased">
         <PostHogProvider user={user}>

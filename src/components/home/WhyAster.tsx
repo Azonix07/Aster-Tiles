@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Reveal from "@/components/scroll/Reveal";
+import GridLines from "@/components/decor/GridLines";
 
 const reasons = [
   {
@@ -61,9 +61,7 @@ const reasons = [
 export default function WhyAster() {
   return (
     <section className="relative overflow-hidden border-y border-mist bg-white py-24">
-      <div className="pointer-events-none absolute inset-0 opacity-[0.03] mix-blend-multiply">
-        <Image src="/media/abstract_texture.png" alt="" fill sizes="100vw" className="object-cover" />
-      </div>
+      <GridLines size={64} opacity={0.5} />
       <div className="relative mx-auto max-w-7xl px-6">
         <Reveal className="text-center">
           <span data-reveal className="label text-green">
@@ -85,7 +83,7 @@ export default function WhyAster() {
               data-reveal
               className="group rounded-2xl border border-mist bg-off p-7 transition-all duration-300 hover:-translate-y-1.5 hover:border-green hover:bg-white hover:shadow-[0_12px_30px_rgba(45,184,124,0.14)]"
             >
-              <div className="mb-5 flex h-13 w-13 items-center justify-center rounded-xl border border-green/25 bg-green/8 text-green transition-all duration-500 ease-out group-hover:-rotate-6 group-hover:scale-110 group-hover:bg-green group-hover:text-white motion-reduce:transition-none">
+              <div className="mb-5 flex h-13 w-13 items-center justify-center rounded-xl border border-green/25 bg-green/8 text-green transition-colors duration-300 ease-out group-hover:bg-green group-hover:text-white motion-reduce:transition-none">
                 {r.icon}
               </div>
               <h3 className="font-display text-lg font-bold text-navy">{r.title}</h3>

@@ -57,7 +57,6 @@ export default async function CollectionsGrid() {
               </div>
               <div className="p-8 relative">
                 {/* Subtle glass effect behind text */}
-                <div className="absolute inset-0 bg-gradient-to-b from-white/40 to-transparent pointer-events-none" />
                 
                 <div className="relative z-10 text-[0.66rem] font-bold tracking-[0.14em] text-green-2 uppercase">
                   {c.blurb}
@@ -81,7 +80,6 @@ export default async function CollectionsGrid() {
       </div>
 
       {/* Ambient glass glow circle */}
-      <div className="absolute -bottom-20 -left-20 w-96 h-96 rounded-full bg-green/5 blur-3xl pointer-events-none z-0" />
     </section>
   );
 }
