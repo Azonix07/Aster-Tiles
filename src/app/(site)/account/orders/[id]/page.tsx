@@ -4,8 +4,9 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { currentUser } from "@/lib/auth";
 import { getDb } from "@/lib/db";
-import { money, dateTime } from "@/lib/format";
+import { money, dateTime, STATUS_LABELS, STATUS_DESCRIPTIONS } from "@/lib/format";
 import { OrderProgress, StatusBadge, Timeline } from "@/components/shop/OrderBits";
+import OrderActions from "@/components/shop/OrderActions";
 
 export const metadata: Metadata = {
   title: "Order details",
@@ -27,6 +28,8 @@ export default async function OrderDetailPage({
   if (!order || (order.userId !== user.id && !user.isAdmin)) notFound();
 
   const justPlaced = (await searchParams).placed === "1";
+  const isOwner = order.userId === user.id;
+  const cancellable = isOwner && ["pending", "confirmed", "processing"].includes(order.status);
 
   return (
     <section className="min-h-[70vh] bg-off pt-12 pb-20">
@@ -58,6 +61,14 @@ export default async function OrderDetailPage({
 
         <div className="mt-8 rounded-2xl bg-white p-6 shadow-lift sm:p-8">
           <OrderProgress status={order.status} />
+          <div
+            className={`mt-6 rounded-xl border px-4 py-3.5 ${
+              order.status === "cancelled" ? "border-red-200 bg-red-50" : "border-green/30 bg-green/5"
+            }`}
+          >
+            <p className="font-display text-sm font-bold text-navy">{STATUS_LABELS[order.status]}</p>
+            <p className="mt-0.5 text-sm text-muted">{STATUS_DESCRIPTIONS[order.status]}</p>
+          </div>
         </div>
 
         <div className="mt-8 grid gap-8 lg:grid-cols-[1.7fr_1fr] lg:items-start">
@@ -152,6 +163,72 @@ export default async function OrderDetailPage({
                 </span>
               </p>
             </div>
+
+            {/* tracking */}
+            <div className="rounded-2xl bg-white p-6 shadow-lift sm:p-8">
+              <h2 className="display text-xl text-navy">Tracking</h2>
+              {order.status === "cancelled" ? (
+                <p className="mt-3 text-sm text-muted">
+                  This order was cancelled, so there&apos;s nothing to track.
+                </p>
+              ) : order.carrier || order.trackingNumber || order.estimatedDelivery ? (
+                <>
+                  <dl className="mt-4 space-y-2.5 text-sm">
+                    {order.carrier && (
+                      <div className="flex justify-between gap-4">
+                        <dt className="text-muted">Carrier</dt>
+                        <dd className="font-bold text-navy">{order.carrier}</dd>
+                      </div>
+                    )}
+                    {order.trackingNumber && (
+                      <div className="flex justify-between gap-4">
+                        <dt className="text-muted">Tracking no.</dt>
+                        <dd className="font-bold text-navy">{order.trackingNumber}</dd>
+                      </div>
+                    )}
+                    {order.estimatedDelivery && (
+                      <div className="flex justify-between gap-4">
+                        <dt className="text-muted">Est. delivery</dt>
+                        <dd className="font-bold text-navy">{order.estimatedDelivery}</dd>
+                      </div>
+                    )}
+                  </dl>
+                  {order.trackingUrl && (
+                    <a
+                      href={order.trackingUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-green mt-4 w-full justify-center"
+                    >
+                      Track with carrier
+                    </a>
+                  )}
+                </>
+              ) : (
+                <p className="mt-3 text-sm text-muted">
+                  Tracking details appear here once your order ships — we&apos;ll email you when
+                  it&apos;s on the way.
+                </p>
+              )}
+              <p className="mt-4 border-t border-mist pt-4 text-xs leading-relaxed text-muted">
+                Prefer not to sign in? Track this order anytime on the{" "}
+                <Link
+                  href={`/track?number=${encodeURIComponent(order.number)}`}
+                  className="font-semibold text-green hover:underline"
+                >
+                  public tracking page
+                </Link>{" "}
+                with your order number and email.
+              </p>
+            </div>
+
+            {isOwner && (
+              <OrderActions
+                orderId={order.id}
+                cancellable={cancellable}
+                items={order.items.map((i) => ({ tileId: i.tileId, sqm: i.sqm }))}
+              />
+            )}
           </aside>
         </div>
       </div>
