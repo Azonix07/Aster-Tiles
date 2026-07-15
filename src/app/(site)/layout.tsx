@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import PaymentsBanner from "@/components/shop/PaymentsBanner";
 import MobileTabBar from "@/components/mobile/MobileTabBar";
 import ScrollProgress from "@/components/interactive/ScrollProgress";
+import ChatWidget from "@/components/chat/ChatWidget";
 
 export default function SiteLayout({
   children,
@@ -19,6 +20,7 @@ export default function SiteLayout({
       <div className="h-24 lg:hidden" aria-hidden="true" />
       <PaymentsBanner />
       <MobileTabBar />
+      <ChatWidget />
     </SmoothScroll>
   );
 }
